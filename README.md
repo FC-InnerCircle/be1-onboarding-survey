@@ -1,4 +1,5 @@
 # 이너써클 BE 온보딩 프로젝트 (장현호)
+<img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
 ## Introduction
 
