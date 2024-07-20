@@ -1,5 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
+import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
@@ -8,10 +9,13 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SurveyTest {
+
+    private final Clock fakeClock = () -> LocalDateTime.of(2024, 7, 20, 11, 46, 0);
 
     @Nested
     @DisplayName("항목 추가")
@@ -114,7 +118,7 @@ public class SurveyTest {
             );
 
             // Update the item with new information
-            sut.updateItem(command);
+            sut.updateItem(command, fakeClock);
 
             // Assert that the item has been updated
             SurveyItem latest = sut.findItem(1L).orElseThrow();

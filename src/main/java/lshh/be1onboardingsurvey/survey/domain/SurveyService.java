@@ -1,10 +1,8 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import lombok.RequiredArgsConstructor;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
+import lshh.be1onboardingsurvey.common.lib.clock.Clock;
+import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
@@ -19,6 +17,7 @@ import java.util.Optional;
 public class SurveyService {
 
     private final SurveyRepository repository;
+    private final Clock clock;
 
     @Transactional(readOnly = true)
     public List<SurveyView> findAll() {
@@ -58,7 +57,14 @@ public class SurveyService {
     public Result updateItem(UpdateSurveyItemCommand updateSurveyItemCommand) {
         Survey survey = repository.findById(updateSurveyItemCommand.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
-        survey.updateItem(updateSurveyItemCommand);
+        survey.updateItem(updateSurveyItemCommand, clock);
+        return repository.save(survey);
+    }
+
+    public Result updateItemOption(UpdateSurveyItemOptionCommand command) {
+        Survey survey = repository.findById(command.surveyId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+        survey.updateItem(command, clock);
         return repository.save(survey);
     }
 }

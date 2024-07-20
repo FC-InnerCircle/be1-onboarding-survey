@@ -2,6 +2,7 @@ package lshh.be1onboardingsurvey.survey.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 
 import java.time.LocalDateTime;
 
@@ -23,4 +24,8 @@ public class SurveyItemOption {
     @Setter
     @ManyToOne
     SurveyItem surveyItem;
+
+    public void setOverridden(Clock clock) {
+        this.overridden = clock.now();
+    }
 }

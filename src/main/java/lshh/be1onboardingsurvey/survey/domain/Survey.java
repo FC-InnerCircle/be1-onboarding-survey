@@ -5,10 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
+import lshh.be1onboardingsurvey.common.lib.clock.Clock;
+import lshh.be1onboardingsurvey.survey.domain.command.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +58,7 @@ public class Survey {
         surveyItem.addItemOption(command);
     }
 
-    public void updateItem(UpdateSurveyItemCommand command){
+    public void updateItem(UpdateSurveyItemCommand command, Clock clock){
         SurveyItem latestItem = findItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
 
@@ -75,10 +74,15 @@ public class Survey {
                 break;
         }
 
-        latestItem.setOverridden();
+        latestItem.setOverridden(clock);
         newItem.setSurvey(this);
         this.items.add(newItem);
     }
 
 
+    public void updateItem(UpdateSurveyItemOptionCommand command, Clock clock) {
+        SurveyItem surveyItem = findItem(command.itemId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
+        surveyItem.updateItemOption(command, clock);
+    }
 }
