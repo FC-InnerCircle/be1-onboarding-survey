@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
 
 import java.util.List;
@@ -21,14 +22,19 @@ public class Survey {
     String name;
     String description;
 
-    @OneToMany(mappedBy = "id.surveyId")
+    @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<SurveyItem> items;
-
 
     public static Survey of(CreateSurveyCommand command) {
         return Survey.builder()
                 .name(command.name())
                 .description(command.description())
                 .build();
+    }
+
+    public void addItem(AddSurveyItemCommand command) {
+        SurveyItem surveyItem = command.toEntity();
+        surveyItem.setSurvey(this);
+        items.add(surveyItem);
     }
 }

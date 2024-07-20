@@ -1,12 +1,18 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 import lshh.be1onboardingsurvey.common.BooleanConverter;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 public class SurveyItem {
-    @EmbeddedId
-    SurveyItemId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
     String name;
     String description;
     @Enumerated(EnumType.STRING)
@@ -14,7 +20,9 @@ public class SurveyItem {
     @Convert(converter = BooleanConverter.class)
     Boolean required;
 
-    public void upgradeVersion(){
-        this.id.upgradeVersion();
-    }
+    Long sequence;
+    @Setter
+    @ManyToOne
+    Survey survey;
+
 }

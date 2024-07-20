@@ -8,6 +8,7 @@ import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -25,5 +26,15 @@ public class SurveyRepositoryImplement implements SurveyRepository {
     public Result save(Survey survey) {
         jpaRepository.save(survey);
         return Result.success();
+    }
+
+    @Override
+    public Optional<Survey> findById(Long id) {
+        return jpaRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Survey> findByName(String name) {
+        return jpaRepository.findByName(name);
     }
 }

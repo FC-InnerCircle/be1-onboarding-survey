@@ -1,6 +1,7 @@
 package lshh.be1onboardingsurvey.survey.controller;
 
 import lombok.RequiredArgsConstructor;
+import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
 import lshh.be1onboardingsurvey.survey.domain.SurveyService;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
@@ -21,6 +22,13 @@ public class SurveyController {
         Result result = service.create(command);
         return Response.of(result);
     }
+
+    @PostMapping("/item")
+    public Response addItem(@RequestBody AddSurveyItemCommand command) {
+        Result result = service.addItem(command);
+        return Response.of(result);
+    }
+
 
     @GetMapping("all")
     public List<SurveyView> all(){
