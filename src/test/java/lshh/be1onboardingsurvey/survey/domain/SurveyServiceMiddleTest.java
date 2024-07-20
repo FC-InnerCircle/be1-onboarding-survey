@@ -1,6 +1,5 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
-import lombok.RequiredArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import org.junit.jupiter.api.Test;
