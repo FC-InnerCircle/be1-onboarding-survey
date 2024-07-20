@@ -1,26 +1,22 @@
-package com.innercircle.onboardingservey.domain;
+package com.innercircle.onboardingservey.domain.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Entity
-@Table(name = "questions_options")
+@Table(name = "serveys")
 @RequiredArgsConstructor
 @Getter
-public class QuestionOption {
+public class Survey {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long questionOptionId;
+    private Long surveyId;
     private final String title;
-    private final Integer order;
+    private final String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Question question;
 }

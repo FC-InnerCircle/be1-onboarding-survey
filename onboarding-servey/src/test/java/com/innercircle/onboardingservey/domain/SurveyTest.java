@@ -1,6 +1,8 @@
 package com.innercircle.onboardingservey.domain;
 
 import static org.assertj.core.api.Assertions.*;
+
+import com.innercircle.onboardingservey.domain.model.Survey;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

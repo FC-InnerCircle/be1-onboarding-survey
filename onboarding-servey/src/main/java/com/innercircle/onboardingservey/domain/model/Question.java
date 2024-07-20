@@ -1,4 +1,4 @@
-package com.innercircle.onboardingservey.domain;
+package com.innercircle.onboardingservey.domain.model;
 
 import static com.innercircle.onboardingservey.common.ValidationUtils.assertHasCollection;
 import static com.innercircle.onboardingservey.common.ValidationUtils.assertHasText;
@@ -70,7 +70,7 @@ public class Question {
     }
 
 
-    public static Question shortAnswer(
+    public static Question shortText(
         final String title,
         final String description,
         final Boolean required,
@@ -84,7 +84,7 @@ public class Question {
         );
     }
 
-    public static Question longAnswer(
+    public static Question longText(
         final String title,
         final String description,
         final Boolean required,
@@ -131,5 +131,4 @@ public class Question {
             questionOptionList
         );
     }
-
 }

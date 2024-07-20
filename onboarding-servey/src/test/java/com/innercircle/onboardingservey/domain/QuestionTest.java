@@ -1,11 +1,12 @@
 package com.innercircle.onboardingservey.domain;
 
+import com.innercircle.onboardingservey.domain.model.Question;
+import com.innercircle.onboardingservey.domain.model.QuestionOption;
+import com.innercircle.onboardingservey.domain.model.Survey;
 import java.util.List;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -19,7 +20,7 @@ public class QuestionTest {
         final String title = "이름을 입력해주세요";
         final String description = "본인의 이름을 성과 함께 입력해주세요";
         final Boolean required = Boolean.TRUE;
-        final Question question = Question.shortAnswer(
+        final Question question = Question.shortText(
             title, description, required, survey);
 
         assertThat(question).isNotNull();
@@ -34,7 +35,7 @@ public class QuestionTest {
         final String title = "이름을 입력해주세요";
         final String description = "본인의 이름을 성과 함께 입력해주세요";
         final Boolean required = Boolean.TRUE;
-        final Question question = Question.longAnswer(
+        final Question question = Question.longText(
             title, description, required, survey);
 
         assertThat(question).isNotNull();
@@ -49,7 +50,7 @@ public class QuestionTest {
         final Survey survey = new Survey("단일 선택 리스트 질문", "단문 선택 리스트 질문을 생성한다.");
         final String title = "이름을 입력해주세요";
         final Boolean required = Boolean.TRUE;
-        final List<QuestionOption> questionOptions = IntStream.of(1,2,3,4,5)
+        final List<QuestionOption> questionOptions = IntStream.of(1, 2, 3, 4, 5)
             .mapToObj(i -> new QuestionOption("선택 " + i, i))
             .toList();
 

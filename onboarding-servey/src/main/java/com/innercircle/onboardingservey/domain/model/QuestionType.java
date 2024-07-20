@@ -1,4 +1,4 @@
-package com.innercircle.onboardingservey.domain;
+package com.innercircle.onboardingservey.domain.model;
 
 import lombok.RequiredArgsConstructor;
 
