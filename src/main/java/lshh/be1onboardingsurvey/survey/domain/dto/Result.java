@@ -9,7 +9,7 @@ public record  Result <T>(
         return new Result(Status.SUCCESS, null);
     }
 
-    enum Status {
+    public enum Status {
         OK,
         SUCCESS,
         ERROR

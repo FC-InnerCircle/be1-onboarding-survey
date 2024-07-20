@@ -2,6 +2,7 @@ package lshh.be1onboardingsurvey.survey.domain;
 
 import lombok.RequiredArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
+import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 import org.springframework.stereotype.Service;

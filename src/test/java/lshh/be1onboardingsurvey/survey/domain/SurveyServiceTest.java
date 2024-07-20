@@ -1,6 +1,7 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
+import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -29,7 +30,6 @@ public class SurveyServiceTest {
         public void testCreate_Simple() {
             // Arrange
             CreateSurveyCommand command = new CreateSurveyCommand("name", "description");
-            Survey expectedSurvey = Survey.of(command);
             Result expectedResult = Result.success();
     
             when(repository.save(any(Survey.class))).thenReturn(expectedResult);

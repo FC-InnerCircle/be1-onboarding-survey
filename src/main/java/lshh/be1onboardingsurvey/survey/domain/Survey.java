@@ -1,12 +1,13 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,9 +16,14 @@ import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
 @Entity
 public class Survey {
     @Id
-    private Long id;
-    private String name;
-    private String description;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+    String name;
+    String description;
+
+    @OneToMany(mappedBy = "id.surveyId")
+    List<SurveyItem> items;
+
 
     public static Survey of(CreateSurveyCommand command) {
         return Survey.builder()

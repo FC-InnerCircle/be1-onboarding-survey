@@ -1,5 +1,6 @@
-package lshh.be1onboardingsurvey.survey.domain;
+package lshh.be1onboardingsurvey.survey.domain.component;
 
+import lshh.be1onboardingsurvey.survey.domain.Survey;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 

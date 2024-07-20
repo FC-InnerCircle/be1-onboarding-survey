@@ -2,7 +2,7 @@ package lshh.be1onboardingsurvey.survey.infrastructure;
 
 import lombok.RequiredArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.Survey;
-import lshh.be1onboardingsurvey.survey.domain.SurveyRepository;
+import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 import org.springframework.stereotype.Repository;
