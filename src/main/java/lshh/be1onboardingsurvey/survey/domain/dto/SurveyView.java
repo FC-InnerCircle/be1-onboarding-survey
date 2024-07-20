@@ -1,7 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain.dto;
 
 import lshh.be1onboardingsurvey.survey.domain.Survey;
-import lshh.be1onboardingsurvey.survey.domain.SurveyItem;
 
 import java.util.List;
 

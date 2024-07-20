@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.common;
+package lshh.be1onboardingsurvey.common.lib.jpa;
 
 import jakarta.persistence.AttributeConverter;
 

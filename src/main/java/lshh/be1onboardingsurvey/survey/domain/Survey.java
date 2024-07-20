@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
+import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
+import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
 
 import java.util.List;
 
@@ -37,4 +39,14 @@ public class Survey {
         surveyItem.setSurvey(this);
         items.add(surveyItem);
     }
+
+    public void updateItem(AddSurveyItemOptionCommand command) {
+        // todo
+    }
+
+    public void updateItem(UpdateSurveyItemCommand command){
+        // todo
+    }
+
+
 }

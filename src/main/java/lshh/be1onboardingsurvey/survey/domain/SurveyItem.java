@@ -2,7 +2,10 @@ package lshh.be1onboardingsurvey.survey.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lshh.be1onboardingsurvey.common.BooleanConverter;
+import lshh.be1onboardingsurvey.common.lib.jpa.BooleanConverter;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @AllArgsConstructor
@@ -19,10 +22,14 @@ public class SurveyItem {
     SurveyItemForm form;
     @Convert(converter = BooleanConverter.class)
     Boolean required;
-
     Long sequence;
+
+    LocalDateTime overrided;
+
     @Setter
     @ManyToOne
     Survey survey;
 
+    @OneToMany(mappedBy = "surveyItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    List<SurveyItemOption> options;
 }

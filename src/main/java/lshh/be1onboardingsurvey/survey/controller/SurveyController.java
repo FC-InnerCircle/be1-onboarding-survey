@@ -29,6 +29,8 @@ public class SurveyController {
         return Response.of(result);
     }
 
+    @PostMapping("/item/option")
+
 
     @GetMapping("all")
     public List<SurveyView> all(){
