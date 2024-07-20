@@ -2,7 +2,9 @@ package lshh.be1onboardingsurvey.survey.domain;
 
 import lombok.RequiredArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
+import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.CreateSurveyCommand;
+import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
 import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
@@ -24,9 +26,10 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public Survey findByName(String name) {
+    public Optional<SurveyView> findByName(String name) {
         return repository.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+                .map(SurveyView::of);
+
     }
 
     @Transactional
@@ -40,6 +43,22 @@ public class SurveyService {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
         survey.addItem(command);
+        return repository.save(survey);
+    }
+
+    @Transactional
+    public Result addItemOption(AddSurveyItemOptionCommand command) {
+        Survey survey = repository.findById(command.surveyId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+        survey.updateItem(command);
+        return repository.save(survey);
+    }
+
+    @Transactional
+    public Result updateItem(UpdateSurveyItemCommand updateSurveyItemCommand) {
+        Survey survey = repository.findById(updateSurveyItemCommand.surveyId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+        survey.updateItem(updateSurveyItemCommand);
         return repository.save(survey);
     }
 }

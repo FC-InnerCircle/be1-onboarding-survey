@@ -1,6 +1,10 @@
 package lshh.be1onboardingsurvey.survey.domain.dto;
 
 import lshh.be1onboardingsurvey.survey.domain.SurveyItem;
+import lshh.be1onboardingsurvey.survey.domain.SurveyItemOption;
+
+import java.util.Comparator;
+import java.util.List;
 
 public record SurveyItemView(
         Long id,
@@ -8,7 +12,8 @@ public record SurveyItemView(
         String description,
         String form,
         Boolean required,
-        Long sequence
+        Long sequence,
+        List<SurveyItemOptionView> options
 ) {
     public static SurveyItemView of(SurveyItem entity){
         return new SurveyItemView(entity.getId(),
@@ -16,7 +21,12 @@ public record SurveyItemView(
                 entity.getDescription(),
                 entity.getForm().name(),
                 entity.getRequired(),
-                entity.getSequence()
+                entity.getSequence(),
+                entity.getOptions().stream()
+                        .filter(option->option.getOverridden() == null)
+                        .sorted(Comparator.comparing(SurveyItemOption::getSequence))
+                        .map(SurveyItemOptionView::of)
+                        .toList()
         );
     }
 }

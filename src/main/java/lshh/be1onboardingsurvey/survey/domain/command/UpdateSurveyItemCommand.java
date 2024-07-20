@@ -3,8 +3,10 @@ package lshh.be1onboardingsurvey.survey.domain.command;
 import lshh.be1onboardingsurvey.survey.domain.SurveyItem;
 import lshh.be1onboardingsurvey.survey.domain.SurveyItemForm;
 
-public record AddSurveyItemCommand(
+
+public record UpdateSurveyItemCommand(
         Long surveyId,
+        Long itemId,
         String name,
         String description,
         SurveyItemForm form,
