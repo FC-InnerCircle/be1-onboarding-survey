@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: survey
+
+  jpa:
+    open-in-view: false
