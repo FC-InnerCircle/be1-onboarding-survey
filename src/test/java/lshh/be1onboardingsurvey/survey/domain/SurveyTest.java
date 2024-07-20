@@ -3,6 +3,7 @@ package lshh.be1onboardingsurvey.survey.domain;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -13,6 +14,7 @@ import java.util.List;
 public class SurveyTest {
 
     @Nested
+    @DisplayName("항목 추가")
     public class AddItemTest{
         @Test
         public void testAddItem() {
@@ -43,6 +45,7 @@ public class SurveyTest {
     }
 
     @Nested
+    @DisplayName("항목 옵션 추가")
     public class AddSurveyItemOptionTest{
         @Test
         public void testAddSurveyItemOption() {
@@ -78,6 +81,7 @@ public class SurveyTest {
     }
 
     @Nested
+    @DisplayName("항목 수정")
     public class UpdateItemTest{
         @Test
         public void testUpdateItemCommand() {
@@ -114,7 +118,7 @@ public class SurveyTest {
 
             // Assert that the item has been updated
             SurveyItem latest = sut.findItem(1L).orElseThrow();
-            assertEquals("Latest Item", sut.findItem(1L).orElseThrow().getName());
+            assertEquals("Latest Item", latest.getName());
 
             SurveyItem updated = sut.findItemBySequence(1L).orElseThrow();
             assertEquals("Updated Item", updated.getName());
