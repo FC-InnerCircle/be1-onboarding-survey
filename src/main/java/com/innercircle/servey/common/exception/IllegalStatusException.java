@@ -1,7 +1,7 @@
 package com.innercircle.servey.common.exception;
 
 
-import dev.practice.order.common.response.ErrorCode;
+import com.innercircle.servey.common.response.ErrorCode;
 
 public class IllegalStatusException extends BaseException {
 
