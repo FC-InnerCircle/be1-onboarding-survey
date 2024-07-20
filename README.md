@@ -91,7 +91,7 @@
 
 ### 소스코드
 
-- 본 Repository에 개인 이름으로 main 브랜치를 포크하여 작업을 시작합니다. 예) seojihun
+- 본 Repository에 main 브랜치를 포크하여 작업을 시작합니다.
 - SpringBoot 프로젝트를 신규로 설정하고, 개인별로 main 브랜치에 PR을 공개적으로 먼저 작성한 후에 작업을 시작합니다. 이때 PR은 Draft 상태로 설정해주세요.
 - 최소 기능 단위로 완성할 때 마다 커밋합니다.
 - 모든 작업이 완료되면 `Ready for review` 버튼을 이용하여 PR을 Draft 상태에서 Review 가능 상태로 변경해주세요.
