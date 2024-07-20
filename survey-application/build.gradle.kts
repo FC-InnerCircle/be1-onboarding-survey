@@ -5,3 +5,12 @@ plugins {
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.spring") version "1.9.24"
 }
+
+dependencies {
+    implementation(project(":survey-api"))
+    implementation(project(":survey-domain"))
+    implementation(project(":survey-common"))
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
