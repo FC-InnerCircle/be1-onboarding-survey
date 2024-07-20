@@ -12,6 +12,7 @@ class SurveyTest {
         String title = "이름을 입력해주세요";
         String description = "본인의 이름을 성과 함게 기재해주세요";
         final Survey survey = new Survey(title, description);
+
         assertThat(survey).isNotNull();
         assertThat(survey.getTitle()).isEqualTo(title);
         assertThat(survey.getDescription()).isEqualTo(description);
