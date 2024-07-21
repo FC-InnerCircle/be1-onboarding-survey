@@ -1,4 +1,4 @@
-package com.inner_circle.survey.entity;
+package com.inner_circle.survey.entity.request;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,7 +18,6 @@ public class Survey {
     private Long id;
 
     private String title;
-
     private String description;
 
     public Survey(String title, String description) {
