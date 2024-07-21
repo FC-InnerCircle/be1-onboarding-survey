@@ -13,5 +13,3 @@ class SurveyApplication
 fun main(args: Array<String>) {
     runApplication<SurveyApplication>(*args)
 }
-
-

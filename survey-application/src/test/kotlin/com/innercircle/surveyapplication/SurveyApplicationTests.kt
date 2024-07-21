@@ -9,5 +9,4 @@ class SurveyApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
