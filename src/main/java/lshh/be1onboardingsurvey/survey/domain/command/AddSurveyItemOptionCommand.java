@@ -9,6 +9,12 @@ public record AddSurveyItemOptionCommand(
         String description,
         Long sequence
 ) {
+    public AddSurveyItemOptionCommand {
+        if(surveyId == null || itemId == null){
+            throw new IllegalArgumentException("SurveyId, itemId must not be null");
+        }
+    }
+
     public SurveyItemOption toEntity() {
         return SurveyItemOption.builder()
                 .name(this.name)

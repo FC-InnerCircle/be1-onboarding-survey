@@ -27,6 +27,9 @@ public class Survey {
     @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     List<SurveyItem> items;
 
+    @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    List<SurveyResponse> responses;
+
     public static Survey of(CreateSurveyCommand command) {
         return Survey.builder()
                 .name(command.name())
@@ -46,6 +49,23 @@ public class Survey {
                 .findFirst();
     }
 
+    public Optional<SurveyItem> findItemByPreId(Long preId){
+        return this.items.stream()
+                .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
+                .findFirst();
+    }
+
+    public Optional<SurveyItem> findLatestItem(Long id){
+        return findItem(id)
+                .map(item -> {
+                    while(item.getOverridden() != null){
+                        item = findItemByPreId(item.getId())
+                                .orElseThrow(() -> new IllegalArgumentException("Survey latest item not found"));
+                    }
+                    return item;
+                });
+    }
+
     public Optional<SurveyItem> findItemBySequence(Long sequence){
         return this.items.stream()
                 .filter(i -> i.getSequence().equals(sequence) && i.getOverridden() == null)
@@ -59,7 +79,7 @@ public class Survey {
     }
 
     public void updateItem(UpdateSurveyItemCommand command, Clock clock){
-        SurveyItem latestItem = findItem(command.itemId())
+        SurveyItem latestItem = findLatestItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
 
         SurveyItem newItem = command.toEntity();
@@ -84,5 +104,25 @@ public class Survey {
         SurveyItem surveyItem = findItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
         surveyItem.updateItemOption(command, clock);
+    }
+
+    public void addResponse(AddSurveyResponseCommand command) {
+        SurveyResponse surveyResponse = command.toEntity();
+        surveyResponse.setSurvey(this);
+        responses.add(surveyResponse);
+    }
+
+    public Optional<SurveyResponse> findResponse(Long id){
+        return this.responses.stream()
+                .filter(response -> response.getId().equals(id))
+                .findFirst();
+    }
+
+    public void addResponseItem(AddSurveyResponseItemCommand command) {
+        SurveyResponse surveyResponse = findResponse(command.responseId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey response not found"));
+        SurveyItem surveyItem = findItem(command.itemId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
+        surveyResponse.addItem(command, surveyItem.getFormType());
     }
 }

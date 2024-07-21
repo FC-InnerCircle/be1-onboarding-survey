@@ -1,5 +1,8 @@
 
 # 도메인
+- 클래스 다이어그램
+![class-diagram](./docs/class-diagram.png)
+
 ## 설문 조사
 - id
 - 이름
@@ -20,13 +23,19 @@
   - 다중 선택 리스트
 - 항목 필수 여부
 
-
 ## 선택 리스트 항목
 - id
-- version
 - 설문 항목 id
 - 이름
-- overrided
+- overridden
+
+## 설문조사 답변
+- id
+- 설문 항목 id
+- 이름
+- overridden
+
+## 설문조사 답변 값
 
 # 유스케이스
 ## 설문조사 생성

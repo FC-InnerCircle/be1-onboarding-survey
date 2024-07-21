@@ -24,12 +24,14 @@ public class SurveyItem {
     String name;
     String description;
     @Enumerated(EnumType.STRING)
-    SurveyItemForm form;
+    SurveyItemFormType formType;
     @Convert(converter = BooleanConverter.class)
     Boolean required;
     Long sequence;
 
     LocalDateTime overridden;
+
+    Long preId;
   
     @Setter
     @ManyToOne
@@ -40,8 +42,8 @@ public class SurveyItem {
 
     public void addItemOption(AddSurveyItemOptionCommand command) {
         if(
-            this.form != SurveyItemForm.RADIO
-            && this.form != SurveyItemForm.CHECKBOX
+            this.formType != SurveyItemFormType.RADIO
+            && this.formType != SurveyItemFormType.CHECKBOX
         ){
             throw new IllegalArgumentException("Survey item is not a select type");
         }

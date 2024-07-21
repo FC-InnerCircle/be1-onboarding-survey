@@ -1,6 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
-public enum SurveyItemForm {
+public enum SurveyItemFormType {
     TEXT,
     TEXTAREA,
     RADIO,

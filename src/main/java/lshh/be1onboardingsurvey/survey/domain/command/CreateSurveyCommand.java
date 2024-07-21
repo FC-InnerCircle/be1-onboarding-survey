@@ -7,7 +7,5 @@ public record CreateSurveyCommand(
     public CreateSurveyCommand {
         if (name == null || name.isBlank())
             throw new IllegalArgumentException("Name cannot be null or empty");
-        if (description == null || description.isBlank())
-            throw new IllegalArgumentException("Description cannot be null or empty");
     }
 }

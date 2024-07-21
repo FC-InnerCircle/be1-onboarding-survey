@@ -5,6 +5,7 @@ import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
+import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseView;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,17 +29,16 @@ public class SurveyService {
     public Optional<SurveyView> findByName(String name) {
         return repository.findByName(name)
                 .map(SurveyView::of);
-
     }
 
     @Transactional
-    public Result create(CreateSurveyCommand command) {
+    public Result<?> create(CreateSurveyCommand command) {
         Survey survey = Survey.of(command);
         return repository.save(survey);
     }
 
     @Transactional
-    public Result addItem(AddSurveyItemCommand command) {
+    public Result<?> addItem(AddSurveyItemCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
         survey.addItem(command);
@@ -46,7 +46,7 @@ public class SurveyService {
     }
 
     @Transactional
-    public Result addItemOption(AddSurveyItemOptionCommand command) {
+    public Result<?> addItemOption(AddSurveyItemOptionCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
         survey.updateItem(command);
@@ -54,17 +54,40 @@ public class SurveyService {
     }
 
     @Transactional
-    public Result updateItem(UpdateSurveyItemCommand updateSurveyItemCommand) {
+    public Result<?> updateItem(UpdateSurveyItemCommand updateSurveyItemCommand) {
         Survey survey = repository.findById(updateSurveyItemCommand.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
         survey.updateItem(updateSurveyItemCommand, clock);
         return repository.save(survey);
     }
 
-    public Result updateItemOption(UpdateSurveyItemOptionCommand command) {
+    @Transactional
+    public Result<?> updateItemOption(UpdateSurveyItemOptionCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
         survey.updateItem(command, clock);
         return repository.save(survey);
+    }
+
+    @Transactional
+    public Result<?> addResponse(AddSurveyResponseCommand command) {
+        Survey survey = repository.findById(command.surveyId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+        survey.addResponse(command);
+        return repository.save(survey);
+    }
+
+
+    @Transactional
+    public Result<?> addResponseItem(AddSurveyResponseItemCommand command) {
+        Survey survey = repository.findById(command.surveyId())
+                .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
+        survey.addResponseItem(command);
+        return repository.save(survey);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SurveyResponseView> findResponse(Long surveyId) {
+        return repository.findResponseBySurveyId(surveyId);
     }
 }

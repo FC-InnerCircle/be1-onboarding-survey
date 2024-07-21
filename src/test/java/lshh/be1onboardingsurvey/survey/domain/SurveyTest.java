@@ -1,9 +1,8 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import lshh.be1onboardingsurvey.common.lib.clock.Clock;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
-import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemCommand;
+import lshh.be1onboardingsurvey.survey.domain.command.*;
+import lshh.be1onboardingsurvey.survey.domain.vo.SurveyResponseItemValue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class SurveyTest {
 
@@ -21,6 +21,7 @@ public class SurveyTest {
     @DisplayName("항목 추가")
     public class AddItemTest{
         @Test
+        @DisplayName("항목 추가 성공")
         public void testAddItem() {
             // Initialize Survey with empty item list
             Survey sut = Survey.builder()
@@ -34,7 +35,7 @@ public class SurveyTest {
                     1L,
                     "Test Item",
                     "This is a test item",
-                    SurveyItemForm.TEXT,
+                    SurveyItemFormType.TEXT,
                     true,
                     1L
             );
@@ -52,11 +53,12 @@ public class SurveyTest {
     @DisplayName("항목 옵션 추가")
     public class AddSurveyItemOptionTest{
         @Test
+        @DisplayName("항목 옵션 추가 성공")
         public void testAddSurveyItemOption() {
             // Initialize Survey with single item list
             SurveyItem initialItem = SurveyItem.builder()
                     .id(1L)
-                    .form(SurveyItemForm.RADIO)
+                    .formType(SurveyItemFormType.RADIO)
                     .build();
             List<SurveyItem> itemList = new ArrayList<>();
             itemList.add(initialItem);
@@ -88,13 +90,14 @@ public class SurveyTest {
     @DisplayName("항목 수정")
     public class UpdateItemTest{
         @Test
+        @DisplayName("항목 수정 성공")
         public void testUpdateItemCommand() {
             // Initialize Survey with single item list
             SurveyItem initialItem = SurveyItem.builder()
                     .id(1L)
                     .name("Latest Item")
                     .description("This is the latest item")
-                    .form(SurveyItemForm.TEXT)
+                    .formType(SurveyItemFormType.TEXT)
                     .required(true)
                     .sequence(1L)
                     .build();
@@ -112,7 +115,7 @@ public class SurveyTest {
                     1L,
                     "Updated Item",
                     "This is an updated item",
-                    SurveyItemForm.TEXT,
+                    SurveyItemFormType.TEXT,
                     true,
                     1L
             );
@@ -126,6 +129,107 @@ public class SurveyTest {
 
             SurveyItem updated = sut.findItemBySequence(1L).orElseThrow();
             assertEquals("Updated Item", updated.getName());
+        }
+    }
+
+    @Nested
+    @DisplayName("항목 최신 조회")
+    public class FindLatestItemTest{
+        @Test
+        @DisplayName("최신 항목 조회 성공")
+        public void testFindLatestItem() {
+            // Initialize Survey with two items
+
+            SurveyItem initialItem1 = SurveyItem.builder()
+                    .id(1L)
+                    .overridden(fakeClock.now())
+                    .formType(SurveyItemFormType.RADIO)
+                    .build();
+
+            SurveyItem initialItem2 = SurveyItem.builder()
+                    .id(2L)
+                    .preId(1L)
+                    .formType(SurveyItemFormType.RADIO)
+                    .build();
+
+            List<SurveyItem> itemList = new ArrayList<>();
+            itemList.add(initialItem1);
+            itemList.add(initialItem2);
+
+            Survey sut = Survey.builder()
+                .name("Test Survey")
+                .description("This is a test survey")
+                .items(itemList)
+                .build();
+            System.out.println(sut.getItems());
+
+            // Assert that the correct latest item is found
+            Optional<SurveyItem> latestItem = sut.findLatestItem(1L);
+            assertTrue(latestItem.isPresent());
+            assertEquals(2L, latestItem.get().getId());
+        }
+    }
+    @Nested
+    @DisplayName("응답 추가")
+    public class AddResponseTest{
+        @Test
+        @DisplayName("응답 추가 성공")
+        public void testAddResponseSuccess() {
+            // Initialize Survey with empty response list
+            Survey sut = Survey.builder()
+                    .name("Test Survey")
+                    .description("This is a test survey")
+                    .responses(new ArrayList<>())
+                    .build();
+
+            // Create mock AddSurveyResponseCommand
+            AddSurveyResponseCommand command = new AddSurveyResponseCommand(1L);
+
+            // Add the new response
+            sut.addResponse(command);
+
+            // Assert that the response has been added
+            assertEquals(1, sut.getResponses().size());
+            assertEquals(sut, sut.getResponses().getFirst().getSurvey());
+        }
+    }
+
+    @Nested
+    @DisplayName("응답 항목 추가")
+    public class AddResponseItemTest{
+        @Test
+        @DisplayName("응답 항목 추가 성공")
+        public void testAddResponseItem() {
+            SurveyResponse initialResponse = SurveyResponse.builder()
+                .id(1L)
+                .build();
+            SurveyItem initialItem = SurveyItem.builder()
+                .id(1L)
+                .formType(SurveyItemFormType.TEXT)
+                .build();
+            ArrayList<SurveyItem> itemList = new ArrayList<>();
+            itemList.add(initialItem);
+            ArrayList<SurveyResponse> responseList = new ArrayList<>();
+            responseList.add(initialResponse);
+            Survey sut = Survey.builder()
+                .name("Test Survey")
+                .description("This is a test survey")
+                .items(itemList)
+                .responses(responseList)
+                .build();
+
+            AddSurveyResponseItemCommand command = new AddSurveyResponseItemCommand(
+                1L,
+                1L,
+                1L,
+                "Test value"
+            );
+            sut.addResponseItem(command);
+
+            SurveyResponse response = sut.findResponse(1L).orElseThrow();
+            assertEquals(1, response.getItems().size());
+            SurveyResponseItem item = response.getItems().getFirst();
+            assertEquals(SurveyResponseItemValue.of(SurveyItemFormType.TEXT, "Test value"), item.getValue());
         }
     }
 

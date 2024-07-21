@@ -19,7 +19,7 @@ public record SurveyItemView(
         return new SurveyItemView(entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
-                entity.getForm().name(),
+                entity.getFormType().name(),
                 entity.getRequired(),
                 entity.getSequence(),
                 entity.getOptions().stream()

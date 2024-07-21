@@ -10,6 +10,12 @@ public record UpdateSurveyItemOptionCommand(
         String description,
         Long sequence
 ) {
+    public UpdateSurveyItemOptionCommand {
+        if(surveyId == null || itemId == null || optionId == null){
+            throw new IllegalArgumentException("SurveyId, itemId, optionId must not be null");
+        }
+    }
+
     public SurveyItemOption toEntity() {
         return SurveyItemOption.builder()
                 .name(this.name)
