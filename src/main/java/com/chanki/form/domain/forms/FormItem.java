@@ -2,18 +2,20 @@ package com.chanki.form.domain.forms;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
+import jakarta.persistence.JoinColumns;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -45,7 +47,12 @@ public class FormItem {
 	@Enumerated(EnumType.STRING)
 	private FormItemType type;
 	
-	@Transient
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumns({
+		@JoinColumn(name = "form_id", referencedColumnName = "form_id"),
+		@JoinColumn(name = "version", referencedColumnName = "version"),
+		@JoinColumn(name = "sequence", referencedColumnName = "sequence")
+	})
 	private List<FormItemOption> formItemOptions;
 	
 	@Builder

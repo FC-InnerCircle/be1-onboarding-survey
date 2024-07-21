@@ -1,5 +1,7 @@
 package com.chanki.form.web.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,5 +21,10 @@ public class FormController {
 	@PostMapping("/api/create")
 	public Form save(@RequestBody FormCreateRequestDto formCreateRequestDto) {
 		return formService.createForm(formCreateRequestDto);
+	}
+	
+	@GetMapping("/api/form/{formId}")
+	public Form save(@PathVariable("formId") long formId) {
+		return formService.selectForm(formId);
 	}
 }

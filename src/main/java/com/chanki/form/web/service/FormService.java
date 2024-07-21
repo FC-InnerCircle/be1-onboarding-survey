@@ -2,7 +2,9 @@ package com.chanki.form.web.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
@@ -37,15 +39,14 @@ public class FormService {
 		if(formItemOptions == null) return new ArrayList<>();
 		
 		// ## TODO Setter 를 사용시 어디서 값이 변경되는지 알기 어려울거 같아 안 쓰면서 개발중인데, 이게 맞는건지 모르겠다.
-		AtomicInteger index = new AtomicInteger();
+		AtomicLong index = new AtomicLong();
 		return formItemOptions.stream()
-				.map(option -> FormItemOption.builder().formId(formId).version(version).sequence(sequence).optionSequence(index.getAndIncrement()).description(option.getDescription()).build()).collect(Collectors.toList());
+				.map(option -> FormItemOption.builder().formId(formId).version(version).sequence(sequence).optionSequence(index.getAndIncrement() + 1).description(option.getDescription()).build()).collect(Collectors.toList());
 	}
 	
 	
 	@Transactional
 	public Form createForm(FormCreateRequestDto formCreateRequestDto) {
-		System.out.println(formCreateRequestDto);
 		Form form = Form.builder()
 				.description(formCreateRequestDto.getDescription())
 				.title(formCreateRequestDto.getTitle()).build();
@@ -62,5 +63,13 @@ public class FormService {
 		}
 
 		return insertedForm;
+	}
+	
+	// ##TODO 전체 FORM 형태 조회 테스트를 위한 Service(추후 제거)
+	@Transactional
+	public Form selectForm(long formId) {
+		Optional<Form> form = formRepository.findById(formId);
+		Form form1 = form.get();
+		return form1;
 	}
 }

@@ -26,9 +26,11 @@ public class FormItemOption {
 	private long formId;
 	
 	@Id
+	@JoinColumn(name = "version")
 	private long version;
 	
 	@Id
+	@JoinColumn(name = "sequence")
 	private long sequence;
 	
 	@Id
@@ -38,11 +40,6 @@ public class FormItemOption {
 	@Column(length = 500)
 	private String description;
 	
-	
-	@Enumerated(EnumType.STRING)
-	private FormItemType type;
-	
-	
 	@Builder
 	public FormItemOption(long formId, long version, long sequence, long optionSequence, String description, FormItemType type) {
 		this.formId = formId;
@@ -50,6 +47,5 @@ public class FormItemOption {
 		this.sequence = sequence;
 		this.optionSequence = optionSequence;
 		this.description = description;
-		this.type = type;
 	}
 }
