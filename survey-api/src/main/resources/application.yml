@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: survey-api
+
+springdoc:
+  swagger-ui:
+    path: /openapi/swagger-ui.html
+    api-docs:
+      path: /openapi/v3/api-docs
+    packagesToScan: com.innercircle.surveyapi
+    pathToMatch: /**
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
