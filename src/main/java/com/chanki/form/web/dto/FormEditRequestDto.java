@@ -1,18 +1,17 @@
 package com.chanki.form.web.dto;
 
 import java.util.List;
-
-import com.chanki.form.web.domain.forms.FormItem;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-public class FormCreateRequestDto {
+@ToString
+public class FormEditRequestDto {
 
+  private long formId;
   private String title;
   private String description;
   private List<FormItemCreateRequestDto> formItems;
-
 }
