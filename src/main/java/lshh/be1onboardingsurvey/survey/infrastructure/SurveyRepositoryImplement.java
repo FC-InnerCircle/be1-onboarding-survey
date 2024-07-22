@@ -44,7 +44,7 @@ public class SurveyRepositoryImplement implements SurveyRepository {
     }
 
     @Override
-    public List<SurveyResponseView> findResponseBySurveyId(Long surveyId) {
+    public List<SurveyResponseView> findResponseViewBySurveyId(Long surveyId) {
         List<SurveyResponse> maybeResponse = responseJpaRepository.findBySurveyId(surveyId);
         List<SurveyResponseItemView> items = maybeResponse.stream()
                 .map(SurveyResponse::getItems)

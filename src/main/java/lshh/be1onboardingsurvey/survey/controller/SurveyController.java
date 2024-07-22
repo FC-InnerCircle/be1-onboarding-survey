@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.SurveyService;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
+import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseDetailView;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseView;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,13 @@ public class SurveyController {
     @Operation(summary = "응답 조회")
     @GetMapping("/{surveyId}/response")
     public List<SurveyResponseView> response(@PathVariable Long surveyId){
-        return service.findResponse(surveyId);
+        return service.findResponses(surveyId);
     }
+
+    @Operation(summary = "응답 상세 조회")
+    @GetMapping("/{surveyId}/response/detail")
+    public List<SurveyResponseDetailView> responseDetail(@PathVariable Long surveyId){
+        return service.findResponseDetails(surveyId);
+    }
+
 }

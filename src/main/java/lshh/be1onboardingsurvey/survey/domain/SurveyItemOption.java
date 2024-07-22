@@ -20,6 +20,8 @@ public class SurveyItemOption {
     String description;
     Long sequence;
     LocalDateTime overridden;
+    @Setter
+    Long preId;
 
     @Setter
     @ManyToOne
@@ -28,4 +30,14 @@ public class SurveyItemOption {
     public void setOverridden(Clock clock) {
         this.overridden = clock.now();
     }
+
+    public SurveyItemOption toCopy(SurveyItem surveyItem) {
+        return SurveyItemOption.builder()
+                .name(this.name)
+                .description(this.description)
+                .sequence(this.sequence)
+                .surveyItem(surveyItem)
+                .build();
+    }
+
 }

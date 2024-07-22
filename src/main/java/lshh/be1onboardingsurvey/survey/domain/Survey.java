@@ -52,7 +52,7 @@ public class Survey {
     public Optional<SurveyItem> findItemByPreId(Long preId){
         return this.items.stream()
                 .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
-                .findFirst();
+                .findFirst();   // todo - 동시성 이슈 처리 필요. overriden과 preId 동시 쓰기에 대하여.. 테스트 우선 작성.
     }
 
     public Optional<SurveyItem> findLatestItem(Long id){
@@ -81,19 +81,15 @@ public class Survey {
     public void updateItem(UpdateSurveyItemCommand command, Clock clock){
         SurveyItem latestItem = findLatestItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
-
         SurveyItem newItem = command.toEntity();
         switch(command.form()){
-            case TEXT:
-            case TEXTAREA:
-                break;
-            case RADIO:
-            case CHECKBOX:
-                List<SurveyItemOption> options = latestItem.getOptions();
+            case TEXT, TEXTAREA -> {}
+            case RADIO, CHECKBOX -> {
+                List<SurveyItemOption> options = latestItem.getOptions().stream().map(option -> option.toCopy(newItem)).toList();
                 newItem.addItemOptions(options);
-                break;
+            }
         }
-
+        newItem.setPreId(latestItem.getId());
         latestItem.setOverridden(clock);
         newItem.setSurvey(this);
         this.items.add(newItem);

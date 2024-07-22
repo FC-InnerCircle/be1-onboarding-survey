@@ -1,10 +1,7 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import lshh.be1onboardingsurvey.survey.domain.command.*;
-import lshh.be1onboardingsurvey.survey.domain.dto.Result;
-import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseItemView;
-import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseView;
-import lshh.be1onboardingsurvey.survey.domain.dto.SurveyView;
+import lshh.be1onboardingsurvey.survey.domain.dto.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -71,7 +68,7 @@ public class SurveyServiceTest {
     @DisplayName("Survey 항목 수정")
     class UpdateItemTest{
         @Test
-        @DisplayName("간단한 item 수정")
+        @DisplayName("간단한 항목 수정")
         public void testUpdateItem_Simple() {
             // Arrange
             // survey 생성
@@ -108,6 +105,49 @@ public class SurveyServiceTest {
             System.out.println(updatedSurvey);
             assertEquals("item_updated_testUpdateItem_Simple", updatedSurvey.items().getFirst().name());
         }
+
+        @Test
+        @DisplayName("항목 수정 후, 옵션이 복사되어, 양쪽에 전부 남아있는지 버전 확인")
+        public void testUpdateItem_CheckOptionCopy() {
+            // Arrange
+            // survey 생성
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("survey_testUpdateItem_CheckOptionCopy", "description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("survey_testUpdateItem_CheckOptionCopy").orElseThrow();
+            Long surveyId = surveyView.id();
+            // survey item 생성
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "item_testUpdateItem_CheckOptionCopy", "description", SurveyItemFormType.RADIO, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyViewWithItem = surveyService.findByName("survey_testUpdateItem_CheckOptionCopy").orElseThrow();
+            Long itemId = surveyViewWithItem.items().getFirst().id();
+            // survey item option 생성
+            AddSurveyItemOptionCommand command = new AddSurveyItemOptionCommand(surveyId, itemId, "option_testUpdateItem_CheckOptionCopy", "description", 1L);
+            surveyService.addItemOption(command);
+
+            // Act
+            UpdateSurveyItemCommand updateSurveyItemCommand = new UpdateSurveyItemCommand(
+                    surveyId,
+                    itemId,
+                    "item_updated_testUpdateItem_CheckOptionCopy",
+                    "description",
+                    SurveyItemFormType.RADIO,
+                    true,
+                    2L
+            );
+            Result<?> result = surveyService.updateItem(updateSurveyItemCommand);
+
+            // Assert
+            assertEquals(Result.success(), result);
+            SurveyAllVersionView updatedSurvey = surveyService.findWithAllVersion(surveyId).orElseThrow();
+            assertEquals(2, updatedSurvey.items().size());
+            SurveyItemVersionView latest = updatedSurvey.items().stream().filter(i->i.overridden() == null).findFirst().orElseThrow();
+            SurveyItemVersionView origin = updatedSurvey.items().stream().filter(i->i.overridden() != null && i.id().equals(latest.preId())).findFirst().orElseThrow();
+            System.out.println(latest);
+            System.out.println(origin);
+            assertEquals(1, latest.options().size());
+            assertEquals(1, origin.options().size());
+            assertEquals(latest.options().getFirst().name(), origin.options().getFirst().name());
+        }
     }
 
     @Nested
@@ -138,6 +178,92 @@ public class SurveyServiceTest {
             assertEquals(1, surveyWithItemOption.items().getFirst().options().size());
         }
     }
+
+    @Nested
+    @DisplayName("Survey 항목 옵션 수정")
+    class UpdateItemOptionTest {
+        @Test
+        @DisplayName("간단한 항목 옵션 수정")
+        public void testUpdateItemOption_Simple() {
+            // Arrange
+            // survey creation
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("testUpdateItemOption_Simple", "Description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("testUpdateItemOption_Simple").orElseThrow();
+            Long surveyId = surveyView.id();
+            // survey item creation
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "testUpdateItemOption_Simple", "Description", SurveyItemFormType.RADIO, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyViewWithItem = surveyService.findByName("testUpdateItemOption_Simple").orElseThrow();
+            Long itemId = surveyViewWithItem.items().getFirst().id();
+            // survey item option creation
+            AddSurveyItemOptionCommand addSurveyItemOptionCommand = new AddSurveyItemOptionCommand(surveyId, itemId, "option_testUpdateItemOption_Simple", "Description", 1L);
+            surveyService.addItemOption(addSurveyItemOptionCommand);
+            SurveyView surveyViewWithItemOption = surveyService.findByName("testUpdateItemOption_Simple").orElseThrow();
+            Long optionId = surveyViewWithItemOption.items().getFirst().options().getFirst().id();
+            System.out.println(surveyViewWithItemOption);
+
+            // Act
+            UpdateSurveyItemOptionCommand updateSurveyItemOptionCommand = new UpdateSurveyItemOptionCommand(
+                    surveyId,
+                    itemId,
+                    optionId,
+                    "option_updated_testUpdateItemOption_simple",
+                    "Description Updated",
+                    1L
+            );
+            Result<?> result = surveyService.updateItemOption(updateSurveyItemOptionCommand);
+
+            // Assert
+            assertEquals(Result.Status.SUCCESS, result.status());
+            SurveyView surveyWithUpdatedItemOption = surveyService.findByName("testUpdateItemOption_Simple").orElseThrow();
+            System.out.println(surveyWithUpdatedItemOption);
+            assertEquals("option_updated_testUpdateItemOption_simple", surveyWithUpdatedItemOption.items().getFirst().options().getFirst().name());
+            assertEquals("Description Updated", surveyWithUpdatedItemOption.items().getFirst().options().getFirst().description());
+        }
+
+        @Test
+        @DisplayName("항목 옵션 수정 후, 버전 정상 반영되었는지 확인")
+        public void testUpdateItemOption_CheckVersion() {
+            // Arrange
+            // survey 생성
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("survey_testUpdateItemOption_CheckOptionCopy", "description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("survey_testUpdateItemOption_CheckOptionCopy").orElseThrow();
+            Long surveyId = surveyView.id();
+            // survey item 생성
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "item_testUpdateItemOption_CheckOptionCopy", "description", SurveyItemFormType.RADIO, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyViewWithItem = surveyService.findByName("survey_testUpdateItemOption_CheckOptionCopy").orElseThrow();
+            Long itemId = surveyViewWithItem.items().getFirst().id();
+            // survey item option 생성
+            AddSurveyItemOptionCommand command = new AddSurveyItemOptionCommand(surveyId, itemId, "option_testUpdateItemOption_CheckOptionCopy", "i'll check by description", 1L);
+            surveyService.addItemOption(command);
+            Long optionId = surveyService.findByName("survey_testUpdateItemOption_CheckOptionCopy").orElseThrow().items().getFirst().options().getFirst().id();
+
+            // Act
+            UpdateSurveyItemOptionCommand updateSurveyItemOptionCommand = new UpdateSurveyItemOptionCommand(
+                    surveyId,
+                    itemId,
+                    optionId,
+                    "option_updated_testUpdateItemOption_CheckOptionCopy",
+                    "i'll check by description",
+                    2L
+            );
+            Result<?> result = surveyService.updateItemOption(updateSurveyItemOptionCommand);
+
+            // Assert
+            assertEquals(Result.success(), result);
+            SurveyAllVersionView updatedSurvey = surveyService.findWithAllVersion(surveyId).orElseThrow();
+            assertEquals(2, updatedSurvey.items().getFirst().options().size());
+            SurveyItemOptionVersionView latest = updatedSurvey.items().getFirst().options().stream().filter(i->i.overridden() == null).findFirst().orElseThrow();
+            SurveyItemOptionVersionView origin = updatedSurvey.items().getFirst().options().stream().filter(i->i.overridden() != null && i.id().equals(latest.preId())).findFirst().orElseThrow();
+            System.out.println(latest);
+            System.out.println(origin);
+            assertEquals(latest.description(), origin.description());
+        }
+    }
+
     @Nested
     @DisplayName("Survey response 추가")
     class AddResponseTest{
@@ -157,7 +283,10 @@ public class SurveyServiceTest {
 
             // Assert
             assertEquals(Result.success(), result);
+            SurveyResponseView responseView = surveyService.findResponses(surveyId).getFirst();
+            assertEquals(surveyId, responseView.surveyId());
         }
+
     }
 
     @Nested
@@ -180,7 +309,7 @@ public class SurveyServiceTest {
             // survey response 생성
             AddSurveyResponseCommand addSurveyResponseCommand = new AddSurveyResponseCommand(surveyId);
             surveyService.addResponse(addSurveyResponseCommand);
-            SurveyResponseView responseView = surveyService.findResponse(surveyId).getFirst();
+            SurveyResponseView responseView = surveyService.findResponses(surveyId).getFirst();
 
             // Act
             // response item 추가
@@ -194,10 +323,10 @@ public class SurveyServiceTest {
 
             // Assert
             assertEquals(Result.success(), result);
-            SurveyResponseView responseView2 = surveyService.findResponse(surveyId).getFirst();
+            SurveyResponseView responseView2 = surveyService.findResponses(surveyId).getFirst();
             SurveyResponseItemView itemView = responseView2.items().getFirst();
             assertEquals("item_testAddResponseItem_Simple", itemView.value());
-
         }
     }
+
 }

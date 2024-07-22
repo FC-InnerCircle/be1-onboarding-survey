@@ -31,6 +31,7 @@ public class SurveyItem {
 
     LocalDateTime overridden;
 
+    @Setter
     Long preId;
   
     @Setter
@@ -73,6 +74,8 @@ public class SurveyItem {
         SurveyItemOption newOption = command.toEntity();
         latest.setOverridden(clock);
         newOption.setSurveyItem(this);
+        newOption.setPreId(latest.getId());
+        this.options.add(newOption);
     }
 
     public Optional<SurveyItemOption> findOption(Long id){
@@ -80,4 +83,5 @@ public class SurveyItem {
                 .filter(o -> o.getId().equals(id))
                 .findFirst();
     }
+
 }
