@@ -1,10 +1,10 @@
-package com.innercircle.survey.demo;
+package com.innercircle.survey;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class SurveyApplicationTests {
 
 	@Test
 	void contextLoads() {
