@@ -1,6 +1,20 @@
 # 이너써클 BE 온보딩 프로젝트 (장현호)
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
+- 사용 기술스택
+  - Kotlin, Gradle(Monolithic Multi-Module, [Composite Builds](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html#2_composite_builds)), Spring Boot, ktlint, h2, springdoc-openapi(swagger ui), Spring Data JPA
+- 외부 라이브러리 [1]
+  - ktlint: Coding Convention을 위한 라이브러리
+
+```shell
+🧑🏻‍💻 ktlint 사용 예시
+
+# 코드 스타일 자동 정리 (자동 포맷팅)
+./gradlew ktlintFormat
+# 코드 스타일 위반 사항 검사
+./gradlew ktlintCheck
+```
+---
 ## Introduction
 
 - “설문조사 서비스"를 구현하려고 합니다.

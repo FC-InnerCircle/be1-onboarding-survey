@@ -12,3 +12,8 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
+
+// main가 없으므로 jar task를 비활성화
+tasks.getByName<Jar>("bootJar") {
+    enabled = false
+}
