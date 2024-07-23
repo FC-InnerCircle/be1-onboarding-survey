@@ -22,4 +22,12 @@ public class SurveyService {
         SurveyForm surveyForm = new SurveyForm(surveyFormRequest.getTitle(), surveyFormRequest.getDescription());
         surveyFormRepository.save(surveyForm);
     }
+
+    @Transactional
+    public void updateSurveyForm(long formId, SurveyFormRequest surveyFormRequest) {
+        SurveyForm surveyForm = surveyFormRepository.findById(formId).orElseThrow();
+        surveyForm.setTitle(surveyFormRequest.getTitle());
+        surveyForm.setDescription(surveyFormRequest.getDescription());
+        surveyForm.setUpdatedAt(LocalDateTime.now());
+    }
 }

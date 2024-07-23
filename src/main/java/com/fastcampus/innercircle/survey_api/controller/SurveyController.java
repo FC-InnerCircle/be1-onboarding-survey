@@ -19,4 +19,12 @@ public class SurveyController {
 
         surveyService.saveSurveyForm(surveyFormRequest);
     }
+
+    @PutMapping("/v1/forms/{formId}")
+    public void updateSurveyForm(
+            @PathVariable(value = "formId") long formId,
+            @RequestBody SurveyFormRequest surveyFormRequest
+    ) {
+        surveyService.updateSurveyForm(formId, surveyFormRequest);
+    }
 }
