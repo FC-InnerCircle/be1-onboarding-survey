@@ -11,6 +11,7 @@ public class SurveyRequest {
     ) {
 
     }
+
     public record SurveyUpdateRequest(
         Long surveyId,
         String surveyTitle,
@@ -29,6 +30,7 @@ public class SurveyRequest {
     ) {
 
     }
+
     public record QuestionUpdateRequest(
         Long questionId,
         String questionTitle,
@@ -45,6 +47,7 @@ public class SurveyRequest {
     ) {
 
     }
+
     public record QuestionOptionUpdateRequest(
         Long questionOptionId,
         String questionOptionTitle

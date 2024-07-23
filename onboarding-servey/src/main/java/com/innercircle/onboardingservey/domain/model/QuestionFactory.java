@@ -48,6 +48,7 @@ public class QuestionFactory {
             );
         };
     }
+
     public static Question update(
         final Survey survey,
         final QuestionUpdateCommand command

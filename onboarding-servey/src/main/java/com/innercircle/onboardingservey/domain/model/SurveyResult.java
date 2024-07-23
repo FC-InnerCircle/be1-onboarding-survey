@@ -60,7 +60,8 @@ public class SurveyResult {
 
         public static QuestionOptionDetailResult from(QuestionOption questionOption) {
             return new QuestionOptionDetailResult(
-                questionOption.getQuestionOptionId(), questionOption.getTitle()
+                questionOption.getQuestionOptionId(),
+                questionOption.getTitle()
             );
         }
     }

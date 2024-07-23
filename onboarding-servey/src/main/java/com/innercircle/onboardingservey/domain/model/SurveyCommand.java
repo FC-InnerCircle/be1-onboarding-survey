@@ -6,6 +6,7 @@ import com.innercircle.onboardingservey.controller.survey.SurveyRequest.Question
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.QuestionUpdateRequest;
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.SurveyCreateRequest;
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.SurveyUpdateRequest;
+
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -28,6 +29,7 @@ public class SurveyCommand {
             );
         }
     }
+
     public record SurveyUpdateCommand(
         Long surveyId,
         String surveyTitle,
@@ -62,11 +64,16 @@ public class SurveyCommand {
                 questionCreateRequest.questionDescription(),
                 questionCreateRequest.isRequired(),
                 QuestionType.valueOf(questionCreateRequest.questionType()),
-                IntStream.range(0, questionCreateRequest.questionOptionCreateRequests()
-                        .size())
+                IntStream.range(
+                        0,
+                        questionCreateRequest.questionOptionCreateRequests()
+                            .size()
+                    )
                     .mapToObj(i -> QuestionOptionCreateCommand.from(
                         questionCreateRequest.questionOptionCreateRequests()
-                            .get(i), i))
+                            .get(i),
+                        i
+                    ))
                     .toList()
             );
         }
@@ -88,11 +95,16 @@ public class SurveyCommand {
                 questionUpdateRequest.questionDescription(),
                 questionUpdateRequest.isRequired(),
                 QuestionType.valueOf(questionUpdateRequest.questionType()),
-                IntStream.range(0, questionUpdateRequest.questionOptionUpdateRequests()
-                        .size())
+                IntStream.range(
+                        0,
+                        questionUpdateRequest.questionOptionUpdateRequests()
+                            .size()
+                    )
                     .mapToObj(i -> QuestionOptionUpdateCommand.from(
                         questionUpdateRequest.questionOptionUpdateRequests()
-                            .get(i), i))
+                            .get(i),
+                        i
+                    ))
                     .toList()
             );
         }
@@ -108,9 +120,12 @@ public class SurveyCommand {
             Integer displayOrder
         ) {
             return new QuestionOptionCreateCommand(
-                questionOptionCreateRequest.questionOptionTitle(), displayOrder);
+                questionOptionCreateRequest.questionOptionTitle(),
+                displayOrder
+            );
         }
     }
+
     public record QuestionOptionUpdateCommand(
         Long questionOptionId,
         String questionOptionTitle,

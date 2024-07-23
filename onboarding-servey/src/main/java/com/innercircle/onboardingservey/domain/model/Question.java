@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import lombok.Getter;
 import org.springframework.util.CollectionUtils;
 
@@ -64,17 +66,34 @@ public class Question {
     }
 
     private void valid() {
-        assertHasText(this.title, "title must not be null");
-        assertNotNull(this.questionType, "questionType must not be null");
-        assertNotNull(this.required, "required must not be null");
-        assertNotNull(this.survey, "survey must not be null");
+        assertHasText(
+            this.title,
+            "title must not be null"
+        );
+        assertNotNull(
+            this.questionType,
+            "questionType must not be null"
+        );
+        assertNotNull(
+            this.required,
+            "required must not be null"
+        );
+        assertNotNull(
+            this.survey,
+            "survey must not be null"
+        );
 
         if (this.questionType.isChoice()) {
             assertHasCollection(
-                questionOptions, "questionOptionsDetailResponse must not be empty or null");
+                questionOptions,
+                "questionOptionsDetailResponse must not be empty or null"
+            );
         }
         if (this.questionType.isText()) {
-            assertHasText(this.description, "describe must not be null");
+            assertHasText(
+                this.description,
+                "describe must not be null"
+            );
         }
     }
 
@@ -85,8 +104,12 @@ public class Question {
         final Boolean required,
         final Survey survey
     ) {
-        return new Question(title, description, QuestionType.SHORT_TEXT, required, survey,
-                            new ArrayList<>()
+        return new Question(title,
+            description,
+            QuestionType.SHORT_TEXT,
+            required,
+            survey,
+            new ArrayList<>()
         );
     }
 
@@ -96,8 +119,12 @@ public class Question {
         final Boolean required,
         final Survey survey
     ) {
-        return new Question(title, description, QuestionType.LONG_TEXT, required, survey,
-                            new ArrayList<>()
+        return new Question(title,
+            description,
+            QuestionType.LONG_TEXT,
+            required,
+            survey,
+            new ArrayList<>()
         );
     }
 
@@ -107,8 +134,12 @@ public class Question {
         final Survey survey,
         final List<QuestionOption> questionOptionList
     ) {
-        return new Question(title, null, QuestionType.SINGLE_CHOICE, required, survey,
-                            questionOptionList
+        return new Question(title,
+            null,
+            QuestionType.SINGLE_CHOICE,
+            required,
+            survey,
+            questionOptionList
         );
     }
 
@@ -118,8 +149,12 @@ public class Question {
         final Survey survey,
         final List<QuestionOption> questionOptionList
     ) {
-        return new Question(title, null, QuestionType.MULTIPLE_CHOICE, required, survey,
-                            questionOptionList
+        return new Question(title,
+            null,
+            QuestionType.MULTIPLE_CHOICE,
+            required,
+            survey,
+            questionOptionList
         );
     }
 
@@ -142,10 +177,21 @@ public class Question {
         if (CollectionUtils.isEmpty(this.questionOptions)) {
             this.questionOptions = new ArrayList<>();
         }
-        final Map<Long, QuestionOption> beforeQuestionOptionMap = this.questionOptions.stream()
-            .collect(Collectors.toMap(QuestionOption::getQuestionOptionId, Function.identity()));
-        final Map<Long, QuestionOption> updateQuestionOptionMap = questionOptions.stream()
-            .collect(Collectors.toMap(QuestionOption::getQuestionOptionId, Function.identity()));
+
+        final Map<Long, QuestionOption> beforeQuestionOptionMap =
+            this.questionOptions
+                .stream()
+                .collect(Collectors.toMap(
+                    QuestionOption::getQuestionOptionId,
+                    Function.identity()
+                ));
+        final Map<Long, QuestionOption> updateQuestionOptionMap =
+            questionOptions
+                .stream()
+                .collect(Collectors.toMap(
+                    QuestionOption::getQuestionOptionId,
+                    Function.identity()
+                ));
 
         Sets.difference(
                 beforeQuestionOptionMap.keySet(),
@@ -157,7 +203,9 @@ public class Question {
             .forEach(this.questionOptions::remove);
 
         final List<QuestionOption> addQuestionOptions = Sets.difference(
-                updateQuestionOptionMap.keySet(), beforeQuestionOptionMap.keySet())
+                updateQuestionOptionMap.keySet(),
+                beforeQuestionOptionMap.keySet()
+            )
             .stream()
             .map(updateQuestionOptionMap::get)
             .filter(Objects::nonNull)

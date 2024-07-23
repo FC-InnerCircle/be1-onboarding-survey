@@ -14,6 +14,7 @@ public class SurveyJpaReader implements SurveyReader {
 
     @Override
     public Survey getBySurveyId(Long surveyId) {
-        return surveyRepository.findById(surveyId).orElseThrow(EntityNotFoundException::new);
+        return surveyRepository.findById(surveyId)
+            .orElseThrow(EntityNotFoundException::new);
     }
 }

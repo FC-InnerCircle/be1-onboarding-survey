@@ -4,10 +4,22 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public enum QuestionType {
-    SHORT_TEXT("단답형", false),
-    LONG_TEXT("장문형", false),
-    SINGLE_CHOICE("단일 선택 리스트", true),
-    MULTIPLE_CHOICE("다중 선택 리스트", true),
+    SHORT_TEXT(
+        "단답형",
+        false
+    ),
+    LONG_TEXT(
+        "장문형",
+        false
+    ),
+    SINGLE_CHOICE(
+        "단일 선택 리스트",
+        true
+    ),
+    MULTIPLE_CHOICE(
+        "다중 선택 리스트",
+        true
+    ),
     ;
 
     private final String description;

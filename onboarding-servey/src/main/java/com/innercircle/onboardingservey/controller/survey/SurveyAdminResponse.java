@@ -5,6 +5,7 @@ import com.innercircle.onboardingservey.domain.model.QuestionType;
 import com.innercircle.onboardingservey.domain.model.SurveyResult.QuestionDetailResult;
 import com.innercircle.onboardingservey.domain.model.SurveyResult.QuestionOptionDetailResult;
 import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
+
 import java.util.List;
 
 public class SurveyAdminResponse {
@@ -24,7 +25,10 @@ public class SurveyAdminResponse {
                 surveyDetailResult.surveyId(),
                 surveyDetailResult.title(),
                 surveyDetailResult.description(),
-                surveyDetailResult.questionDetailResults().stream().map(QuestionDetailResponse::from).toList()
+                surveyDetailResult.questionDetailResults()
+                    .stream()
+                    .map(QuestionDetailResponse::from)
+                    .toList()
             );
         }
     }
@@ -60,7 +64,8 @@ public class SurveyAdminResponse {
 
         public static QuestionOptionDetailResponse from(QuestionOptionDetailResult questionOptionDetailResult) {
             return new QuestionOptionDetailResponse(
-                questionOptionDetailResult.questOptionId(), questionOptionDetailResult.title()
+                questionOptionDetailResult.questOptionId(),
+                questionOptionDetailResult.title()
             );
         }
     }
