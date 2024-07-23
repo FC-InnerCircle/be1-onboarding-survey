@@ -1,10 +1,12 @@
 package com.example.innercircle_survey.entity;
 
+import com.example.innercircle_survey.enumeration.QuestionType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,6 +16,7 @@ public class QuestionVersion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "question_version_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,11 +31,32 @@ public class QuestionVersion {
 //    @OneToMany(mappedBy = "questionVersion")
 //    private List<Answer> answers;
 
-    @Column
-    private int versionNumber;
+    @Column(name = "version_number")
+    private Integer versionNumber;
 
-    @Column
-    private String text;
+    // 항목 번호
+    @Column(name = "question_number")
+    private Integer number;
 
-    // QuestionType 은 잠깐 배제
+    // 항목 이름
+    @Column(name = "question_text")
+    private String title;
+
+    // 항목 설명
+    @Column(name = "question_description")
+    private String description;
+
+    // 항목 입력 형태
+    @Enumerated(EnumType.STRING)
+    private QuestionType type;
+
+    // 항목 필수 여부
+    @Column(name = "required")
+    private Boolean required;
+
+    @OneToMany(mappedBy = "questionVersion")
+    private List<QuestionVersionOption> questionVersionOptions;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 }

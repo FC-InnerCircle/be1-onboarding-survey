@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,8 +20,12 @@ public class Survey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "survey_id")
     private Long id;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private List<SurveyVersion> surveyVersions;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 }

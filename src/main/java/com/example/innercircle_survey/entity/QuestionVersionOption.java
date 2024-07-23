@@ -6,24 +6,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @RequiredArgsConstructor
-public class Response {
+public class QuestionVersionOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "response_id")
+    @Column(name = "question_version_option_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "survey_version_id")
-    private SurveyVersion surveyVersion;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_version_id")
+    private QuestionVersion questionVersion;
 
-    @OneToMany(mappedBy = "response")
-    private List<Answer> answers;
+    @Column(name = "question_version_option_text")
+    private String text;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

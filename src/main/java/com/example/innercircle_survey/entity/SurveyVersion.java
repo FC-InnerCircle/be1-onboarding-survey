@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -15,6 +16,7 @@ public class SurveyVersion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "survey_version_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -28,15 +30,19 @@ public class SurveyVersion {
 //    @OneToMany(mappedBy = "surveyVersion", cascade = CascadeType.ALL)
 //    private List<Response> responses;
 
-    @Column
-    private int versionNumber;
+    @Column(name = "version_number")
+    private Integer versionNumber;
 
-    @Column
+    @Column(name = "survey_title")
     private String title;
 
-    @Column
+    @Lob
+    @Column(name = "survey_description")
     private String description;
 
-    @Column
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
 }

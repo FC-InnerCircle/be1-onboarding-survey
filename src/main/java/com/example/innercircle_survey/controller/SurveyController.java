@@ -1,13 +1,12 @@
 package com.example.innercircle_survey.controller;
 
+import com.example.innercircle_survey.dto.SurveyRequestDTO;
 import com.example.innercircle_survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.http.HttpResponse;
 
 /**
@@ -26,26 +25,33 @@ public class SurveyController {
 
     private final SurveyService service;
 
+    // 설문조사 등록
     @PostMapping("/survey")
-    public HttpResponse<Object> insertSurvey() {
+    public HttpResponse<Object> createSurvey(@RequestBody @Valid SurveyRequestDTO request) {
 
         return null;
     }
 
+    // 설문조사 수정
     @PutMapping("/survey/{surveyId}")
-    public HttpResponse<Object> updateSurvey(@PathVariable("surveyId") String surveyId) {
+    public HttpResponse<Object> updateSurvey(
+            @PathVariable("surveyId") String surveyId,
+            @RequestBody @Valid SurveyRequestDTO request
+    ) {
 
         return null;
     }
 
+    // 설문조사 응답 제출
     @PostMapping("/survey/{surveyId}")
-    public HttpResponse<Object> insertResponse(@PathVariable("surveyId") String surveyId) {
+    public HttpResponse<Object> createResponse(@PathVariable("surveyId") String surveyId) {
 
         return null;
     }
 
+    // 설문조사 응답 조회
     @GetMapping("/survey/{surveyId}")
-    public HttpResponse<Object> selectSurveyResponse(@PathVariable("surveyId") String surveyId) {
+    public HttpResponse<Object> readSurveyResponses(@PathVariable("surveyId") String surveyId) {
 
         return null;
     }
