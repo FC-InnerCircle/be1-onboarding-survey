@@ -7,6 +7,6 @@ public record QuestionRequest(
     String description,
     int order,
     boolean required,
-    List<String> options
+    List<OptionRequest> options
 ) {
 }
