@@ -17,12 +17,16 @@ public class Option {
   @ManyToOne
   private Question question;
 
+  @Column(name = "option_order")
+  private int order;
+
   private String answer;
   private boolean latest;
 
-  public Option(Question question, String answer) {
+  public Option(Question question, String answer, int order) {
     this.question = question;
     this.answer = answer;
+    this.order = order;
     this.latest = true;
   }
 }

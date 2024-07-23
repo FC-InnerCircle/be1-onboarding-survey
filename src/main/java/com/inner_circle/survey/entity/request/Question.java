@@ -20,17 +20,21 @@ public class Question {
   @Enumerated(value = EnumType.STRING)
   private AnswerType type;
 
+  @Column(name = "question_order")
+  private int order;
+
   private String title;
   private String description;
   private boolean required;
   private boolean latest;
 
-  public Question(Survey survey, AnswerType type, String title, String description, boolean required) {
+  public Question(Survey survey, AnswerType type, String title, String description, boolean required, int order) {
     this.survey = survey;
     this.type = type;
     this.title = title;
     this.description = description;
     this.required = required;
+    this.order = order;
     this.latest = true;
   }
 }

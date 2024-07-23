@@ -1,9 +1,7 @@
 package com.inner_circle.survey.entity.response;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.inner_circle.survey.entity.request.Survey;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +15,13 @@ public class Respondent {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @ManyToOne
+  private Survey survey;
+
   private String name;
 
-  public Respondent(String name) {
+  public Respondent(Survey survey, String name) {
+    this.survey = survey;
     this.name = name;
   }
 }

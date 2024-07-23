@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Survey {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String title;
-    private String description;
+  private String title;
+  private String description;
 
-    public Survey(String title, String description) {
-        this.title = title;
-        this.description = description;
-    }
+  public Survey(String title, String description) {
+    this.title = title;
+    this.description = description;
+  }
 }
