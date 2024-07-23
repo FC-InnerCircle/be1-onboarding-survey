@@ -1,8 +1,9 @@
 package com.innercircle.onboardingservey.controller.survey;
 
+import com.innercircle.onboardingservey.controller.survey.SurveyAdminResponse.SurveyDetailResponse;
 import com.innercircle.onboardingservey.domain.SurveyService;
 import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyCreateCommand;
-import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetail;
+import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,11 +19,11 @@ public class SurveyAdminController {
     private final SurveyService surveyService;
 
     @PostMapping
-    public ResponseEntity<SurveyAdminResponse.SurveyDetail> create(
+    public ResponseEntity<SurveyDetailResponse> create(
         @RequestBody SurveyRequest.SurveyCreateRequest request
     ) {
-        final SurveyDetail surveyDetail = surveyService.create(SurveyCreateCommand.from(request));
-        return ResponseEntity.ok(SurveyAdminResponse.SurveyDetail.from(surveyDetail));
+        final SurveyDetailResult surveyDetail = surveyService.create(SurveyCreateCommand.from(request));
+        return ResponseEntity.ok(SurveyDetailResponse.from(surveyDetail));
     }
 
 }

@@ -5,40 +5,40 @@ import java.util.List;
 
 public class SurveyResult {
 
-    public record SurveyDetail(
+    public record SurveyDetailResult(
         Long surveyId,
         String title,
         String description,
-        List<QuestionDetail> questionDetails
+        List<QuestionDetailResult> questionDetailResults
     ) {
 
-        public static SurveyDetail from(
+        public static SurveyDetailResult from(
             Survey survey,
             List<Question> questions
         ) {
 
-            return new SurveyDetail(
+            return new SurveyDetailResult(
                 survey.getSurveyId(),
                 survey.getTitle(),
                 survey.getDescription(),
                 questions.stream()
-                    .map(QuestionDetail::from)
+                    .map(QuestionDetailResult::from)
                     .toList()
             );
         }
     }
 
-    public record QuestionDetail(
+    public record QuestionDetailResult(
         Long questionId,
         String title,
         String description,
         Boolean required,
         QuestionType questionType,
-        List<QuestionOptionDetail> questionOptions
+        List<QuestionOptionDetailResult> questionOptionDetails
     ) {
 
-        public static QuestionDetail from(Question question) {
-            return new QuestionDetail(
+        public static QuestionDetailResult from(Question question) {
+            return new QuestionDetailResult(
                 question.getQuestionId(),
                 question.getTitle(),
                 question.getDescription(),
@@ -47,19 +47,19 @@ public class SurveyResult {
                 question.getQuestionOptions()
                     .stream()
                     .sorted(Comparator.comparingInt(QuestionOption::getDisplayOrder))
-                    .map(QuestionOptionDetail::from)
+                    .map(QuestionOptionDetailResult::from)
                     .toList()
             );
         }
     }
 
-    public record QuestionOptionDetail(
+    public record QuestionOptionDetailResult(
         Long questOptionId,
         String title
     ) {
 
-        public static QuestionOptionDetail from(QuestionOption questionOption) {
-            return new QuestionOptionDetail(
+        public static QuestionOptionDetailResult from(QuestionOption questionOption) {
+            return new QuestionOptionDetailResult(
                 questionOption.getQuestionOptionId(), questionOption.getTitle()
             );
         }

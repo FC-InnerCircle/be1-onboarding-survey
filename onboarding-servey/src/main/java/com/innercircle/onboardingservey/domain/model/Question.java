@@ -62,7 +62,7 @@ public class Question {
         assertNotNull(this.survey, "survey must not be null");
 
         if (this.questionType.isChoice()) {
-            assertHasCollection(questionOptions, "questionOptions must not be empty or null");
+            assertHasCollection(questionOptions, "questionOptionsDetailResponse must not be empty or null");
         }
         if (this.questionType.isText()) {
             assertHasText(this.description, "describe must not be null");

@@ -4,7 +4,7 @@ import com.innercircle.onboardingservey.domain.model.Question;
 import com.innercircle.onboardingservey.domain.model.QuestionFactory;
 import com.innercircle.onboardingservey.domain.model.Survey;
 import com.innercircle.onboardingservey.domain.model.SurveyCommand;
-import com.innercircle.onboardingservey.domain.model.SurveyResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class SurveyService {
     private final SurveyStore surveyStore;
 
     @Transactional
-    public SurveyResult.SurveyDetail create(SurveyCommand.SurveyCreateCommand command) {
+    public SurveyDetailResult create(SurveyCommand.SurveyCreateCommand command) {
 
         final Survey survey = surveyStore.store(
             new Survey(command.surveyTitle(), command.surveyDescription()));
@@ -30,7 +30,7 @@ public class SurveyService {
                 .toList()
         );
 
-        return SurveyResult.SurveyDetail.from(survey, questions);
+        return SurveyDetailResult.from(survey, questions);
     }
 
 
