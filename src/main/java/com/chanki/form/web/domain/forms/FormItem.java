@@ -55,11 +55,11 @@ public class FormItem {
   private List<FormItemOption> formItemOptions;
 
   @Builder
-  public FormItem(long formId, long version, long sequence, String description, FormItemType type,
-      List<FormItemOption> formItemOptions) {
+  public FormItem(long formId, long version, long sequence, boolean required, String description, FormItemType type, List<FormItemOption> formItemOptions) {
     this.formId = formId;
     this.version = version;
     this.sequence = sequence;
+    this.required = required;
     this.description = description;
     this.type = type;
     this.formItemOptions = formItemOptions;

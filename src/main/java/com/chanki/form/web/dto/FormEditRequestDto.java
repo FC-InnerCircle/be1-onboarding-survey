@@ -9,7 +9,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class FormEditRequestDto {
-
   private long formId;
   private String title;
   private String description;

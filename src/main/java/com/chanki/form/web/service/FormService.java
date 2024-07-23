@@ -1,16 +1,5 @@
 package com.chanki.form.web.service;
 
-import com.chanki.form.web.dto.FormEditRequestDto;
-import com.chanki.form.web.dto.FormItemCreateRequestDto;
-import com.chanki.form.web.dto.FormItemOptionCreateRequestDto;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import com.chanki.form.web.domain.forms.Form;
 import com.chanki.form.web.domain.forms.FormItem;
 import com.chanki.form.web.domain.forms.FormItemOption;
@@ -18,10 +7,14 @@ import com.chanki.form.web.domain.forms.FormItemOptionRepository;
 import com.chanki.form.web.domain.forms.FormItemRepository;
 import com.chanki.form.web.domain.forms.FormRepository;
 import com.chanki.form.web.dto.FormCreateRequestDto;
-
-import jakarta.persistence.EntityNotFoundException;
+import com.chanki.form.web.dto.FormEditRequestDto;
 import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 // ## TODO 식별관계로 만들어, 뭔가 복잡한거 같은데.. 
 // ## TODO 비식별관계로 변경해야 하는지...
@@ -35,7 +28,7 @@ public class FormService {
   private final FormItemOptionRepository formItemOptionRepository;
 
   public List<FormItemOption> getListWithSetParentItemInfo(FormItem formItem,
-      List<FormItemOptionCreateRequestDto> formItemOptions) {
+      List<FormItemOption> formItemOptions) {
     long formId = formItem.getFormId();
     long version = formItem.getVersion();
     long sequence = formItem.getSequence();
@@ -47,53 +40,37 @@ public class FormService {
 
     AtomicLong index = new AtomicLong();
     return formItemOptions.stream()
-        .map(option -> FormItemOption.builder().formId(formId).version(version).sequence(sequence)
-            .optionSequence(index.getAndIncrement() + 1).description(option.getDescription())
-            .build()).collect(Collectors.toList());
+        .map(option -> FormItemOption.builder()
+            .formId(formId)
+            .version(version)
+            .sequence(sequence)
+            .optionSequence(index.getAndIncrement() + 1)
+            .description(option.getDescription())
+            .build())
+        .toList();
   }
 
   @Transactional
   public Form createForm(FormCreateRequestDto formCreateRequestDto) {
-    Form form = Form.builder()
-        .description(formCreateRequestDto.getDescription())
-        .title(formCreateRequestDto.getTitle()).build();
+    Form form = formRepository.save(formCreateRequestDto.toEntity());
 
-    Form insertedForm = formRepository.save(form);
-    List<FormItemCreateRequestDto> formItems = formCreateRequestDto.getFormItems();
-
-    for (int i = 0; i < formItems.size(); i++) {
-      FormItemCreateRequestDto formItem = formItems.get(i);
-      FormItem inserted = formItemRepository.save(
-          FormItem.builder().formId(insertedForm.getFormID()).version(1L).sequence(i + 1)
-              .description(formItem.getDescription()).type(formItem.getType()).build());
-      List<FormItemOption> formItemOptions = this.getListWithSetParentItemInfo(inserted,
-          formItem.getFormItemOptions());
-      formItemOptionRepository.saveAll(formItemOptions);
+    for (int i = 0; i < formCreateRequestDto.getFormItems().size(); i++) {
+      FormItem formItem = formCreateRequestDto.getFormItems().get(i).toEntity(form.getFormID(), 1L, i + 1);
+      formItemRepository.save(formItem);
     }
 
-    return insertedForm;
+    return form;
   }
 
   @Transactional
   public long editForm(FormEditRequestDto formEditRequestDto) {
     Form form = formRepository.findById(formEditRequestDto.getFormId())
-        .orElseThrow(() -> new IllegalArgumentException("NO_FORM"));
+        .orElseThrow(() -> new IllegalArgumentException("Form does not exist"));
+    long getNextSequence = formItemRepository.findNextVersion(form.getFormID());
 
-    // ## TODO 폼 수정 시 설명과 제목 업데이트 해줘야 함.
-    long nextVersion = formItemRepository.findNextVersion(form.getFormID());
-
-    List<FormItemCreateRequestDto> formItems = formEditRequestDto.getFormItems();
-
-    // ## TODO 수정 - 다른 방식 조사 / 수정
-    for (int i = 0; i < formItems.size(); i++) {
-      FormItemCreateRequestDto formItem = formItems.get(i);
-      FormItem inserted = formItemRepository.save(
-          FormItem.builder().formId(formEditRequestDto.getFormId()).version(nextVersion)
-              .sequence(i + 1).description(formItem.getDescription()).type(formItem.getType())
-              .build());
-      List<FormItemOption> formItemOptions = this.getListWithSetParentItemInfo(inserted,
-          formItem.getFormItemOptions());
-      formItemOptionRepository.saveAll(formItemOptions);
+    for (int i = 0; i < formEditRequestDto.getFormItems().size(); i++) {
+      FormItem formItem = formEditRequestDto.getFormItems().get(i).toEntity(form.getFormID(), getNextSequence, i + 1);
+      formItemRepository.save(formItem);
     }
 
     return form.getFormID();
