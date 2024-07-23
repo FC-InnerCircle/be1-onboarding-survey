@@ -88,7 +88,8 @@ class SurveyServiceTest {
   @Test
   void getSurvey() {
     // given & when
-    SurveyResponse survey = surveyService.getSurvey(1L);
+    List<Survey> surveys = surveyRepository.findAll();
+    SurveyResponse survey = surveyService.getSurvey(surveys.get(0).getId());
 
     // then
     assertThat(survey.title()).isEqualTo("test survey");
