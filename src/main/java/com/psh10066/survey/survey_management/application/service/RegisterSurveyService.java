@@ -20,8 +20,8 @@ public class RegisterSurveyService implements RegisterSurveyUseCase {
     @Override
     public Survey.SurveyId registerSurvey(RegisterSurveyCommand command) {
         SurveyForm surveyForm = SurveyForm.create(
-            command.getDescription(),
             command.getName(),
+            command.getDescription(),
             command.getQuestions().stream()
                 .map(SurveyQuestionDto::toModel)
                 .toList()

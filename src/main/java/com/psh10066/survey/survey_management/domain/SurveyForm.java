@@ -14,7 +14,7 @@ public class SurveyForm {
     private final String description;
     private final List<SurveyQuestion> questions;
 
-    public static SurveyForm create(String description, String name, List<SurveyQuestion> questions) {
-        return new SurveyForm(1L, description, name, questions);
+    public static SurveyForm create(String name, String description, List<SurveyQuestion> questions) {
+        return new SurveyForm(1L, name, description, questions);
     }
 }
