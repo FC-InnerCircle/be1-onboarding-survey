@@ -13,6 +13,9 @@ data class Question(
     @ManyToOne
     @JoinColumn(name = "form_id", nullable = false)
     val form: Form,
+    @ManyToOne
+    @JoinColumn(name = "question_type_id", nullable = false)
+    val questionType: QuestionType,
     @Column(name = "question_text", nullable = false)
     val questionText: String,
     @Column(name = "question_order", nullable = false)
