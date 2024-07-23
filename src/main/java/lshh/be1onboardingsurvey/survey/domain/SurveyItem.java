@@ -68,7 +68,7 @@ public class SurveyItem {
     }
 
     public void updateItemOption(UpdateSurveyItemOptionCommand command, Clock clock) {
-        SurveyItemOption latest = this.findOption(command.optionId())
+        SurveyItemOption latest = this.findLatestOption(command.optionId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item option not found"));
 
         SurveyItemOption newOption = command.toEntity();
@@ -82,6 +82,23 @@ public class SurveyItem {
         return this.options.stream()
                 .filter(o -> o.getId().equals(id))
                 .findFirst();
+    }
+
+    public Optional<SurveyItemOption> findItemByPreId(Long preId){
+        return this.options.stream()
+                .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
+                .findFirst();
+    }
+
+    public Optional<SurveyItemOption> findLatestOption(Long id){
+        return findOption(id)
+                .map(item -> {
+                    while(item.getOverridden() != null){
+                        item = findItemByPreId(item.getId())
+                                .orElseThrow(() -> new IllegalArgumentException("Survey latest item not found"));
+                    }
+                    return item;
+                });
     }
 
 }

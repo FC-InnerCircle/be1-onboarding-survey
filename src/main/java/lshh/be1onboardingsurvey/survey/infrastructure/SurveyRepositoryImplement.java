@@ -39,7 +39,7 @@ public class SurveyRepositoryImplement implements SurveyRepository {
     }
 
     @Override
-    public Optional<Survey> findByName(String name) {
+    public List<Survey> findByName(String name) {
         return jpaRepository.findByName(name);
     }
 

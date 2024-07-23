@@ -1,6 +1,7 @@
 package lshh.be1onboardingsurvey.survey.domain;
 
 import lombok.RequiredArgsConstructor;
+import lshh.be1onboardingsurvey.common.lib.cache.lock.AdvisoryLock;
 import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
@@ -24,9 +25,9 @@ public class SurveyService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<SurveyView> findByName(String name) {
-        return repository.findByName(name)
-                .map(SurveyView::of);
+    public List<SurveyView> findByName(String name) {
+        return repository.findByName(name).stream()
+                .map(SurveyView::of).toList();
     }
 
     @Transactional(readOnly = true)
@@ -57,6 +58,7 @@ public class SurveyService {
         return repository.save(survey);
     }
 
+    @AdvisoryLock(key = "#updateSurveyItemCommand.itemId()")
     @Transactional
     public Result<?> updateItem(UpdateSurveyItemCommand updateSurveyItemCommand) {
         Survey survey = repository.findById(updateSurveyItemCommand.surveyId())
@@ -66,6 +68,7 @@ public class SurveyService {
     }
 
     @Transactional
+    @AdvisoryLock(key = "#command.optionId()")
     public Result<?> updateItemOption(UpdateSurveyItemOptionCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));

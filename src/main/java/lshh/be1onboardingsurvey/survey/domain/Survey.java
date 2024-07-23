@@ -52,7 +52,7 @@ public class Survey {
     public Optional<SurveyItem> findItemByPreId(Long preId){
         return this.items.stream()
                 .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
-                .findFirst();   // todo - 동시성 이슈 처리 필요. overriden과 preId 동시 쓰기에 대하여.. 테스트 우선 작성.
+                .findFirst();
     }
 
     public Optional<SurveyItem> findLatestItem(Long id){

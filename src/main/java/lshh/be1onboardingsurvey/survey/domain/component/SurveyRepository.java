@@ -15,8 +15,7 @@ public interface SurveyRepository {
     Result<?> save(Survey survey);
 
     Optional<Survey> findById(Long id);
-
-    Optional<Survey> findByName(String name);
+    List<Survey> findByName(String name);
 
     List<SurveyResponseView> findResponseViewBySurveyId(Long surveyId);
 }
