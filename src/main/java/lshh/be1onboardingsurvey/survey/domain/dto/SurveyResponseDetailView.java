@@ -34,10 +34,13 @@ public record SurveyResponseDetailView (
                         }
                         case CHECKBOX -> {
                             if(responseItem.getRealValue() != null && responseItem.getRealValue() instanceof List<?> values){
-                                yield values.stream()
+                                List<SurveyItemOption> options = values.stream()
                                         .map(value -> item.findOption((Long)value))
                                         .filter(Optional::isPresent)
-                                        .map(opt -> opt.get().getName())
+                                        .map(Optional::get)
+                                        .toList();
+                                yield options.stream()
+                                        .map(SurveyItemOption::getName)
                                         .toList();
                             }
                             yield null;

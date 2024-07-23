@@ -525,4 +525,123 @@ public class SurveyServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("Survey 응답 목록 상세 조회")
+    class FindResponseDetailsTest{
+        @Test
+        @DisplayName("간단한 응답 목록 상세 조회 - TEXT")
+        public void testFindResponseDetails_simple_TEXT(){
+            // Arrange
+            // survey 생성
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("testFindResponseDetails_simple", "description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("testFindResponseDetails_simple").getFirst();
+            Long surveyId = surveyView.id();
+            // survey item 생성
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "testFindResponseDetails_simple", "description", SurveyItemFormType.TEXT, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyView2 = surveyService.findByName("testFindResponseDetails_simple").getFirst();
+            Long surveyItemId = surveyView2.items().getFirst().id();
+            // survey response 생성
+            AddSurveyResponseCommand addSurveyResponseCommand = new AddSurveyResponseCommand(surveyId);
+            surveyService.addResponse(addSurveyResponseCommand);
+            SurveyResponseView responseView = surveyService.findResponses(surveyId).getFirst();
+            // response item 생성
+            AddSurveyResponseItemCommand addSurveyResponseItemCommand = new AddSurveyResponseItemCommand(
+                    surveyId,
+                    responseView.id(),
+                    surveyItemId,
+                    "item_testFindResponseDetails_simple"
+            );
+            surveyService.addResponseItem(addSurveyResponseItemCommand);
+
+            // Act
+            List<SurveyResponseDetailView> responseDetails = surveyService.findResponseDetails(surveyId);
+
+            // Assert
+            System.out.println(responseDetails);
+            assertEquals(1, responseDetails.size());
+        }
+
+        @Test
+        @DisplayName("간단한 응답 목록 상세 조회 - RADIO")
+        public void testFindResponseDetails_simple_RADIO(){
+            // Arrange
+            // survey 생성
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("testFindResponseDetails_simple_RADIO", "description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("testFindResponseDetails_simple_RADIO").getFirst();
+            Long surveyId = surveyView.id();
+            // survey item 생성
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "testFindResponseDetails_simple_RADIO", "description", SurveyItemFormType.RADIO, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyView2 = surveyService.findByName("testFindResponseDetails_simple_RADIO").getFirst();
+            Long surveyItemId = surveyView2.items().getFirst().id();
+            // survey item option 생성
+            AddSurveyItemOptionCommand addSurveyItemOptionCommand = new AddSurveyItemOptionCommand(surveyId, surveyItemId, "option_testFindResponseDetails_simple_RADIO", "description", 1L);
+            surveyService.addItemOption(addSurveyItemOptionCommand);
+            Long optionId = surveyService.findByName("testFindResponseDetails_simple_RADIO").getFirst().items().getFirst().options().getFirst().id();
+
+            // survey response 생성
+            AddSurveyResponseCommand addSurveyResponseCommand = new AddSurveyResponseCommand(surveyId);
+            surveyService.addResponse(addSurveyResponseCommand);
+            SurveyResponseView responseView = surveyService.findResponses(surveyId).getFirst();
+            // response item 생성
+            AddSurveyResponseItemCommand addSurveyResponseItemCommand = new AddSurveyResponseItemCommand(
+                    surveyId,
+                    responseView.id(),
+                    surveyItemId,
+                    optionId
+            );
+            surveyService.addResponseItem(addSurveyResponseItemCommand);
+
+            // Act
+            List<SurveyResponseDetailView> responseDetails = surveyService.findResponseDetails(surveyId);
+
+            // Assert
+            System.out.println(responseDetails);
+            assertEquals(1, responseDetails.size());
+        }
+
+        @Test
+        @DisplayName("간단한 응답 목록 상세 조회 - CHECKBOX")
+        public void testFindResponseDetails_simple_CHECKBOX(){
+            // Arrange
+            // survey 생성
+            CreateSurveyCommand createSurveyCommand = new CreateSurveyCommand("testFindResponseDetails_simple_CHECKBOX", "description");
+            surveyService.create(createSurveyCommand);
+            SurveyView surveyView = surveyService.findByName("testFindResponseDetails_simple_CHECKBOX").getFirst();
+            Long surveyId = surveyView.id();
+            // survey item 생성
+            AddSurveyItemCommand addSurveyItemCommand = new AddSurveyItemCommand(surveyId, "testFindResponseDetails_simple_CHECKBOX", "description", SurveyItemFormType.CHECKBOX, true, 1L);
+            surveyService.addItem(addSurveyItemCommand);
+            SurveyView surveyView2 = surveyService.findByName("testFindResponseDetails_simple_CHECKBOX").getFirst();
+            Long surveyItemId = surveyView2.items().getFirst().id();
+            // survey item option 생성
+            AddSurveyItemOptionCommand addSurveyItemOptionCommand = new AddSurveyItemOptionCommand(surveyId, surveyItemId, "option_testFindResponseDetails_simple_CHECKBOX", "description", 1L);
+            surveyService.addItemOption(addSurveyItemOptionCommand);
+            Long optionId = surveyService.findByName("testFindResponseDetails_simple_CHECKBOX").getFirst().items().getFirst().options().getFirst().id();
+
+            // survey response 생성
+            AddSurveyResponseCommand addSurveyResponseCommand = new AddSurveyResponseCommand(surveyId);
+            surveyService.addResponse(addSurveyResponseCommand);
+            SurveyResponseView responseView = surveyService.findResponses(surveyId).getFirst();
+            // response item 생성
+            AddSurveyResponseItemCommand addSurveyResponseItemCommand = new AddSurveyResponseItemCommand(
+                    surveyId,
+                    responseView.id(),
+                    surveyItemId,
+                    new Long[]{optionId}
+            );
+            surveyService.addResponseItem(addSurveyResponseItemCommand);
+
+            // Act
+            List<SurveyResponseDetailView> responseDetails = surveyService.findResponseDetails(surveyId);
+
+            // Assert
+            System.out.println(responseDetails);
+            assertEquals(1, responseDetails.size());
+        }
+    }
+
 }

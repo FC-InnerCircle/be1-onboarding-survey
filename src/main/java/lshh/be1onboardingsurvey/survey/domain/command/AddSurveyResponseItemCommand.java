@@ -8,7 +8,7 @@ public record AddSurveyResponseItemCommand(
         Long surveyId,
         Long responseId,
         Long itemId,
-        String value
+        Object value
 ){
     public AddSurveyResponseItemCommand {
         if(surveyId == null || responseId == null || itemId == null){

@@ -34,35 +34,35 @@ public class SurveyController {
     }
 
     @Operation(summary = "설문지 항목 옵션 추가")
-    @PostMapping("/{survey}/item/{item}/option")
+    @PostMapping("/{surveyId}/item/{itemId}/option")
     public Response<?> addOption(@RequestBody AddSurveyItemOptionCommand command) {
         Result<?> result = service.addItemOption(command);
         return Response.of(result);
     }
 
     @Operation(summary = "설문지 항목 수정")
-    @PostMapping("/{survey}/item/{item}")
+    @PostMapping("/{surveyId}/item/{item}")
     public Response<?> updateItem(@RequestBody UpdateSurveyItemCommand command) {
         Result<?> result = service.updateItem(command);
         return Response.of(result);
     }
 
     @Operation(summary = "설문지 항목 옵션 수정")
-    @PostMapping("/{survey}/item/{item}/option/{option}")
+    @PostMapping("/{surveyId}/item/{itemId}/option/{optionId}")
     public Response<?> updateOption(@RequestBody UpdateSurveyItemOptionCommand command) {
         Result<?> result = service.updateItemOption(command);
         return Response.of(result);
     }
 
     @Operation(summary = "응답 추가")
-    @PostMapping("/{survey}/response")
+    @PostMapping("/{surveyId}/response")
     public Response<?> addResponse(@RequestBody AddSurveyResponseCommand command) {
         Result<?> result = service.addResponse(command);
         return Response.of(result);
     }
 
     @Operation(summary = "응답 항목 추가")
-    @PostMapping("/{survey}/response/{response}/item")
+    @PostMapping("/{surveyId}/response/{responseId}/item")
     public Response<?> addResponseItem(@RequestBody AddSurveyResponseItemCommand command) {
         Result<?> result = service.addResponseItem(command);
         return Response.of(result);
@@ -85,5 +85,6 @@ public class SurveyController {
     public List<SurveyResponseDetailView> responseDetail(@PathVariable Long surveyId){
         return service.findResponseDetails(surveyId);
     }
+
 
 }
