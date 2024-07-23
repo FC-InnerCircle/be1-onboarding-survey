@@ -1,4 +1,4 @@
-package com.innercircle.onboardingservey.infrastructure.model;
+package com.innercircle.onboardingservey.infrastructure;
 
 import com.innercircle.onboardingservey.domain.SurveyStore;
 import com.innercircle.onboardingservey.domain.model.Survey;
