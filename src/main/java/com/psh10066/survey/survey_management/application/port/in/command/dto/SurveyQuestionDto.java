@@ -22,19 +22,17 @@ public record SurveyQuestionDto(
     @NotNull
     @NotEmpty
     @Valid
-    List<SurveySelectInputDto> selectInputs,
+    List<@NotBlank String> selectInputs,
 
     @NotNull
     Boolean required
 ) {
     public SurveyQuestion toModel() {
-        return new SurveyQuestion(
+        return SurveyQuestion.create(
             this.name,
             this.description,
             this.type,
-            this.selectInputs.stream()
-                .map(SurveySelectInputDto::toModel)
-                .toList(),
+            this.selectInputs,
             this.required
         );
     }

@@ -1,10 +1,8 @@
 package com.psh10066.survey.survey_management.adapter.in.web.request;
 
 import com.psh10066.survey.survey_management.adapter.in.web.request.dto.SurveyQuestionRequestDto;
-import com.psh10066.survey.survey_management.adapter.in.web.request.dto.SurveySelectInputRequestDto;
 import com.psh10066.survey.survey_management.application.port.in.command.RegisterSurveyCommand;
 import com.psh10066.survey.survey_management.application.port.in.command.dto.SurveyQuestionDto;
-import com.psh10066.survey.survey_management.application.port.in.command.dto.SurveySelectInputDto;
 import com.psh10066.survey.survey_management.domain.SurveyQuestionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +24,7 @@ class RegisterSurveyRequestTest {
                 "questionName",
                 "questionDescription",
                 SurveyQuestionType.RADIO,
-                List.of(new SurveySelectInputRequestDto(1, "1번")),
+                List.of("그렇다", "아니다"),
                 true
             ))
         );
@@ -43,11 +41,11 @@ class RegisterSurveyRequestTest {
         assertThat(question.name()).isEqualTo("questionName");
         assertThat(question.description()).isEqualTo("questionDescription");
         assertThat(question.type()).isEqualTo(SurveyQuestionType.RADIO);
-        assertThat(question.selectInputs()).hasSize(1);
+        assertThat(question.selectInputs()).hasSize(2);
         assertThat(question.required()).isTrue();
 
-        SurveySelectInputDto surveySelectInput = question.selectInputs().getFirst();
-        assertThat(surveySelectInput.inputValue()).isEqualTo(1);
-        assertThat(surveySelectInput.text()).isEqualTo("1번");
+        List<String> surveySelectInputs = question.selectInputs();
+        assertThat(surveySelectInputs.get(0)).isEqualTo("그렇다");
+        assertThat(surveySelectInputs.get(1)).isEqualTo("아니다");
     }
 }

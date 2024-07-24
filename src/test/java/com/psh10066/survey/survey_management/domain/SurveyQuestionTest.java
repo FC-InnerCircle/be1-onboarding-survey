@@ -16,10 +16,10 @@ class SurveyQuestionTest {
     void surveyQuestionType_short() {
         // given
         SurveyQuestionType surveyQuestionType = SurveyQuestionType.SHORT;
-        List<SurveySelectInput> surveySelectInputs = Collections.emptyList();
+        List<String> surveySelectInputs = List.of("그렇다", "아니다");
 
         // when
-        SurveyQuestion surveyQuestion = new SurveyQuestion("name", "description", surveyQuestionType, surveySelectInputs, true);
+        SurveyQuestion surveyQuestion = SurveyQuestion.create("name", "description", surveyQuestionType, surveySelectInputs, true);
 
         // then
         assertThat(surveyQuestion.selectInputs()).isNull();
@@ -30,10 +30,10 @@ class SurveyQuestionTest {
     void surveyQuestionType_long() {
         // given
         SurveyQuestionType surveyQuestionType = SurveyQuestionType.LONG;
-        List<SurveySelectInput> surveySelectInputs = Collections.emptyList();
+        List<String> surveySelectInputs = List.of("그렇다", "아니다");
 
         // when
-        SurveyQuestion surveyQuestion = new SurveyQuestion("name", "description", surveyQuestionType, surveySelectInputs, true);
+        SurveyQuestion surveyQuestion = SurveyQuestion.create("name", "description", surveyQuestionType, surveySelectInputs, true);
 
         // then
         assertThat(surveyQuestion.selectInputs()).isNull();
@@ -44,12 +44,12 @@ class SurveyQuestionTest {
     void surveyQuestionType_radio() {
         // given
         SurveyQuestionType surveyQuestionType = SurveyQuestionType.RADIO;
-        List<SurveySelectInput> surveySelectInputs = Collections.emptyList();
+        List<String> surveySelectInputs = Collections.emptyList();
 
         // when
         // then
         assertThatThrownBy(() ->
-            new SurveyQuestion("name", "description", surveyQuestionType, surveySelectInputs, true)
+            SurveyQuestion.create("name", "description", surveyQuestionType, surveySelectInputs, true)
         ).isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -58,12 +58,28 @@ class SurveyQuestionTest {
     void surveyQuestionType_checkbox() {
         // given
         SurveyQuestionType surveyQuestionType = SurveyQuestionType.CHECKBOX;
-        List<SurveySelectInput> surveySelectInputs = Collections.emptyList();
+        List<String> surveySelectInputs = Collections.emptyList();
 
         // when
         // then
         assertThatThrownBy(() ->
-            new SurveyQuestion("name", "description", surveyQuestionType, surveySelectInputs, true)
+            SurveyQuestion.create("name", "description", surveyQuestionType, surveySelectInputs, true)
         ).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @DisplayName("입력받은 선택 리스트의 inputValue를 0부터 설정한다.")
+    @Test
+    void selectInputWithValue() {
+        // given
+        List<String> surveySelectInputs = List.of("그렇다", "아니다");
+
+        // when
+        SurveyQuestion surveyQuestion = SurveyQuestion.create("name", "description", SurveyQuestionType.CHECKBOX, surveySelectInputs, true);
+
+        // then
+        assertThat(surveyQuestion.selectInputs().get(0).inputValue()).isEqualTo(0);
+        assertThat(surveyQuestion.selectInputs().get(0).text()).isEqualTo("그렇다");
+        assertThat(surveyQuestion.selectInputs().get(1).inputValue()).isEqualTo(1);
+        assertThat(surveyQuestion.selectInputs().get(1).text()).isEqualTo("아니다");
     }
 }

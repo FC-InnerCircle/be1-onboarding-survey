@@ -8,7 +8,7 @@ public record SurveyQuestionRequestDto(
     String name,
     String description,
     SurveyQuestionType type,
-    List<SurveySelectInputRequestDto> selectInputs,
+    List<String> selectInputs,
     Boolean required
 ) {
 }

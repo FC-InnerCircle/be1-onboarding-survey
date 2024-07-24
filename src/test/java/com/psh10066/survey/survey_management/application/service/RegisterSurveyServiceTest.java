@@ -3,7 +3,6 @@ package com.psh10066.survey.survey_management.application.service;
 import com.psh10066.mock.survey_management.adapter.out.persistence.FakeSurveyRepository;
 import com.psh10066.survey.survey_management.application.port.in.command.RegisterSurveyCommand;
 import com.psh10066.survey.survey_management.application.port.in.command.dto.SurveyQuestionDto;
-import com.psh10066.survey.survey_management.application.port.in.command.dto.SurveySelectInputDto;
 import com.psh10066.survey.survey_management.domain.Survey;
 import com.psh10066.survey.survey_management.domain.SurveyQuestion;
 import com.psh10066.survey.survey_management.domain.SurveyQuestionType;
@@ -38,7 +37,7 @@ class RegisterSurveyServiceTest {
                 "questionName",
                 "questionDescription",
                 SurveyQuestionType.RADIO,
-                List.of(new SurveySelectInputDto(1, "1번")),
+                List.of("그렇다", "아니다"),
                 true
             ))
         );
@@ -61,11 +60,11 @@ class RegisterSurveyServiceTest {
         assertThat(question.name()).isEqualTo("questionName");
         assertThat(question.description()).isEqualTo("questionDescription");
         assertThat(question.type()).isEqualTo(SurveyQuestionType.RADIO);
-        assertThat(question.selectInputs()).hasSize(1);
+        assertThat(question.selectInputs()).hasSize(2);
         assertThat(question.required()).isTrue();
 
-        SurveySelectInput surveySelectInput = question.selectInputs().getFirst();
-        assertThat(surveySelectInput.inputValue()).isEqualTo(1);
-        assertThat(surveySelectInput.text()).isEqualTo("1번");
+        List<SurveySelectInput> surveySelectInputs = question.selectInputs();
+        assertThat(surveySelectInputs.get(0).text()).isEqualTo("그렇다");
+        assertThat(surveySelectInputs.get(1).text()).isEqualTo("아니다");
     }
 }

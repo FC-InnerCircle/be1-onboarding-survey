@@ -1,7 +1,10 @@
 package com.psh10066.survey.survey_management.adapter.out.persistence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.psh10066.survey.survey_management.domain.*;
+import com.psh10066.survey.survey_management.domain.Survey;
+import com.psh10066.survey.survey_management.domain.SurveyForm;
+import com.psh10066.survey.survey_management.domain.SurveyQuestion;
+import com.psh10066.survey.survey_management.domain.SurveyQuestionType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +33,11 @@ class SurveyRepositoryTest {
     @Test
     void register() {
         // given
-        List<SurveyQuestion> questions = List.of(new SurveyQuestion(
+        List<SurveyQuestion> questions = List.of(SurveyQuestion.create(
             "questionName",
             "questionDescription",
             SurveyQuestionType.RADIO,
-            List.of(new SurveySelectInput(1, "1번")),
+            List.of("그렇다", "아니다"),
             true
         ));
         SurveyForm surveyForm = SurveyForm.create(
