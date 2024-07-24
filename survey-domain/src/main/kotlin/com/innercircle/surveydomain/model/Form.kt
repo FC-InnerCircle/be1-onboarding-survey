@@ -15,11 +15,14 @@ data class Form(
     @Column(columnDefinition = "TEXT")
     val description: String? = null,
     @Column(nullable = false)
-    val createdAt: LocalDateTime,
+    val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(nullable = false)
-    val updatedAt: LocalDateTime,
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
     @Column(nullable = false)
     val isActive: Boolean,
-    @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], orphanRemoval = true)
-    val questions: List<Question> = mutableListOf(),
+    val version: Int,
+    @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val questions: List<Question> = emptyList(),
+    @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val submissions: List<Submission> = emptyList(),
 )

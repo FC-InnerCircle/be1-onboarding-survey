@@ -13,15 +13,17 @@ data class Question(
     @ManyToOne
     @JoinColumn(name = "form_id", nullable = false)
     val form: Form,
-    @ManyToOne
-    @JoinColumn(name = "question_type_id", nullable = false)
-    val questionType: QuestionType,
-    @Column(name = "question_text", nullable = false)
+    val formVersion: Int,
     val questionText: String,
+    val questionType: String,
     @Column(name = "question_order", nullable = false)
     val questionOrder: Int,
     @Column(name = "is_required", nullable = false)
     val isRequired: Boolean,
     @Column(name = "additional_config")
-    val additionalConfig: String? = null,
+    val additionalConfig: String?,
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val responses: List<Response> = emptyList(),
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val questionOptions: List<QuestionOption> = emptyList(),
 )
