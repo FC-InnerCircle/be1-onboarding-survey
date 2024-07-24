@@ -21,7 +21,7 @@ public class SurveyQuestionsConverter implements AttributeConverter<List<SurveyQ
         try {
             return objectMapper.writeValueAsString(surveyQuestions);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Could not convert survey questions to JSON");
         }
     }
 
@@ -31,7 +31,7 @@ public class SurveyQuestionsConverter implements AttributeConverter<List<SurveyQ
             return objectMapper.readValue(s, new TypeReference<>() {
             });
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            throw new IllegalArgumentException("Could not convert JSON to survey questions");
         }
     }
 }

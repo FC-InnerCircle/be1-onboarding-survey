@@ -4,8 +4,10 @@ import com.psh10066.survey.survey_management.application.port.out.RegisterSurvey
 import com.psh10066.survey.survey_management.domain.Survey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class SurveyRepository implements RegisterSurveyPort {
 
