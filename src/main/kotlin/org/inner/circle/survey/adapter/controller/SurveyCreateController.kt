@@ -1,6 +1,6 @@
 package org.inner.circle.survey.adapter.controller
 
-import org.inner.circle.survey.adapter.dto.SurveyRequest.CreateSurvey
+import org.inner.circle.survey.adapter.dto.SurveyCreateRequest.CreateSurvey
 import org.inner.circle.survey.application.SurveyCreateUseCase
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity

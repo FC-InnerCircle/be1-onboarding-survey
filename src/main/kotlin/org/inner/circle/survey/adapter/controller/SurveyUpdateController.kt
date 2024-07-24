@@ -1,6 +1,6 @@
 package org.inner.circle.survey.adapter.controller
 
-import org.inner.circle.survey.adapter.dto.SurveyRequest.UpdateSurvey
+import org.inner.circle.survey.adapter.dto.SurveyUpdateRequest.UpdateSurvey
 import org.inner.circle.survey.application.SurveyUpdateUseCase
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PatchMapping
@@ -15,9 +15,9 @@ class SurveyUpdateController(
 ) {
     @PatchMapping
     fun updateSurvey(
-        @RequestBody updateSurveyRequest: UpdateSurvey,
+        @RequestBody updateSurvey: UpdateSurvey,
     ): ResponseEntity<Void> {
-        surveyUpdateUseCase.updateSurvey(updateSurveyRequest)
+        surveyUpdateUseCase.updateSurvey(updateSurvey)
         return ResponseEntity.ok().build()
     }
 }

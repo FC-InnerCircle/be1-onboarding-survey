@@ -5,7 +5,7 @@ import org.inner.circle.survey.domain.Question
 import org.inner.circle.survey.domain.QuestionOption
 import org.inner.circle.survey.domain.Survey
 
-class SurveyRequest {
+class SurveyCreateRequest {
     data class CreateSurvey(
         val title: String,
         val description: String?,
@@ -20,15 +20,7 @@ class SurveyRequest {
             )
     }
 
-    data class UpdateSurvey(
-        val id: Long,
-        val title: String?,
-        val description: String?,
-        val questions: List<Questions>?,
-    )
-
     data class Questions(
-        val id: Long?,
         val title: String,
         val type: QuestionType,
         val description: String?,
@@ -48,7 +40,6 @@ class SurveyRequest {
     }
 
     data class Options(
-        val id: Long?,
         val content: String,
         val orderNumber: Int,
     ) {
