@@ -17,4 +17,8 @@ public class SurveyForm {
     public static SurveyForm create(String name, String description, List<SurveyQuestion> questions) {
         return new SurveyForm(1L, name, description, questions);
     }
+
+    public static SurveyForm update(Long version, String name, String description, List<SurveyQuestion> questions) {
+        return new SurveyForm(version, name, description, questions);
+    }
 }

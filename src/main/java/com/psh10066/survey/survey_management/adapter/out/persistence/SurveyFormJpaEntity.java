@@ -13,7 +13,12 @@ import java.util.UUID;
 
 @Getter
 @Entity
-@Table(name = "survey_form")
+@Table(
+    name = "survey_form",
+    indexes = {
+        @Index(columnList = "surveyId, version", unique = true)
+    }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SurveyFormJpaEntity {
 
@@ -47,7 +52,7 @@ public class SurveyFormJpaEntity {
 
     public static SurveyFormJpaEntity from(Survey.SurveyId surveyId, SurveyForm surveyForm) {
         return new SurveyFormJpaEntity(
-            surveyId.getValue(),
+            surveyId.value(),
             surveyForm.getVersion(),
             surveyForm.getName(),
             surveyForm.getDescription(),

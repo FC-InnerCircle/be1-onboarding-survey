@@ -1,36 +1,57 @@
 package com.psh10066.survey.survey_management.application.service;
 
 import com.psh10066.mock.survey_management.adapter.out.persistence.FakeSurveyPersistenceAdapter;
-import com.psh10066.survey.survey_management.application.port.in.command.RegisterSurveyCommand;
+import com.psh10066.survey.survey_management.application.port.in.command.ModifySurveyCommand;
 import com.psh10066.survey.survey_management.application.port.in.command.dto.SurveyQuestionDto;
-import com.psh10066.survey.survey_management.domain.Survey;
-import com.psh10066.survey.survey_management.domain.SurveyQuestion;
-import com.psh10066.survey.survey_management.domain.SurveyQuestionType;
-import com.psh10066.survey.survey_management.domain.SurveySelectInput;
+import com.psh10066.survey.survey_management.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
-class RegisterSurveyServiceTest {
+class ModifySurveyServiceTest {
 
-    private RegisterSurveyService registerSurveyService;
+    private ModifySurveyService modifySurveyService;
     private FakeSurveyPersistenceAdapter fakeSurveyPersistenceAdapter;
+
+    private UUID testSurveyId;
 
     @BeforeEach
     void setUp() {
         fakeSurveyPersistenceAdapter = new FakeSurveyPersistenceAdapter();
-        registerSurveyService = new RegisterSurveyService(fakeSurveyPersistenceAdapter);
+        fakeSurveyPersistenceAdapter.data.add(testSurvey());
+
+        modifySurveyService = new ModifySurveyService(fakeSurveyPersistenceAdapter, fakeSurveyPersistenceAdapter);
     }
 
-    @DisplayName("설문조사를 등록할 수 있다.")
+    private Survey testSurvey() {
+        List<SurveyQuestion> questions = List.of(SurveyQuestion.create(
+            "beforeQuestionName",
+            "beforeQuestionDescription",
+            SurveyQuestionType.CHECKBOX,
+            List.of("맞다", "틀리다"),
+            false
+        ));
+        SurveyForm surveyForm = SurveyForm.create(
+            "beforeName",
+            "beforeDescription",
+            questions
+        );
+        Survey survey = Survey.create(surveyForm);
+        this.testSurveyId = survey.getId().value();
+        return survey;
+    }
+
+    @DisplayName("설문조사를 수정할 수 있다.")
     @Test
-    void registerSurvey() {
+    void modifySurvey() {
         // given
-        RegisterSurveyCommand command = new RegisterSurveyCommand(
+        ModifySurveyCommand command = new ModifySurveyCommand(
+            testSurveyId,
             "name",
             "description",
             List.of(new SurveyQuestionDto(
@@ -43,7 +64,7 @@ class RegisterSurveyServiceTest {
         );
 
         // when
-        Survey.SurveyId surveyId = registerSurveyService.registerSurvey(command);
+        Survey.SurveyId surveyId = modifySurveyService.modifySurvey(command);
 
         // then
         assertThat(surveyId).isNotNull();
@@ -51,7 +72,7 @@ class RegisterSurveyServiceTest {
 
         Survey survey = fakeSurveyPersistenceAdapter.data.getFirst();
         assertThat(surveyId.value()).isEqualTo(survey.getId().value());
-        assertThat(survey.getForm().getVersion()).isEqualTo(1);
+        assertThat(survey.getForm().getVersion()).isEqualTo(2);
         assertThat(survey.getForm().getName()).isEqualTo("name");
         assertThat(survey.getForm().getDescription()).isEqualTo("description");
         assertThat(survey.getForm().getQuestions()).hasSize(1);

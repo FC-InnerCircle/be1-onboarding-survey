@@ -1,7 +1,6 @@
 package com.psh10066.survey.survey_management.domain;
 
 import lombok.Getter;
-import lombok.Value;
 
 import java.util.UUID;
 
@@ -11,21 +10,25 @@ public class Survey {
     private final SurveyId id;
     private final SurveyForm form;
 
-    private Survey(SurveyForm form) {
-        this.id = new SurveyId();
+    private Survey(SurveyId id, SurveyForm form) {
+        this.id = id;
         this.form = form;
     }
 
     public static Survey create(SurveyForm form) {
-        return new Survey(form);
+        return new Survey(
+            new SurveyId(UUID.randomUUID()),
+            form
+        );
     }
 
-    @Value
-    public static class SurveyId {
-        UUID value;
+    public static Survey update(SurveyId surveyId, SurveyForm form) {
+        return new Survey(
+            surveyId,
+            form
+        );
+    }
 
-        public SurveyId() {
-            this.value = UUID.randomUUID();
-        }
+    public record SurveyId(UUID value) {
     }
 }

@@ -27,7 +27,7 @@ public class SurveyJpaEntity {
 
     public static SurveyJpaEntity from(Survey survey) {
         return new SurveyJpaEntity(
-            survey.getId().getValue(),
+            survey.getId().value(),
             survey.getForm().getVersion()
         );
     }

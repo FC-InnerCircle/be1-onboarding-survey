@@ -16,12 +16,12 @@ import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-@Import({SurveyRepository.class, ObjectMapper.class})
+@Import({SurveyPersistenceAdapter.class, ObjectMapper.class})
 @DataJpaTest
-class SurveyRepositoryTest {
+class SurveyPersistenceAdapterTest {
 
     @Autowired
-    private SurveyRepository surveyRepository;
+    private SurveyPersistenceAdapter surveyPersistenceAdapter;
 
     @Autowired
     private SurveyJpaRepository surveyJpaRepository;
@@ -48,14 +48,14 @@ class SurveyRepositoryTest {
         Survey survey = Survey.create(surveyForm);
 
         // when
-        surveyRepository.register(survey);
+        surveyPersistenceAdapter.register(survey);
 
         // then
-        Optional<SurveyJpaEntity> surveyJpaEntityOpt = surveyJpaRepository.findById(survey.getId().getValue());
+        Optional<SurveyJpaEntity> surveyJpaEntityOpt = surveyJpaRepository.findById(survey.getId().value());
         assertThat(surveyJpaEntityOpt.isPresent()).isTrue();
         SurveyJpaEntity surveyJpaEntity = surveyJpaEntityOpt.get();
 
-        Optional<SurveyFormJpaEntity> surveyFormJpaEntityOpt = surveyFormJpaRepository.findBySurveyIdAndVersion(survey.getId().getValue(), surveyForm.getVersion());
+        Optional<SurveyFormJpaEntity> surveyFormJpaEntityOpt = surveyFormJpaRepository.findBySurveyIdAndVersion(survey.getId().value(), surveyForm.getVersion());
         assertThat(surveyFormJpaEntityOpt.isPresent()).isTrue();
         SurveyFormJpaEntity surveyFormJpaEntity = surveyFormJpaEntityOpt.get();
 

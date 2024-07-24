@@ -18,6 +18,6 @@ class SurveyTest {
 
         // then
         assertThat(survey.getId()).isNotNull();
-        assertThat(survey.getId().getValue()).isNotNull();
+        assertThat(survey.getId().value()).isNotNull();
     }
 }
