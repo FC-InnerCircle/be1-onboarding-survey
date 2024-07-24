@@ -1,6 +1,6 @@
-package com.innercircle.servey.common.exception;
+package com.innercircle.survey.common.exception;
 
-import com.innercircle.servey.common.response.ErrorCode;
+import com.innercircle.survey.common.response.ErrorCode;
 
 public class InvalidParamException extends BaseException {
 

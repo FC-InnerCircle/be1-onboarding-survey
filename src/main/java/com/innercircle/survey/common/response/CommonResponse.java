@@ -1,4 +1,4 @@
-package com.innercircle.servey.common.response;
+package com.innercircle.survey.common.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,10 @@ public class CommonResponse<T> {
 
     public static <T> CommonResponse<T> success(T data) {
         return success(data, null);
+    }
+
+    public static <T> CommonResponse<T> success() {
+        return success(null, null);
     }
 
     public static CommonResponse fail(String message, String errorCode) {

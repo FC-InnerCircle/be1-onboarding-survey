@@ -1,4 +1,4 @@
-package com.innercircle.servey.common.interceptor;
+package com.innercircle.survey.common.interceptor;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

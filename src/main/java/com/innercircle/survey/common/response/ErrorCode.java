@@ -1,4 +1,4 @@
-package com.innercircle.servey.common.response;
+package com.innercircle.survey.common.response;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

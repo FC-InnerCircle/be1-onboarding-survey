@@ -1,7 +1,7 @@
-package com.innercircle.servey.common.response;
+package com.innercircle.survey.common.response;
 
-import com.innercircle.servey.common.exception.BaseException;
-import com.innercircle.servey.common.interceptor.CommonHttpRequestInterceptor;
+import com.innercircle.survey.common.exception.BaseException;
+import com.innercircle.survey.common.interceptor.CommonHttpRequestInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.core.NestedExceptionUtils;
