@@ -13,6 +13,9 @@ data class Response(
     val question: Question,
     @ManyToOne @JoinColumn(name = "submission_id", nullable = false)
     val submission: Submission,
+    @ManyToOne
+    @JoinColumn(name = "question_option_id")
+    val questionOption: QuestionOption?,
     @Column(columnDefinition = "TEXT")
     val responseData: String? = null,
 )

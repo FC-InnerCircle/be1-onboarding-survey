@@ -12,8 +12,9 @@ data class Submission(
     val id: Int = 0,
     @ManyToOne @JoinColumn(name = "form_id", nullable = false)
     val form: Form,
-    @Column(nullable = false)
-    val submittedAt: LocalDateTime,
-    @Column(nullable = false, length = 255)
-    val respondentInfo: String,
+    val formVersion: Int,
+    val submittedAt: LocalDateTime = LocalDateTime.now(),
+    val respondentInfo: String?,
+    @OneToMany(mappedBy = "submission", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val responses: List<Response> = emptyList(),
 )

@@ -1,7 +1,7 @@
 # 이너써클 BE 온보딩 프로젝트 (장현호)
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
-- API 명세서: [http://localhost:8080/openapi/swagger-ui/index.html](http://localhost:8080/openapi/swagger-ui/index.html)
+- API 명세서: [바로가기](https://hyunolike.notion.site/API-3c10372e54c34612976fb7ff0c00c5f1?pvs=4)
 - 사용 기술스택
   - Kotlin, Gradle(Monolithic Multi-Module, [Composite Builds](https://docs.gradle.org/current/userguide/intro_multi_project_builds.html#2_composite_builds)), Spring Boot, ktlint, h2, springdoc-openapi(swagger ui), Spring Data JPA
 - 외부 라이브러리 [1]
