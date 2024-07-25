@@ -1,0 +1,14 @@
+### 1. 설문조사 생성 API
+POST http://localhost:8080/surveys HTTP/1.1
+Content-Type: application/json
+
+{
+   "title": "설문명"
+ , "description": "설문 설명"
+ , "objects" : [
+      {"type": "text", "description": "설명1", "title": "단답형", "isRequired": true}
+    , {"type": "rich_text", "description": "설명2", "title": "장문형", "isRequired": true}
+    , {"type": "radio", "description": "설명3", "title": "단일 선택 리스트", "elements": ["element", "element2"], "isRequired": false}
+    , {"type": "check_box", "description": "설명4", "title": "다중 선택 리스트", "elements": ["element", "element2"], "isRequired": true}
+  ]
+}

@@ -13,12 +13,12 @@ public enum ErrorEnum {
     DATA_NOT_FOUND(HttpStatus.NOT_FOUND, "필수 데이터를 포함해야 합니다.");
 
     private final HttpStatus status;
-    private final String code;
+    private final int code;
     private final String message;
 
     ErrorEnum(HttpStatus status, String message) {
         this.status = status;
-        this.code = name();
+        this.code = status.value();
         this.message = message;
     }
 }

@@ -10,10 +10,8 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @SuperBuilder
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "DTYPE")
 @NoArgsConstructor
-public abstract class SurveyObject {
+public class SurveyObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +23,16 @@ public abstract class SurveyObject {
     @Embedded
     private SurveyObjectContent surveyObjectContent;
 
+    private int elementOrder;
+
     @ManyToOne
     @JoinColumn(name = "survey_id")
     private Survey survey;
 
-    @ManyToOne
-    @JoinColumn(name = "survey_version_id")
-    private SurveyVersion surveyVersion;
+    private int surveyVersionId;
+
+    public void updateSurveyVersion(int version) {
+        this.surveyVersionId = version;
+    }
 
 }

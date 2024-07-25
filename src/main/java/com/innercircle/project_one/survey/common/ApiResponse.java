@@ -1,15 +1,27 @@
 package com.innercircle.project_one.survey.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
+@Getter
+@Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class ApiResponse {
-    protected int code = HttpStatus.OK.value();
 
+    private int code;
+    private String message;
+
+    public ApiResponse(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public HttpStatus getHttpStatus() {
-        try {
-            return HttpStatus.valueOf(code);
-        } catch (IllegalArgumentException e) {
-            return HttpStatus.valueOf(ErrorEnum.INVALID_REQUEST.getCode());
-        }
+        return HttpStatus.valueOf(code);
     }
 }
+

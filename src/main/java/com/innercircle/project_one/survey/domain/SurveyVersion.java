@@ -1,12 +1,10 @@
 package com.innercircle.project_one.survey.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 
 @Entity
 @Getter
-@Data
 public class SurveyVersion {
 
     @Id
@@ -18,6 +16,12 @@ public class SurveyVersion {
     @OneToOne
     @JoinColumn(name = "survey_id")
     private Survey survey;
+
+
+    public SurveyVersion(int version, Survey survey) {
+        this.version = version;
+        this.survey  = survey;
+    }
 
 }
 
