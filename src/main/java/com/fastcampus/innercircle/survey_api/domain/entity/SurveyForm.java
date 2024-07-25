@@ -3,6 +3,8 @@ package com.fastcampus.innercircle.survey_api.domain.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "survey_form")
@@ -11,19 +13,22 @@ public class SurveyForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long formId;
+    private Long formId;
 
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "description")
+    @Column(name = "description", length = 1000)
     private String description;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
+    List<Question> questions = new ArrayList<>();
 
     public long getFormId() {
         return formId;
@@ -55,6 +60,17 @@ public class SurveyForm {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void addQuestions(List<Question> questions) {
+        questions.forEach(question -> {
+            this.questions.add(question);
+            question.setForm(this);
+        });
     }
 
     public SurveyForm() {
