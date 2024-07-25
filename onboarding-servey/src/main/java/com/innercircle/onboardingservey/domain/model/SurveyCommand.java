@@ -6,6 +6,7 @@ import com.innercircle.onboardingservey.controller.survey.SurveyRequest.Question
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.QuestionUpdateRequest;
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.SurveyCreateRequest;
 import com.innercircle.onboardingservey.controller.survey.SurveyRequest.SurveyUpdateRequest;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -22,13 +23,17 @@ public class SurveyCommand {
             return new SurveyCreateCommand(
                 surveyCreateRequest.surveyTitle(),
                 surveyCreateRequest.surveyDescription(),
-                IntStream.range(
+                CollectionUtils.isEmpty(surveyCreateRequest.questionCreateRequests())
+                    ? null
+                    : IntStream.range(
                         0,
-                        surveyCreateRequest.questionCreateRequests().size()
+                        surveyCreateRequest.questionCreateRequests()
+                            .size()
                     )
                     .mapToObj(i ->
                         QuestionCreateCommand.from(
-                            surveyCreateRequest.questionCreateRequests().get(i),
+                            surveyCreateRequest.questionCreateRequests()
+                                .get(i),
                             i
                         ))
                     .toList()
@@ -48,13 +53,17 @@ public class SurveyCommand {
                 surveyUpdateRequest.surveyId(),
                 surveyUpdateRequest.surveyTitle(),
                 surveyUpdateRequest.surveyDescription(),
-                IntStream.range(
+                CollectionUtils.isEmpty(surveyUpdateRequest.questionUpdateRequests())
+                    ? null
+                    : IntStream.range(
                         0,
-                        surveyUpdateRequest.questionUpdateRequests().size()
+                        surveyUpdateRequest.questionUpdateRequests()
+                            .size()
                     )
                     .mapToObj(i ->
                         QuestionUpdateCommand.from(
-                            surveyUpdateRequest.questionUpdateRequests().get(i),
+                            surveyUpdateRequest.questionUpdateRequests()
+                                .get(i),
                             i
                         ))
                     .toList()
@@ -81,7 +90,9 @@ public class SurveyCommand {
                 questionCreateRequest.isRequired(),
                 QuestionType.valueOf(questionCreateRequest.questionType()),
                 displayOrder,
-                IntStream.range(
+                CollectionUtils.isEmpty(questionCreateRequest.questionOptionCreateRequests())
+                    ? null
+                    : IntStream.range(
                         0,
                         questionCreateRequest.questionOptionCreateRequests()
                             .size()
@@ -106,7 +117,10 @@ public class SurveyCommand {
         List<QuestionOptionUpdateCommand> questionOptionUpdateCommands
     ) {
 
-        public static QuestionUpdateCommand from(QuestionUpdateRequest questionUpdateRequest, Integer displayOrder) {
+        public static QuestionUpdateCommand from(
+            QuestionUpdateRequest questionUpdateRequest,
+            Integer displayOrder
+        ) {
             return new QuestionUpdateCommand(
                 questionUpdateRequest.questionId(),
                 questionUpdateRequest.questionTitle(),
@@ -114,7 +128,9 @@ public class SurveyCommand {
                 questionUpdateRequest.isRequired(),
                 QuestionType.valueOf(questionUpdateRequest.questionType()),
                 displayOrder,
-                IntStream.range(
+                CollectionUtils.isEmpty(questionUpdateRequest.questionOptionUpdateRequests())
+                    ? null
+                    : IntStream.range(
                         0,
                         questionUpdateRequest.questionOptionUpdateRequests()
                             .size()

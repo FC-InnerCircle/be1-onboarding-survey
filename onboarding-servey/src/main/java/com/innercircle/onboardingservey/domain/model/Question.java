@@ -16,7 +16,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -24,12 +23,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 @Entity
 @Table(name = "questions")
 @Getter
+@NoArgsConstructor
 public class Question {
 
     @Id

@@ -2,22 +2,17 @@ package com.innercircle.onboardingservey.domain;
 
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
-import com.innercircle.onboardingservey.domain.model.Question;
-import com.innercircle.onboardingservey.domain.model.QuestionFactory;
-import com.innercircle.onboardingservey.domain.model.Survey;
-import com.innercircle.onboardingservey.domain.model.SurveyCommand;
+import com.innercircle.onboardingservey.domain.model.*;
 import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +52,14 @@ public class SurveyService {
     public SurveyDetailResult update(SurveyCommand.SurveyUpdateCommand command) {
 
         final Survey survey = surveyReader.getBySurveyId(command.surveyId());
+        survey.update(
+            command.surveyTitle(),
+            command.surveyDescription()
+        );
+
+        if (CollectionUtils.isEmpty(command.questionUpdateCommands())) {
+            return SurveyResult.SurveyDetailResult.from(survey, Collections.emptyList());
+        }
 
         final Map<Long, Question> beforeQuestionMap = questionReader.findBySurvey(survey)
             .stream()
@@ -64,6 +67,8 @@ public class SurveyService {
                 Question::getQuestionId,
                 Function.identity()
             ));
+
+
         final Map<Long, Question> updateQuestionMap = command.questionUpdateCommands()
             .stream()
             .map(updateCommand -> QuestionFactory.update(
