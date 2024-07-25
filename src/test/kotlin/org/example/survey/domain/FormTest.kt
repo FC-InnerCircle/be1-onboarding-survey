@@ -10,8 +10,6 @@ class FormTest {
             Form(
                 name = "Test Form",
                 description = "This is a test form",
-                questions = listOf(),
-                responses = listOf(),
             )
 
         assertThat(form.formId).isZero

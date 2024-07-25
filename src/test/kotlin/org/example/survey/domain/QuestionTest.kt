@@ -1,6 +1,7 @@
 package org.example.survey.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.example.survey.domain.enums.InputType
 import org.junit.jupiter.api.Test
 
 class QuestionTest {
@@ -15,7 +16,7 @@ class QuestionTest {
                     ),
                 name = "Test Question",
                 description = "This is a test question",
-                inputTypes = "단일 선택",
+                inputType = InputType.SINGLE_CHOICE,
                 required = true,
             )
 
@@ -23,7 +24,7 @@ class QuestionTest {
         assertThat(question.form.name).isEqualTo("Test Form")
         assertThat(question.name).isEqualTo("Test Question")
         assertThat(question.description).isEqualTo("This is a test question")
-        assertThat(question.inputTypes).isEqualTo("단일 선택")
+        assertThat(question.inputType).isEqualTo(InputType.SINGLE_CHOICE)
         assertThat(question.required).isTrue
     }
 }

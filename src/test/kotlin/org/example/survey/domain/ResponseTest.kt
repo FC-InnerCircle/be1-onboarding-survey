@@ -1,6 +1,7 @@
 package org.example.survey.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.example.survey.domain.enums.InputType
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
@@ -27,7 +28,7 @@ class ResponseTest {
                     ),
                 name = "Test Question",
                 description = "This is a test question",
-                inputTypes = "단일 선택",
+                inputType = InputType.SINGLE_CHOICE,
                 required = true,
             )
 

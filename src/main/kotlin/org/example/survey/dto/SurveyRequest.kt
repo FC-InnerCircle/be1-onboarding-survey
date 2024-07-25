@@ -3,6 +3,7 @@ package org.example.survey.dto
 import org.example.survey.domain.Form
 import org.example.survey.domain.Option
 import org.example.survey.domain.Question
+import org.example.survey.domain.enums.InputType
 
 data class SurveyRequest(
     val name: String,
@@ -22,7 +23,7 @@ data class SurveyRequest(
                     form = form,
                     name = questionRequest.name,
                     description = questionRequest.description,
-                    inputTypes = questionRequest.inputTypes,
+                    inputType = InputType.valueOf(questionRequest.inputType),
                     required = questionRequest.required,
                 )
 
