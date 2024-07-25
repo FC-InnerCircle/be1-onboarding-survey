@@ -5,6 +5,7 @@ import com.innercircle.surveycommon.dto.response.CreateFormResponse
 import com.innercircle.surveycommon.dto.response.FormDto
 import com.innercircle.surveycommon.dto.response.QuestionDto
 import com.innercircle.surveycommon.dto.response.QuestionOptionDto
+import com.innercircle.surveycommon.exception.InvalidInputException
 import com.innercircle.surveydomain.model.Form
 import com.innercircle.surveydomain.model.Question
 import com.innercircle.surveydomain.model.QuestionOption
@@ -26,13 +27,13 @@ class SurveyServiceImpl : SurveyService {
          * 4. 저장된 데이터를 조회하여 FormDto로 변환하여 반환
          */
         if (request.title.isBlank()) {
-            throw IllegalArgumentException("Title must not be blank")
+            throw InvalidInputException("제목은 비워둘 수 없습니다")
         }
         if (request.description.isBlank()) {
-            throw IllegalArgumentException("Description must not be blank")
+            throw InvalidInputException("설명은 비워둘 수 없습니다")
         }
         if (request.questions.isEmpty()) {
-            throw IllegalArgumentException("Questions must not be empty")
+            throw InvalidInputException("질문은 비워둘 수 없습니다")
         }
 
         val latestForm = formRepository.findTopByTitleOrderByVersionDesc(request.title)
@@ -49,6 +50,10 @@ class SurveyServiceImpl : SurveyService {
             )
 
         request.questions.forEachIndexed { index, q ->
+            if (q == null) {
+                throw InvalidInputException("질문 항목은 null일 수 없습니다")
+            }
+
             val question =
                 Question(
                     form = form,
@@ -58,24 +63,24 @@ class SurveyServiceImpl : SurveyService {
                     questionOrder = q.questionOrder,
                     isRequired = q.isRequired,
                     additionalConfig = q.additionalConfig.toString(),
-                    questionOptions = emptyList(), // Initialize with an empty list
+                    questionOptions = emptyList(),
                 )
 
             val questionOptions =
                 q.questionOptions?.map { option ->
                     QuestionOption(
-                        question = question, // Set the question reference
+                        question = question,
                         optionText = option.optionText,
                         optionOrder = option.optionOrder,
                     )
                 } ?: emptyList()
 
-            question.questionOptions = questionOptions // Set the question options
+            question.questionOptions = questionOptions
 
             form.addQuestion(question)
         }
 
-        val savedForm = formRepository.save(form)
+        val savedForm = formRepository.save(form) ?: throw InvalidInputException("폼 저장에 실패했습니다")
 
         val formDto =
             FormDto(
