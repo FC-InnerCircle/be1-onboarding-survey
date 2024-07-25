@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/surveys")
 class SurveyController(
-    val formRegisterService: FormRegisterService,
+    private val formRegisterService: FormRegisterService,
 ) {
     @PostMapping
-    fun createSurvey(
+    fun registerSurvey(
         @RequestBody survey: SurveyRequest,
     ): ResponseEntity<Long> {
         val formId = formRegisterService.register(survey.toFormEntity())

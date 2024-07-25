@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 @Service
 class FormRegisterService(
-    val formRepository: FormRepository,
+    private val formRepository: FormRepository,
 ) {
     @Transactional
     fun register(form: Form): Long = formRepository.save(form).formId
