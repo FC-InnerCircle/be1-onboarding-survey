@@ -34,6 +34,7 @@ public class SurveyAdminController implements SurveyAdminControllerDoc {
     }
 
     public CommonResponse surveyResponseResult(SurveyDto.ResponseResultRequest request) {
+
         return null;
     }
 }

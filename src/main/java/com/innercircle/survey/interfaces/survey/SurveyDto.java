@@ -31,22 +31,22 @@ public class SurveyDto {
 
             private String question;
 
-            public SurveyShortAnswer toEntity() {
-                return SurveyShortAnswer.builder()
-                        .question(question)
-                        .build();
-            }
+//            public SurveyShortAnswer toEntity() {
+//                return SurveyShortAnswer.builder()
+//                        .question(question)
+//                        .build();
+//            }
         }
 
         @Data
         public static class LongAnswerTypeQuestion extends QuestionBase {
             private String question;
 
-            public SurveyLongAnswer toEntity() {
-                return SurveyLongAnswer.builder()
-                        .question(question)
-                        .build();
-            }
+//            public SurveyLongAnswer toEntity() {
+//                return SurveyLongAnswer.builder()
+//                        .question(question)
+//                        .build();
+//            }
         }
 
         @Data
@@ -54,11 +54,11 @@ public class SurveyDto {
             private String question;
             private List<QuestionOption> questionOptions;
 
-            public SurveySingleSelect toEntity() {
-                return SurveySingleSelect.builder()
-                        .question(question)
-                        .build();
-            }
+//            public SurveySingleSelect toEntity() {
+//                return SurveySingleSelect.builder()
+//                        .question(question)
+//                        .build();
+//            }
         }
 
         @Data
@@ -66,11 +66,11 @@ public class SurveyDto {
             private String question;
             private List<QuestionOption> questionOptions;
 
-            public SurveyMultipleSelect toEntity() {
-                return SurveyMultipleSelect.builder()
-                        .question(question)
-                        .build();
-            }
+//            public SurveyMultipleSelect toEntity() {
+//                return SurveyMultipleSelect.builder()
+//                        .question(question)
+//                        .build();
+//            }
         }
 
         @Data
@@ -99,26 +99,26 @@ public class SurveyDto {
 
         public Survey toEntity() {
             Survey survey = new Survey();
-            if (shortAnswerTypeQuestions != null) {
-                shortAnswerTypeQuestions.stream()
-                        .map(ShortAnswerTypeQuestion::toEntity)
-                        .forEach(survey::addShortAnswer);
-            }
-            if (longAnswerTypeQuestions != null) {
-                longAnswerTypeQuestions.stream()
-                        .map(LongAnswerTypeQuestion::toEntity)
-                        .forEach(survey::addLongAnswer);
-            }
-            if (singleSelectListQuestions != null) {
-                singleSelectListQuestions.stream()
-                        .map(SingleSelectListQuestion::toEntity)
-                        .forEach(survey::addSingleSelect);
-            }
-            if (multipleSelectListQuestions != null) {
-                multipleSelectListQuestions.stream()
-                        .map(MultipleSelectListQuestion::toEntity)
-                        .forEach(survey::addMultipleSelect);
-            }
+//            if (shortAnswerTypeQuestions != null) {
+//                shortAnswerTypeQuestions.stream()
+//                        .map(ShortAnswerTypeQuestion::toEntity)
+//                        .forEach(survey::addShortAnswer);
+//            }
+//            if (longAnswerTypeQuestions != null) {
+//                longAnswerTypeQuestions.stream()
+//                        .map(LongAnswerTypeQuestion::toEntity)
+//                        .forEach(survey::addLongAnswer);
+//            }
+//            if (singleSelectListQuestions != null) {
+//                singleSelectListQuestions.stream()
+//                        .map(SingleSelectListQuestion::toEntity)
+//                        .forEach(survey::addSingleSelect);
+//            }
+//            if (multipleSelectListQuestions != null) {
+//                multipleSelectListQuestions.stream()
+//                        .map(MultipleSelectListQuestion::toEntity)
+//                        .forEach(survey::addMultipleSelect);
+//            }
             return survey;
         }
     }

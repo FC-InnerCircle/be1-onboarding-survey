@@ -8,29 +8,18 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "survey_single_select")
-public class SurveySingleSelect extends AbstractEntity {
+public class SurveySingleSelect extends SurveyQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long version;
-    private Long sequence;
-    private String question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "survey_id")
-    private Survey survey;
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
-
-    @Builder
-    public SurveySingleSelect(Long sequence, String question) {
-        this.sequence = sequence;
-        this.question = question;
-    }
+    @OneToMany(mappedBy = "question")
+    private List<SingleSelectOption> options = new ArrayList<>();
 }

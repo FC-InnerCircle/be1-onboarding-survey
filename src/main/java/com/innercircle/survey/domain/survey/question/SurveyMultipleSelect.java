@@ -8,29 +8,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "survey_multi_select")
-public class SurveyMultipleSelect extends AbstractEntity {
+public class SurveyMultipleSelect extends SurveyQuestion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long version;
-    private String question;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "survey_id")
-    private Survey survey;
-
-    @Builder
-    private SurveyMultipleSelect(String question, Survey survey) {
-        this.question = question;
-        this.survey = survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
+    @OneToMany(mappedBy = "question")
+    private List<SurveyMultipleSelect> multipleSelects = new ArrayList<>();
 }

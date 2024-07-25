@@ -15,6 +15,7 @@ public class SurveyAdminFacade {
 
     public String registerSurvey(Survey survey) {
         var surveyToken = surveyAdminService.registerSurvey(survey);
+        // 알림메시지
         return surveyToken;
     }
 
