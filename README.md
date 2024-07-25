@@ -1,5 +1,8 @@
 # 이너써클 BE 온보딩 프로젝트
 
+# jar 위치
+- [/package](./package)
+
 ## Introduction
 
 - “설문조사 서비스"를 구현하려고 합니다.

@@ -34,7 +34,6 @@ public class AdvisoryLockManager {
         long waitTime = advisoryLock.waitTime();
 
         Lock lock = advisoryLockBuffer.getLock(key);
-        System.out.println("----------------------------------------key: " + resultKey);
         if(!lock.tryLock(waitTime, advisoryLock.timeUnit())) {
             throw new AdvisoryLockException("Failed to acquire lock - over wait time: " + resultKey);
         }
