@@ -29,6 +29,7 @@ public class QuestionTest {
             title,
             description,
             required,
+            1,
             survey
         );
 
@@ -52,6 +53,7 @@ public class QuestionTest {
             title,
             description,
             required,
+            1,
             survey
         );
 
@@ -86,6 +88,7 @@ public class QuestionTest {
         final Question question = Question.singleChoice(
             title,
             required,
+            1,
             survey,
             questionOptions
         );
@@ -121,6 +124,7 @@ public class QuestionTest {
         final Question question = Question.multiChoice(
             title,
             required,
+            1,
             survey,
             questionOptions
         );

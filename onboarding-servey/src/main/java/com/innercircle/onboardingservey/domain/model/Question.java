@@ -1,8 +1,6 @@
 package com.innercircle.onboardingservey.domain.model;
 
-import static com.innercircle.onboardingservey.common.ValidationUtils.assertHasCollection;
-import static com.innercircle.onboardingservey.common.ValidationUtils.assertHasText;
-import static com.innercircle.onboardingservey.common.ValidationUtils.assertNotNull;
+
 
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
@@ -26,6 +24,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.Getter;
+import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 
 @Entity
@@ -41,6 +40,7 @@ public class Question {
     private String description;
     private QuestionType questionType;
     private Boolean required;
+    private Integer displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Survey survey;
@@ -53,6 +53,7 @@ public class Question {
         final String description,
         final QuestionType questionType,
         final Boolean required,
+        final Integer displayOrder,
         final Survey survey,
         final List<QuestionOption> questionOptions
     ) {
@@ -60,37 +61,39 @@ public class Question {
         this.description = description;
         this.questionType = questionType;
         this.required = required;
+        this.displayOrder = displayOrder;
         this.survey = survey;
         this.questionOptions = questionOptions;
         valid();
     }
 
     private void valid() {
-        assertHasText(
+
+        Assert.hasText(
             this.title,
             "title must not be null"
         );
-        assertNotNull(
+        Assert.notNull(
             this.questionType,
             "questionType must not be null"
         );
-        assertNotNull(
+        Assert.notNull(
             this.required,
             "required must not be null"
         );
-        assertNotNull(
+        Assert.notNull(
             this.survey,
             "survey must not be null"
         );
 
         if (this.questionType.isChoice()) {
-            assertHasCollection(
+            Assert.notEmpty(
                 questionOptions,
                 "questionOptionsDetailResponse must not be empty or null"
             );
         }
         if (this.questionType.isText()) {
-            assertHasText(
+            Assert.hasText(
                 this.description,
                 "describe must not be null"
             );
@@ -102,12 +105,14 @@ public class Question {
         final String title,
         final String description,
         final Boolean required,
+        final Integer displayOrder,
         final Survey survey
     ) {
         return new Question(title,
             description,
             QuestionType.SHORT_TEXT,
             required,
+            displayOrder,
             survey,
             new ArrayList<>()
         );
@@ -117,12 +122,14 @@ public class Question {
         final String title,
         final String description,
         final Boolean required,
+        final Integer displayOrder,
         final Survey survey
     ) {
         return new Question(title,
             description,
             QuestionType.LONG_TEXT,
             required,
+            displayOrder,
             survey,
             new ArrayList<>()
         );
@@ -131,6 +138,7 @@ public class Question {
     public static Question singleChoice(
         final String title,
         final Boolean required,
+        final Integer displayOrder,
         final Survey survey,
         final List<QuestionOption> questionOptionList
     ) {
@@ -138,6 +146,7 @@ public class Question {
             null,
             QuestionType.SINGLE_CHOICE,
             required,
+            displayOrder,
             survey,
             questionOptionList
         );
@@ -145,14 +154,18 @@ public class Question {
 
     public static Question multiChoice(
         final String title,
+
         final Boolean required,
+        final Integer displayOrder,
         final Survey survey,
         final List<QuestionOption> questionOptionList
     ) {
-        return new Question(title,
+        return new Question(
+            title,
             null,
             QuestionType.MULTIPLE_CHOICE,
             required,
+            displayOrder,
             survey,
             questionOptionList
         );
@@ -164,6 +177,7 @@ public class Question {
         this.questionType = question.getQuestionType();
         this.required = question.getRequired();
         this.survey = question.getSurvey();
+        this.displayOrder = question.getDisplayOrder();
         this.questionOptions = update(question.getQuestionOptions());
         valid();
         return this;

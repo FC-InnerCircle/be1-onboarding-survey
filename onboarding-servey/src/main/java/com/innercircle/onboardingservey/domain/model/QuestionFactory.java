@@ -14,17 +14,20 @@ public class QuestionFactory {
                 command.questionTitle(),
                 command.questionDescription(),
                 command.required(),
+                command.displayOrder(),
                 survey
             );
             case SHORT_TEXT -> Question.shortText(
                 command.questionTitle(),
                 command.questionDescription(),
                 command.required(),
+                command.displayOrder(),
                 survey
             );
             case SINGLE_CHOICE -> Question.singleChoice(
                 command.questionTitle(),
                 command.required(),
+                command.displayOrder(),
                 survey,
                 command.questionOptionCreateCommands()
                     .stream()
@@ -37,6 +40,7 @@ public class QuestionFactory {
             case MULTIPLE_CHOICE -> Question.multiChoice(
                 command.questionTitle(),
                 command.required(),
+                command.displayOrder(),
                 survey,
                 command.questionOptionCreateCommands()
                     .stream()
@@ -58,17 +62,20 @@ public class QuestionFactory {
                 command.questionTitle(),
                 command.questionDescription(),
                 command.required(),
+                command.displayOrder(),
                 survey
             );
             case SHORT_TEXT -> Question.shortText(
                 command.questionTitle(),
                 command.questionDescription(),
                 command.required(),
+                command.displayOrder(),
                 survey
             );
             case SINGLE_CHOICE -> Question.singleChoice(
                 command.questionTitle(),
                 command.required(),
+                command.displayOrder(),
                 survey,
                 command.questionOptionUpdateCommands()
                     .stream()
@@ -81,6 +88,7 @@ public class QuestionFactory {
             case MULTIPLE_CHOICE -> Question.multiChoice(
                 command.questionTitle(),
                 command.required(),
+                command.displayOrder(),
                 survey,
                 command.questionOptionUpdateCommands()
                     .stream()

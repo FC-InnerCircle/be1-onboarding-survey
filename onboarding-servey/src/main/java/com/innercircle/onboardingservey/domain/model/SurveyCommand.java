@@ -22,9 +22,15 @@ public class SurveyCommand {
             return new SurveyCreateCommand(
                 surveyCreateRequest.surveyTitle(),
                 surveyCreateRequest.surveyDescription(),
-                surveyCreateRequest.questionCreateRequests()
-                    .stream()
-                    .map(QuestionCreateCommand::from)
+                IntStream.range(
+                        0,
+                        surveyCreateRequest.questionCreateRequests().size()
+                    )
+                    .mapToObj(i ->
+                        QuestionCreateCommand.from(
+                            surveyCreateRequest.questionCreateRequests().get(i),
+                            i
+                        ))
                     .toList()
             );
         }
@@ -42,9 +48,15 @@ public class SurveyCommand {
                 surveyUpdateRequest.surveyId(),
                 surveyUpdateRequest.surveyTitle(),
                 surveyUpdateRequest.surveyDescription(),
-                surveyUpdateRequest.questionUpdateRequests()
-                    .stream()
-                    .map(QuestionUpdateCommand::from)
+                IntStream.range(
+                        0,
+                        surveyUpdateRequest.questionUpdateRequests().size()
+                    )
+                    .mapToObj(i ->
+                        QuestionUpdateCommand.from(
+                            surveyUpdateRequest.questionUpdateRequests().get(i),
+                            i
+                        ))
                     .toList()
             );
         }
@@ -55,15 +67,20 @@ public class SurveyCommand {
         String questionDescription,
         Boolean required,
         QuestionType questionType,
+        Integer displayOrder,
         List<QuestionOptionCreateCommand> questionOptionCreateCommands
     ) {
 
-        public static QuestionCreateCommand from(QuestionCreateRequest questionCreateRequest) {
+        public static QuestionCreateCommand from(
+            QuestionCreateRequest questionCreateRequest,
+            Integer displayOrder
+        ) {
             return new QuestionCreateCommand(
                 questionCreateRequest.questionTitle(),
                 questionCreateRequest.questionDescription(),
                 questionCreateRequest.isRequired(),
                 QuestionType.valueOf(questionCreateRequest.questionType()),
+                displayOrder,
                 IntStream.range(
                         0,
                         questionCreateRequest.questionOptionCreateRequests()
@@ -85,16 +102,18 @@ public class SurveyCommand {
         String questionDescription,
         Boolean required,
         QuestionType questionType,
+        Integer displayOrder,
         List<QuestionOptionUpdateCommand> questionOptionUpdateCommands
     ) {
 
-        public static QuestionUpdateCommand from(QuestionUpdateRequest questionUpdateRequest) {
+        public static QuestionUpdateCommand from(QuestionUpdateRequest questionUpdateRequest, Integer displayOrder) {
             return new QuestionUpdateCommand(
                 questionUpdateRequest.questionId(),
                 questionUpdateRequest.questionTitle(),
                 questionUpdateRequest.questionDescription(),
                 questionUpdateRequest.isRequired(),
                 QuestionType.valueOf(questionUpdateRequest.questionType()),
+                displayOrder,
                 IntStream.range(
                         0,
                         questionUpdateRequest.questionOptionUpdateRequests()

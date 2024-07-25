@@ -34,6 +34,7 @@ public class SurveyResult {
         String description,
         Boolean required,
         QuestionType questionType,
+        Integer displayOrder,
         List<QuestionOptionDetailResult> questionOptionDetails
     ) {
 
@@ -44,6 +45,7 @@ public class SurveyResult {
                 question.getDescription(),
                 question.getRequired(),
                 question.getQuestionType(),
+                question.getDisplayOrder(),
                 question.getQuestionOptions()
                     .stream()
                     .sorted(Comparator.comparingInt(QuestionOption::getDisplayOrder))
