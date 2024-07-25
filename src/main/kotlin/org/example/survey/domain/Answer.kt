@@ -12,9 +12,6 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "answer")
 class Answer(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val answerId: Long = 0,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "response_id")
     val response: Response,
@@ -22,4 +19,6 @@ class Answer(
     @JoinColumn(name = "question_id")
     val question: Question,
     val content: String? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val answerId: Long = 0,
 )

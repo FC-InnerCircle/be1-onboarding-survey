@@ -25,7 +25,7 @@ class Question(
     val inputTypes: String? = null,
     val required: Boolean? = null,
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val options: List<Option> = mutableListOf(),
+    val options: MutableList<Option> = mutableListOf(),
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val answers: List<Answer> = mutableListOf(),
+    val answers: MutableList<Answer> = mutableListOf(),
 )
