@@ -1,7 +1,8 @@
 package lshh.be1onboardingsurvey.survey.domain.dto;
 
-import lshh.be1onboardingsurvey.survey.domain.*;
+import lshh.be1onboardingsurvey.survey.domain.entity.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,12 +34,13 @@ public record SurveyResponseDetailView (
                             yield null;
                         }
                         case CHECKBOX -> {
-                            if(responseItem.getRealValue() != null && responseItem.getRealValue() instanceof List<?> values){
-                                List<SurveyItemOption> options = values.stream()
-                                        .map(value -> item.findOption((Long)value))
+                            if(responseItem.getRealValue() != null && responseItem.getRealValue() instanceof Long[] values){
+                                List<SurveyItemOption> options = Arrays.stream(values)
+                                        .map(item::findOption)
                                         .filter(Optional::isPresent)
                                         .map(Optional::get)
                                         .toList();
+
                                 yield options.stream()
                                         .map(SurveyItemOption::getName)
                                         .toList();

@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.domain;
+package lshh.be1onboardingsurvey.survey.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -102,23 +102,29 @@ public class Survey {
         surveyItem.updateItemOption(command, clock);
     }
 
-    public void addResponse(AddSurveyResponseCommand command) {
-        SurveyResponse surveyResponse = command.toEntity();
-        surveyResponse.setSurvey(this);
-        responses.add(surveyResponse);
+    public void addResponse(SurveyResponse response) {
+        if(!isReadyToSubmitResponse(response)){
+            throw new IllegalArgumentException("Survey response is not ready to submit");
+        }
+        response.setSurvey(this);
+        responses.add(response);
+    }
+
+    public boolean isReadyToSubmitResponse(SurveyResponse response){
+        if(this.items == null || this.items.isEmpty()){
+            return true;
+        }
+        for(SurveyItem item : this.items){
+            if(item.getRequired() != null && item.getRequired() && !response.existsResponseItem(item.getId())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public Optional<SurveyResponse> findResponse(Long id){
         return this.responses.stream()
                 .filter(response -> response.getId().equals(id))
                 .findFirst();
-    }
-
-    public void addResponseItem(AddSurveyResponseItemCommand command) {
-        SurveyResponse surveyResponse = findResponse(command.responseId())
-                .orElseThrow(() -> new IllegalArgumentException("Survey response not found"));
-        SurveyItem surveyItem = findItem(command.itemId())
-                .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
-        surveyResponse.addItem(command, surveyItem.getFormType());
     }
 }

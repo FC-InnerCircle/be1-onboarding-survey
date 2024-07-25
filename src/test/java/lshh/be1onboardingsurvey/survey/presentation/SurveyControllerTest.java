@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.controller;
+package lshh.be1onboardingsurvey.survey.presentation;
 
 import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.SurveyService;
@@ -148,7 +148,7 @@ public class SurveyControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.status", equalTo("FAIL")))
                     .andExpect(jsonPath("$.data", equalTo("""
-                         JSON parse error: Cannot deserialize value of type `lshh.be1onboardingsurvey.survey.domain.SurveyItemFormType` from String "INVALID": not one of the values accepted for Enum class: [TEXTAREA, CHECKBOX, TEXT, RADIO]""")));
+                            JSON parse error: Cannot deserialize value of type `lshh.be1onboardingsurvey.survey.domain.entity.SurveyItemFormType` from String "INVALID": not one of the values accepted for Enum class: [TEXTAREA, CHECKBOX, TEXT, RADIO]""")));
         }
     }
 
@@ -336,7 +336,7 @@ public class SurveyControllerTest {
         @DisplayName("Survey 응답 추가 성공")
         public void addResponse_success() throws Exception {
             Result result = new Result<>(Result.Status.SUCCESS, null);
-            Mockito.when(surveyService.addResponse(any(AddSurveyResponseCommand.class))).thenReturn(result);
+            Mockito.when(surveyService.beginResponse(any(BeginSurveyResponseCommand.class))).thenReturn(result);
 
             // when
             mockMvc.perform(
@@ -364,7 +364,7 @@ public class SurveyControllerTest {
                     )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.status", equalTo("FAIL")))
-                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseCommand`, problem: SurveyId must not be null")));
+                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.BeginSurveyResponseCommand`, problem: SurveyId must not be null")));
         }
     }
 
@@ -372,17 +372,16 @@ public class SurveyControllerTest {
     @DisplayName("Survey 응답 항목 추가")
     class AddResponseItemTest {
         @Test
-        @DisplayName("Survey 응답 항목 추가 성공")
-        public void addResponseItem_success() throws Exception {
+        @DisplayName("Survey 응답 항목 추가 성공 TEXT")
+        public void addResponseItem_success_TEXT() throws Exception {
             Result result = new Result<>(Result.Status.SUCCESS, null);
             Mockito.when(surveyService.addResponseItem(any(AddSurveyResponseItemCommand.class))).thenReturn(result);
 
             // when
             mockMvc.perform(
-                            MockMvcRequestBuilders.post("/survey/1/response/1/item")
+                            MockMvcRequestBuilders.post("/survey/1/response/1/text")
                                     .contentType("application/json")
                                     .content("""
-
                                             {"surveyId": 1,"responseId": 1,"itemId": 1,"value": "Test Value"}
                             """
                         )
@@ -392,10 +391,48 @@ public class SurveyControllerTest {
         }
 
         @Test
+        @DisplayName("Survey 응답 항목 추가 성공 RADIO")
+        public void addResponseItem_success_RADIO() throws Exception {
+            Result result = new Result<>(Result.Status.SUCCESS, null);
+            Mockito.when(surveyService.addResponseItem(any(AddSurveyResponseItemCommand.class))).thenReturn(result);
+
+            // when
+            mockMvc.perform(
+                            MockMvcRequestBuilders.post("/survey/1/response/1/radio")
+                                    .contentType("application/json")
+                                    .content("""
+                                            {"surveyId": 1,"responseId": 1,"itemId": 1,"value": 1}
+                            """
+                                    )
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.status", equalTo("SUCCESS")));
+        }
+
+        @Test
+        @DisplayName("Survey 응답 항목 추가 성공 CHECKBOX")
+        public void addResponseItem_success_CHECKBOX() throws Exception {
+            Result result = new Result<>(Result.Status.SUCCESS, null);
+            Mockito.when(surveyService.addResponseItem(any(AddSurveyResponseItemCommand.class))).thenReturn(result);
+
+            // when
+            mockMvc.perform(
+                            MockMvcRequestBuilders.post("/survey/1/response/1/checkbox")
+                                    .contentType("application/json")
+                                    .content("""
+                                            {"surveyId": 1,"responseId": 1,"itemId": 1,"value": [1, 2]}
+                            """
+                                    )
+                    )
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.status", equalTo("SUCCESS")));
+        }
+
+        @Test
         @DisplayName("Survey 응답 항목 추가 실패 - SurveyId 없음")
         public void addResponseItem_fail() throws Exception {
             mockMvc.perform(
-                            MockMvcRequestBuilders.post("/survey/1/response/1/item")
+                            MockMvcRequestBuilders.post("/survey/1/response/1/text")
                                     .contentType("application/json")
                                     .content("""
                                         {"responseId": 1,"itemId": 1,"value": "Test Value"}
@@ -404,14 +441,14 @@ public class SurveyControllerTest {
                     )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.status", equalTo("FAIL")))
-                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
+                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseTextItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
         }
 
         @Test
         @DisplayName("Survey 응답 항목 추가 실패 - itemId 없음")
         public void addResponseItem_fail_no_itemId() throws Exception {
             mockMvc.perform(
-                            MockMvcRequestBuilders.post("/survey/1/response/1/item")
+                            MockMvcRequestBuilders.post("/survey/1/response/1/text")
                                     .contentType("application/json")
                                     .content("""
                                         {"surveyId": 1,"responseId": 1,"value": "Test Value"}
@@ -420,14 +457,14 @@ public class SurveyControllerTest {
                     )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.status", equalTo("FAIL")))
-                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
+                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseTextItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
         }
 
         @Test
         @DisplayName("Survey 응답 항목 추가 실패 - ResponseId 없음")
         public void addResponseItem_fail_no_responseId() throws Exception {
             mockMvc.perform(
-                            MockMvcRequestBuilders.post("/survey/1/response/1/item")
+                            MockMvcRequestBuilders.post("/survey/1/response/1/text")
                                     .contentType("application/json")
                                     .content("""
 
@@ -437,7 +474,7 @@ public class SurveyControllerTest {
                     )
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.status", equalTo("FAIL")))
-                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
+                    .andExpect(jsonPath("$.data", equalTo("JSON parse error: Cannot construct instance of `lshh.be1onboardingsurvey.survey.domain.command.AddSurveyResponseTextItemCommand`, problem: SurveyId, responseId, itemId must not be null")));
         }
     }
 }

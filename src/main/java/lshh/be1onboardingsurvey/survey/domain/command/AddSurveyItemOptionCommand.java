@@ -1,6 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain.command;
 
-import lshh.be1onboardingsurvey.survey.domain.SurveyItemOption;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyItemOption;
 
 public record AddSurveyItemOptionCommand(
         Long surveyId,

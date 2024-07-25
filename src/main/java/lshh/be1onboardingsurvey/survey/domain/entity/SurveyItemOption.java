@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.domain;
+package lshh.be1onboardingsurvey.survey.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.domain;
+package lshh.be1onboardingsurvey.survey.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,9 +12,9 @@ import lshh.be1onboardingsurvey.survey.domain.vo.SurveyResponseItemValue;
 @Entity
 public class SurveyResponseItem {
     @Id
+    @Setter
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     Long surveyItemId;
 
     @Convert(converter = SurveyResponseItemValueConverter.class)
@@ -29,4 +29,7 @@ public class SurveyResponseItem {
         return value.value();
     }
 
+    public void update(SurveyResponseItem item) {
+        this.value = item.value;
+    }
 }

@@ -1,8 +1,9 @@
 package lshh.be1onboardingsurvey.survey.infrastructure;
 
 import lombok.RequiredArgsConstructor;
-import lshh.be1onboardingsurvey.survey.domain.Survey;
-import lshh.be1onboardingsurvey.survey.domain.SurveyResponse;
+import lshh.be1onboardingsurvey.survey.domain.entity.Survey;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyResponse;
+import lshh.be1onboardingsurvey.survey.domain.component.SurveyReader;
 import lshh.be1onboardingsurvey.survey.domain.component.SurveyRepository;
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 import lshh.be1onboardingsurvey.survey.domain.dto.SurveyResponseItemView;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
-public class SurveyRepositoryImplement implements SurveyRepository {
+public class SurveyRepositoryImplement implements SurveyRepository, SurveyReader {
 
     private final SurveyJpaRepository jpaRepository;
     private final SurveyResponseJpaRepository responseJpaRepository;

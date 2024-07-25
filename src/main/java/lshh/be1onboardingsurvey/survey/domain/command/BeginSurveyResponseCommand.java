@@ -1,11 +1,11 @@
 package lshh.be1onboardingsurvey.survey.domain.command;
 
-import lshh.be1onboardingsurvey.survey.domain.SurveyResponse;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyResponse;
 
-public record AddSurveyResponseCommand (
+public record BeginSurveyResponseCommand(
         Long surveyId
 ){
-    public AddSurveyResponseCommand {
+    public BeginSurveyResponseCommand {
         if(surveyId == null){
             throw new IllegalArgumentException("SurveyId must not be null");
         }

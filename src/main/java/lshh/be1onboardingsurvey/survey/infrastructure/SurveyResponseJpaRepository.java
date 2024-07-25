@@ -1,6 +1,6 @@
 package lshh.be1onboardingsurvey.survey.infrastructure;
 
-import lshh.be1onboardingsurvey.survey.domain.SurveyResponse;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

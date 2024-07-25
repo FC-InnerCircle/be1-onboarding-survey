@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.controller;
+package lshh.be1onboardingsurvey.survey.presentation;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -54,17 +54,46 @@ public class SurveyController {
         return Response.of(result);
     }
 
-    @Operation(summary = "응답 추가")
+    @Operation(summary = "설문지 응답 시작")
     @PostMapping("/{surveyId}/response")
-    public Response<?> addResponse(@RequestBody AddSurveyResponseCommand command) {
-        Result<?> result = service.addResponse(command);
+    public Response<?> addResponse(@RequestBody BeginSurveyResponseCommand command) {
+        Result<?> result = service.beginResponse(command);
         return Response.of(result);
     }
 
-    @Operation(summary = "응답 항목 추가")
-    @PostMapping("/{surveyId}/response/{responseId}/item")
-    public Response<?> addResponseItem(@RequestBody AddSurveyResponseItemCommand command) {
-        Result<?> result = service.addResponseItem(command);
+    @Operation(summary = "설문지 응답 항목 추가 - text")
+    @PostMapping("/{surveyId}/response/{responseId}/text")
+    public Response<?> addResponseItemText(@RequestBody AddSurveyResponseTextItemCommand command) {
+        AddSurveyResponseItemCommand _command = AddSurveyResponseItemCommand.of(command);
+        Result<?> result = service.addResponseItem(_command);
+        return Response.of(result);
+    }
+    @Operation(summary = "설문지 응답 항목 추가 - textarea")
+    @PostMapping("/{surveyId}/response/{responseId}/textarea")
+    public Response<?> addResponseItemTextarea(@RequestBody AddSurveyResponseTextAreaItemCommand command) {
+        AddSurveyResponseItemCommand _command = AddSurveyResponseItemCommand.of(command);
+        Result<?> result = service.addResponseItem(_command);
+        return Response.of(result);
+    }
+    @Operation(summary = "응답 항목 추가 - radio")
+    @PostMapping("/{surveyId}/response/{responseId}/radio")
+    public Response<?> addResponseItemRadio(@RequestBody AddSurveyResponseRadioItemCommand command) {
+        AddSurveyResponseItemCommand _command = AddSurveyResponseItemCommand.of(command);
+        Result<?> result = service.addResponseItem(_command);
+        return Response.of(result);
+    }
+    @Operation(summary = "응답 항목 추가 - checkbox")
+    @PostMapping("/{surveyId}/response/{responseId}/checkbox")
+    public Response<?> addResponseItemCheckbox(@RequestBody AddSurveyResponseCheckboxItemCommand command) {
+        AddSurveyResponseItemCommand _command = AddSurveyResponseItemCommand.of(command);
+        Result<?> result = service.addResponseItem(_command);
+        return Response.of(result);
+    }
+
+    @Operation(summary = "응답 제출")
+    @PostMapping("/{surveyId}/response/{responseId}/submit")
+    public Response<?> submitResponse(SubmitResponseCommand command) {
+        Result<?> result = service.submitResponse(command);
         return Response.of(result);
     }
 

@@ -1,4 +1,4 @@
-package lshh.be1onboardingsurvey.survey.controller;
+package lshh.be1onboardingsurvey.survey.presentation;
 
 import lshh.be1onboardingsurvey.survey.domain.dto.Result;
 

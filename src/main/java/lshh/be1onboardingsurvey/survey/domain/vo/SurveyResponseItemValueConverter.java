@@ -1,7 +1,7 @@
 package lshh.be1onboardingsurvey.survey.domain.vo;
 
 import jakarta.persistence.AttributeConverter;
-import lshh.be1onboardingsurvey.survey.domain.SurveyItemFormType;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyItemFormType;
 
 import java.util.Arrays;
 
@@ -30,7 +30,7 @@ public class SurveyResponseItemValueConverter implements AttributeConverter<Surv
                 case RADIO -> Long.valueOf(valueYet);
                 case CHECKBOX -> {
                     String valueStr = valueYet.substring(1, valueYet.length() - 1); // remove '[' and ']'
-                    yield  Arrays.stream(valueStr.split(",")).map(Long::valueOf).toArray(Long[]::new);
+                    yield Arrays.stream(valueStr.split(", ")).map(Long::valueOf).toArray(Long[]::new);
                 }
             };
             return SurveyResponseItemValue.of(type, value);

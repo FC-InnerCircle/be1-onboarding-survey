@@ -8,7 +8,7 @@ public class ExpressionLanguageParser {
     private ExpressionLanguageParser() {
     }
 
-    public static Object getDynamicValue(String[] parameterNames, Object[] args, String key) {
+    public static Object getDynamicValue(String[] parameterNames, Object[] args, String keyExpression) {
         ExpressionParser parser = new SpelExpressionParser();
         StandardEvaluationContext context = new StandardEvaluationContext();
 
@@ -16,6 +16,6 @@ public class ExpressionLanguageParser {
             context.setVariable(parameterNames[i], args[i]);
         }
 
-        return parser.parseExpression(key).getValue(context, Object.class);
+        return parser.parseExpression(keyExpression).getValue(context, Object.class);
     }
 }

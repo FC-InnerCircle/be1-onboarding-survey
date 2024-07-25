@@ -2,6 +2,7 @@ package lshh.be1onboardingsurvey.survey.domain;
 
 import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
+import lshh.be1onboardingsurvey.survey.domain.entity.*;
 import lshh.be1onboardingsurvey.survey.domain.vo.SurveyResponseItemValue;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -45,7 +46,7 @@ public class SurveyTest {
 
             // Assert that the item has been added
             assertEquals(1, sut.getItems().size());
-            assertEquals(sut, sut.getItems().getFirst().survey);
+            assertEquals(sut, sut.getItems().getFirst().getSurvey());
         }
     }
 
@@ -183,10 +184,12 @@ public class SurveyTest {
                     .build();
 
             // Create mock AddSurveyResponseCommand
-            AddSurveyResponseCommand command = new AddSurveyResponseCommand(1L);
+            SurveyResponse response = SurveyResponse.builder()
+                    .id(1L)
+                    .build();
 
             // Add the new response
-            sut.addResponse(command);
+            sut.addResponse(response);
 
             // Assert that the response has been added
             assertEquals(1, sut.getResponses().size());
@@ -200,9 +203,6 @@ public class SurveyTest {
         @Test
         @DisplayName("응답 항목 추가 성공")
         public void testAddResponseItem() {
-            SurveyResponse initialResponse = SurveyResponse.builder()
-                .id(1L)
-                .build();
             SurveyItem initialItem = SurveyItem.builder()
                 .id(1L)
                 .formType(SurveyItemFormType.TEXT)
@@ -210,7 +210,7 @@ public class SurveyTest {
             ArrayList<SurveyItem> itemList = new ArrayList<>();
             itemList.add(initialItem);
             ArrayList<SurveyResponse> responseList = new ArrayList<>();
-            responseList.add(initialResponse);
+
             Survey sut = Survey.builder()
                 .name("Test Survey")
                 .description("This is a test survey")
@@ -218,17 +218,21 @@ public class SurveyTest {
                 .responses(responseList)
                 .build();
 
+            SurveyResponse response = SurveyResponse.builder()
+                    .id(1L)
+                    .build();
             AddSurveyResponseItemCommand command = new AddSurveyResponseItemCommand(
                 1L,
                 1L,
                 1L,
                 "Test value"
             );
-            sut.addResponseItem(command);
+            response.addItem(command, SurveyItemFormType.TEXT);
+            sut.addResponse(response);
 
-            SurveyResponse response = sut.findResponse(1L).orElseThrow();
-            assertEquals(1, response.getItems().size());
-            SurveyResponseItem item = response.getItems().getFirst();
+            SurveyResponse result = sut.findResponse(1L).orElseThrow();
+            assertEquals(1, result.getItems().size());
+            SurveyResponseItem item = result.getItems().getFirst();
             assertEquals(SurveyResponseItemValue.of(SurveyItemFormType.TEXT, "Test value"), item.getValue());
         }
     }

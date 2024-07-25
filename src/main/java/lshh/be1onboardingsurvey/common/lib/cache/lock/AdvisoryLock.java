@@ -13,6 +13,11 @@ public @interface AdvisoryLock {
     /**
      * 락의 이름
      */
+    String prekey() default "";
+
+    /**
+     * 락의 이름을 동적으로 생성하는 SpEL 표현식
+     */
     String key();
 
     /**

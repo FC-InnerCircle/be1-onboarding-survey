@@ -1,6 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain.vo;
 
-import lshh.be1onboardingsurvey.survey.domain.SurveyItemFormType;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyItemFormType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ public class SurveyResponseItemValueConverterTest {
         @Test
         @DisplayName("CHECKBOX 타입으로 변환")
         public void testConvertToEntityAttributeCheckbox() {
-            String dbData = "CHECKBOX::[1,2]";
+            String dbData = "CHECKBOX::[1, 2]";
             SurveyResponseItemValue<?> attribute = converter.convertToEntityAttribute(dbData);
 
             assertEquals(SurveyItemFormType.CHECKBOX, attribute.type());

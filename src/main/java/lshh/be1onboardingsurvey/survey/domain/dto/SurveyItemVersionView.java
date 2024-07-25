@@ -1,6 +1,6 @@
 package lshh.be1onboardingsurvey.survey.domain.dto;
 
-import lshh.be1onboardingsurvey.survey.domain.SurveyItem;
+import lshh.be1onboardingsurvey.survey.domain.entity.SurveyItem;
 
 import java.time.LocalDateTime;
 import java.util.List;
