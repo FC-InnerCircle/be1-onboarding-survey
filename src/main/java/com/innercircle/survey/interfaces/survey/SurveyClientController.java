@@ -1,4 +1,4 @@
-package com.innercircle.survey.interfaces.servey;
+package com.innercircle.survey.interfaces.survey;
 
 import com.innercircle.survey.common.response.CommonResponse;
 import com.innercircle.survey.interfaces.doc.SurveyClientControllerDoc;

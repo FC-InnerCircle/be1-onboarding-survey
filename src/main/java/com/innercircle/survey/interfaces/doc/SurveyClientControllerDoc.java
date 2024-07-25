@@ -1,7 +1,7 @@
 package com.innercircle.survey.interfaces.doc;
 
 import com.innercircle.survey.common.response.CommonResponse;
-import com.innercircle.survey.interfaces.servey.SurveyDto;
+import com.innercircle.survey.interfaces.survey.SurveyDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;

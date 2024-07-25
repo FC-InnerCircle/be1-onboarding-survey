@@ -5,6 +5,7 @@ import com.innercircle.survey.domain.AbstractEntity;
 import com.innercircle.survey.domain.survey.Survey;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,8 +19,19 @@ public class SurveyShortAnswer extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long version;
+    private String question;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "survey_id")
     private Survey survey;
+
+    @Builder
+    private SurveyShortAnswer(String question, Survey survey) {
+        this.question = question;
+        this.survey = survey;
+    }
+
+    public void setSurvey(Survey survey) {
+        this.survey = survey;
+    }
 }
