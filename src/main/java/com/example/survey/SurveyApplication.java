@@ -1,13 +1,13 @@
-package com.example.be1onboardingsurvey;
+package com.example.survey;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Be1OnboardingSurveyApplication {
+public class SurveyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Be1OnboardingSurveyApplication.class, args);
+        SpringApplication.run(SurveyApplication.class, args);
     }
 
 }
