@@ -2,6 +2,7 @@ package com.psh10066.survey.survey_answer.adapter.out.persistence;
 
 import com.psh10066.survey.survey_answer.domain.SurveyAnswer;
 import com.psh10066.survey.survey_answer.domain.SurveyQuestionAnswer;
+import com.psh10066.survey.survey_management.domain.Survey;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,9 @@ public class SurveyAnswerJpaEntity {
             surveyAnswer.getSurveyVersion(),
             surveyAnswer.getAnswers()
         );
+    }
+
+    public SurveyAnswer toModel() {
+        return new SurveyAnswer(id, new Survey.SurveyId(surveyId), surveyVersion, answers);
     }
 }
