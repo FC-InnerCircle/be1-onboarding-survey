@@ -35,4 +35,13 @@ public class FakeSurveyPersistenceAdapter implements RegisterSurveyPort, ModifyS
         data.add(survey);
         return survey.getId();
     }
+
+    @Override
+    public Survey getSurvey(Survey.SurveyId surveyId, Long version) {
+        return data.stream()
+            .filter(survey ->
+                survey.getId().equals(surveyId) && survey.getForm().getVersion().equals(version)
+            )
+            .findAny().orElseThrow(EntityNotFoundException::new);
+    }
 }

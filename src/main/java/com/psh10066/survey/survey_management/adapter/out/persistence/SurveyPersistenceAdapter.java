@@ -44,4 +44,17 @@ public class SurveyPersistenceAdapter implements RegisterSurveyPort, ModifySurve
             .orElseThrow(() -> new EntityNotFoundException("Survey not found"));
         return entity.getLatestVersion();
     }
+
+    @Override
+    public Survey getSurvey(Survey.SurveyId surveyId, Long version) {
+        SurveyJpaEntity surveyJpaEntity = surveyJpaRepository.findById(surveyId.value())
+            .orElseThrow(() -> new EntityNotFoundException("Survey not found"));
+        SurveyFormJpaEntity surveyFormJpaEntity = surveyFormJpaRepository.findBySurveyIdAndVersion(surveyId.value(), version)
+            .orElseThrow(() -> new EntityNotFoundException("SurveyForm not found"));
+
+        return Survey.update(
+            new Survey.SurveyId(surveyJpaEntity.getId()),
+            surveyFormJpaEntity.toModel()
+        );
+    }
 }

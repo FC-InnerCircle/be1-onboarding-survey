@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record SurveyQuestion(
+    Integer id,
     String name,
     String description,
     SurveyQuestionType type,
@@ -13,7 +14,7 @@ public record SurveyQuestion(
     boolean required
 ) {
 
-    public SurveyQuestion(String name, String description, SurveyQuestionType type, List<SurveySelectInput> selectInputs, boolean required) {
+    public SurveyQuestion(Integer id, String name, String description, SurveyQuestionType type, List<SurveySelectInput> selectInputs, boolean required) {
         if (type.isSelectable()) {
             if (CollectionUtils.isEmpty(selectInputs)) {
                 throw new IllegalArgumentException("Select inputs cannot be empty");
@@ -22,6 +23,7 @@ public record SurveyQuestion(
         } else {
             this.selectInputs = null;
         }
+        this.id = id;
         this.name = name;
         this.description = description;
         this.type = type;
@@ -29,7 +31,7 @@ public record SurveyQuestion(
     }
 
     public static SurveyQuestion create(String name, String description, SurveyQuestionType type, List<String> selectInputs, boolean required) {
-        return new SurveyQuestion(name, description, type, selectInputWithValue(selectInputs), required);
+        return new SurveyQuestion(null, name, description, type, selectInputWithValue(selectInputs), required);
     }
 
     private static List<SurveySelectInput> selectInputWithValue(List<String> inputs) {
@@ -41,5 +43,9 @@ public record SurveyQuestion(
             result.add(new SurveySelectInput(i, inputs.get(i)));
         }
         return result;
+    }
+
+    public SurveyQuestion withId(Integer id) {
+        return new SurveyQuestion(id, name, description, type, selectInputs, required);
     }
 }

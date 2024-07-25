@@ -59,4 +59,13 @@ public class SurveyFormJpaEntity {
             surveyForm.getQuestions()
         );
     }
+
+    public SurveyForm toModel() {
+        return SurveyForm.update(
+            this.version,
+            this.name,
+            this.description,
+            this.questions
+        );
+    }
 }

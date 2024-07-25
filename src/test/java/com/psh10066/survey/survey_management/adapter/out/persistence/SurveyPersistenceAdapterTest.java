@@ -39,7 +39,7 @@ class SurveyPersistenceAdapterTest {
             SurveyQuestionType.RADIO,
             List.of("그렇다", "아니다"),
             true
-        ));
+        ).withId(0));
         SurveyForm surveyForm = SurveyForm.create(
             "name",
             "description",
