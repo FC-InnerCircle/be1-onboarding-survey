@@ -1,3 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  hibernate:
+    ddl-auto: update
+  show-sql: true
+  properties:
+    hibernate:
+      format_sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 springdoc:
   version: v1
   packages-to-scan: com.innercircle.survey.interfaces
