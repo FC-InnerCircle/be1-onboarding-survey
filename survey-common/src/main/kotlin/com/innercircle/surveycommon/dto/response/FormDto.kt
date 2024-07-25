@@ -1,11 +1,11 @@
 package com.innercircle.surveycommon.dto.response
 
 data class FormDto(
-    val id: Long,
+    val id: Int,
     val title: String,
     val description: String,
-    val created_at: String,
-    val updated_at: String,
-    val is_active: Boolean,
+    val createdAt: String,
+    val updatedAt: String,
+    val isActive: Boolean,
     val version: Int,
 )

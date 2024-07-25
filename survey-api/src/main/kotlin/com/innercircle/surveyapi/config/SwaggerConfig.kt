@@ -10,26 +10,29 @@ import org.springframework.context.annotation.Configuration
 @Configuration
 class SwaggerConfig {
     @Bean
-    fun surveyApiGroup(): GroupedOpenApi = GroupedOpenApi.builder()
-        .group("surveys")
-        .pathsToMatch("/api/**")
-        .build()
+    fun surveyApiGroup(): GroupedOpenApi =
+        GroupedOpenApi
+            .builder()
+            .group("surveys")
+            .pathsToMatch("/v1/api/**")
+            .build()
 
     @Bean
-    fun customOpenAPI(): OpenAPI = OpenAPI()
-        .components(Components())
-        .info(
-            Info().apply {
-                title("Inner Circle Survey API")
-                description("API for managing surveys")
-                version("1.0.0")
-                contact(
-                    Contact().apply {
-                        name("이너서클 백엔트파트 장현호")
-                        email("hyunho.jang.dev@gmail.com")
-                        url("https://github.com/hyunolike")
-                    }
-                )
-            }
-        )
+    fun customOpenAPI(): OpenAPI =
+        OpenAPI()
+            .components(Components())
+            .info(
+                Info().apply {
+                    title("Inner Circle Survey API")
+                    description("API for managing surveys")
+                    version("1.0.0")
+                    contact(
+                        Contact().apply {
+                            name("이너서클 백엔트파트 장현호")
+                            email("hyunho.jang.dev@gmail.com")
+                            url("https://github.com/hyunolike")
+                        },
+                    )
+                },
+            )
 }

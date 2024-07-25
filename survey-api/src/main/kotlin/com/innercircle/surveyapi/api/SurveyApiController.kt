@@ -2,6 +2,8 @@
 
 package com.innercircle.surveyapi.api
 
+import com.innercircle.surveycommon.dto.request.CreateFormRequest
+import com.innercircle.surveycommon.dto.response.CreateFormResponse
 import com.innercircle.surveycommon.dto.response.FormsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -19,7 +21,7 @@ import org.springframework.web.bind.annotation.*
 @Component
 @Tag(name = "Surveys", description = "Survey operations")
 @RestController
-@RequestMapping("/api/surveys")
+@RequestMapping("/v1/api")
 interface SurveyApiController {
     @Operation(
         summary = "폼 목록 조회",
@@ -68,11 +70,118 @@ interface SurveyApiController {
 //            ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다."),
         ],
     )
-    @GetMapping("/v1/api/forms")
+    @GetMapping("/forms")
     fun getForms(
         @Parameter(description = "활성화된 폼만 필터링", required = false)
         @RequestParam(required = false) active: Boolean?,
     ): FormsResponse
 
     // TODO: 온보딩 필수 API 4개 선행 추가 및 개발 진행 24.07.25
+    @Operation(
+        summary = "폼 생성",
+        description = "새로운 폼을 생성합니다.",
+        requestBody =
+            io.swagger.v3.oas.annotations.parameters.RequestBody(
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = CreateFormRequest::class),
+                        examples = [
+                            ExampleObject(
+                                name = "예시 요청값",
+                                value = """
+                        {
+                          "title": "신규 사용자 설문",
+                          "description": "신규 사용자 경험 개선을 위한 설문조사",
+                          "is_active": true,
+                          "questions": [
+                            {
+                              "question_text": "전반적인 서비스 만족도는 어떠신가요?",
+                              "question_type": "rating",
+                              "question_order": 1,
+                              "is_required": true,
+                              "additional_config": {
+                                "min": 1,
+                                "max": 5
+                              }
+                            },
+                            {
+                              "question_text": "우리 서비스를 어떻게 알게 되셨나요?",
+                              "question_type": "single_choice",
+                              "question_order": 2,
+                              "is_required": true,
+                              "question_options": [
+                                {"option_text": "인터넷 검색", "option_order": 1},
+                                {"option_text": "친구 추천", "option_order": 2},
+                                {"option_text": "광고", "option_order": 3},
+                                {"option_text": "기타", "option_order": 4}
+                              ]
+                            }
+                          ]
+                        }
+                        """,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+        responses = [
+            ApiResponse(
+                responseCode = "201",
+                description = "성공적으로 생성되었습니다.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = CreateFormResponse::class),
+                        examples = [
+                            ExampleObject(
+                                name = "예시 응답값",
+                                value = """
+                            {
+                              "id": 2,
+                              "title": "신규 사용자 설문",
+                              "description": "신규 사용자 경험 개선을 위한 설문조사",
+                              "created_at": "2024-07-23T11:00:00Z",
+                              "updated_at": "2024-07-23T11:00:00Z",
+                              "is_active": true,
+                              "version": 1,
+                              "questions": [
+                                {
+                                  "id": 1,
+                                  "question_text": "전반적인 서비스 만족도는 어떠신가요?",
+                                  "question_type": "rating",
+                                  "question_order": 1,
+                                  "is_required": true,
+                                  "additional_config": {
+                                    "min": 1,
+                                    "max": 5
+                                  }
+                                },
+                                {
+                                  "id": 2,
+                                  "question_text": "우리 서비스를 어떻게 알게 되셨나요?",
+                                  "question_type": "single_choice",
+                                  "question_order": 2,
+                                  "is_required": true,
+                                  "question_options": [
+                                    {"id": 1, "option_text": "인터넷 검색", "order": 1},
+                                    {"id": 2, "option_text": "친구 추천", "order": 2},
+                                    {"id": 3, "option_text": "광고", "order": 3},
+                                    {"id": 4, "option_text": "기타", "order": 4}
+                                  ]
+                                }
+                              ]
+                            }
+                            """,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+        ],
+    )
+    @PostMapping("/forms")
+    fun createForm(
+        @RequestBody request: CreateFormRequest,
+    ): CreateFormResponse
 }

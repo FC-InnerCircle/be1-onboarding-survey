@@ -12,7 +12,7 @@ data class Question(
     val id: Int = 0,
     @ManyToOne
     @JoinColumn(name = "form_id", nullable = false)
-    val form: Form,
+    var form: Form,
     val formVersion: Int,
     val questionText: String,
     val questionType: String,
@@ -25,5 +25,5 @@ data class Question(
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val responses: List<Response> = emptyList(),
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val questionOptions: List<QuestionOption> = emptyList(),
+    var questionOptions: List<QuestionOption> = emptyList(),
 )

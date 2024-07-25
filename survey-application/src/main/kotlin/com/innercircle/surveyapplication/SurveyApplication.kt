@@ -9,11 +9,21 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Import
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication()
-@Import(com.innercircle.surveyapi.api.SurveyApiControllerImpl::class)
+@SpringBootApplication
+@Import(
+//    com.innercircle.surveydomain.service.SurveyServiceImpl::class,
+    com.innercircle.surveyapi.api.SurveyApiControllerImpl::class,
+)
 @EntityScan(basePackages = ["com.innercircle.surveydomain.model"])
-@EnableJpaRepositories(basePackages = ["com.innerclircle.surveydomain.repository"])
-@ComponentScan(basePackages = ["com.innercircle.surveyapi", "com.innercircle.surveyapplication", "com.innercircle.surveydomain"])
+@EnableJpaRepositories(basePackages = ["com.innercircle.surveydomain.repository"])
+@ComponentScan(
+    basePackages = [
+        "com.innercircle.surveyapi",
+        "com.innercircle.surveyapplication",
+        "com.innercircle.surveydomain",
+        "com.innercircle.surveycommon",
+    ],
+)
 class SurveyApplication
 
 fun main(args: Array<String>) {

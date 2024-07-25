@@ -22,7 +22,12 @@ data class Form(
     val isActive: Boolean,
     val version: Int,
     @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val questions: List<Question> = emptyList(),
+    var questions: MutableList<Question> = mutableListOf(),
     @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val submissions: List<Submission> = emptyList(),
-)
+) {
+    fun addQuestion(question: Question) {
+        question.form = this
+        questions.add(question)
+    }
+}

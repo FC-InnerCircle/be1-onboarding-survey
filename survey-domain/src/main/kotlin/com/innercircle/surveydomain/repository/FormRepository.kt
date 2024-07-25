@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface FormRepository : JpaRepository<Form, Int>
+interface FormRepository : JpaRepository<Form, Int> {
+    fun findTopByTitleOrderByVersionDesc(title: String): Form?
+}
