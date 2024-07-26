@@ -8,6 +8,8 @@ import com.example.survey.domain.mapper.SurveyMapper;
 import com.example.survey.domain.model.InputType;
 import com.example.survey.domain.model.Survey;
 import com.example.survey.domain.model.SurveyVersion;
+import com.example.survey.exception.SurveyNotFoundException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +20,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -36,6 +40,8 @@ class SurveyServiceTest {
     private SurveyService surveyService;
 
     private SurveyDto validSurveyDto;
+    private SurveyDto updatedSurveyDto;
+    private Survey existingSurvey;
 
     @BeforeEach
     void setUp() {
@@ -58,6 +64,20 @@ class SurveyServiceTest {
                 .description("Test Description")
                 .items(Arrays.asList(item1, item2))
                 .build();
+
+        updatedSurveyDto = SurveyDto.builder()
+            .name("Updated Survey")
+            .description("Updated Description")
+            .items(Arrays.asList(item1, item2))
+            .build();
+
+        existingSurvey = Survey.builder()
+            .id(1L)
+            .name("Test Survey")
+            .description("Test Description")
+            .items(SurveyMapper.surveyItemDtosToSurveyItems(Arrays.asList(item1, item2)))
+            .currentVersion(1)
+            .build();
     }
 
     @Test
@@ -81,5 +101,38 @@ class SurveyServiceTest {
         SurveyVersion capturedVersion = versionCaptor.getValue();
         assertEquals(1, capturedVersion.getVersion());
         assertEquals(survey.getId(), capturedVersion.getSurveyId());
+    }
+
+    @Test
+    @DisplayName("Update survey with valid data")
+    void testUpdateSurveyWithValidData() {
+        when(surveyPersistence.findById(anyLong())).thenReturn(Optional.of(existingSurvey));
+        when(surveyPersistence.save(any(Survey.class))).thenReturn(existingSurvey);
+
+        SurveyDto updatedSurvey = surveyService.updateSurvey(1L, updatedSurveyDto);
+
+        assertEquals(updatedSurveyDto.getName(), updatedSurvey.getName());
+        assertEquals(updatedSurveyDto.getDescription(), updatedSurvey.getDescription());
+
+        ArgumentCaptor<Survey> surveyCaptor = ArgumentCaptor.forClass(Survey.class);
+        verify(surveyPersistence).save(surveyCaptor.capture());
+
+        Survey capturedSurvey = surveyCaptor.getValue();
+        assertEquals(updatedSurveyDto.getName(), capturedSurvey.getName());
+        assertEquals(updatedSurveyDto.getDescription(), capturedSurvey.getDescription());
+    }
+
+    @Test
+    @DisplayName("Update non-existing survey")
+    void testUpdateNonExistingSurvey() {
+        when(surveyPersistence.findById(anyLong())).thenReturn(Optional.empty());
+
+        SurveyNotFoundException exception = assertThrows(
+            SurveyNotFoundException.class,
+            () -> surveyService.updateSurvey(1L, updatedSurveyDto)
+        );
+
+        assertEquals("Survey not found with id: 1", exception.getMessage());
+        verify(surveyPersistence, never()).save(any(Survey.class));
     }
 }

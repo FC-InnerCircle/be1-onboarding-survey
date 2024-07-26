@@ -1,6 +1,8 @@
 package com.example.survey.adapter.exception;
 
 import com.example.survey.adapter.dto.ApiResponse;
+import com.example.survey.exception.SurveyNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,5 +29,14 @@ public class ApiExceptionHandler {
                 .message("An unexpected error occurred")
                 .build();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SurveyNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleSurveyNotFoundException(SurveyNotFoundException ex) {
+        ApiResponse<Void> response = ApiResponse.<Void>builder()
+            .status("error")
+            .message(ex.getMessage())
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }

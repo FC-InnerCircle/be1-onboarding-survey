@@ -27,4 +27,16 @@ public class SurveyController {
                 .build();
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<SurveyDto>> updateSurvey(@PathVariable Long id, @Valid @RequestBody SurveyDto surveyDto) {
+        SurveyDto updatedSurvey = surveyService.updateSurvey(id, surveyDto);
+        ApiResponse<SurveyDto> response = ApiResponse.<SurveyDto>builder()
+            .status("success")
+            .message("Survey updated successfully")
+            .data(updatedSurvey)
+            .build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
