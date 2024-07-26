@@ -5,7 +5,7 @@ import com.fastcampus.innercircle.survey_api.domain.entity.Question;
 import com.fastcampus.innercircle.survey_api.domain.entity.Response;
 import com.fastcampus.innercircle.survey_api.domain.entity.SurveyForm;
 import com.fastcampus.innercircle.survey_api.domain.request.ResponseRequest;
-import com.fastcampus.innercircle.survey_api.repository.QuestionRepository;
+import com.fastcampus.innercircle.survey_api.domain.response.SurveyResponse;
 import com.fastcampus.innercircle.survey_api.repository.ResponseRepository;
 import com.fastcampus.innercircle.survey_api.repository.SurveyFormRepository;
 import jakarta.transaction.Transactional;
@@ -50,6 +50,12 @@ public class ResponseService {
         response.setAnswers(answers);
 
         responseRepository.save(response);
+    }
+
+    public List<SurveyResponse> getResponses(Long formId) {
+
+        List<Response> responses = responseRepository.findByFormId(formId);
+        return responses.stream().map(SurveyResponse::of).toList();
     }
 
     private Question findQuestionById(List<Question> questions, Long id) {
