@@ -23,34 +23,25 @@ public class SurveyService {
     private final OptionRepository optionRepository;
 
     public void createSurvey(SurveyReq surveyReq) {
-        Survey survey = Survey.builder()
-            .title(surveyReq.getTitle())
-            .description(surveyReq.getDescription())
-            .endAt(surveyReq.getEndAt())
-            .build();
+        Survey survey = Survey.builder().title(surveyReq.getTitle())
+            .description(surveyReq.getDescription()).endAt(surveyReq.getEndAt()).build();
         survey = surveyRepository.save(survey);
 
         List<QuestionReq> questionDtos = surveyReq.getQuestions();
         for (QuestionReq questionDto : questionDtos) {
-            Question question = Question.builder()
-                .survey(survey)
-                .type(QuestionType.valueOf(questionDto.getType()))
-                .text(questionDto.getText())
-                .isRequired(questionDto.isRequired())
-                .build();
+            Question question = Question.builder().survey(survey)
+                .type(QuestionType.valueOf(questionDto.getType())).text(questionDto.getText())
+                .isRequired(questionDto.isRequired()).build();
             question = questionRepository.save(question);
 
             List<OptionReq> optionDtos = questionDto.getOptions();
             if (optionDtos != null) {
                 for (OptionReq optionDto : optionDtos) {
-                    Option option = Option.builder()
-                        .question(question)
-                        .text(optionDto.getText())
+                    Option option = Option.builder().question(question).text(optionDto.getText())
                         .build();
                     optionRepository.save(option);
                 }
             }
         }
-
     }
 }
