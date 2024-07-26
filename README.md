@@ -1,5 +1,34 @@
 # 이너써클 BE 온보딩 프로젝트
 
+## [이호준] 과제 제출
+
+### jar 파일 다운로드 경로
+
+- https://github.com/psh10066/be1-onboarding-survey/blob/main/jar/survey-0.0.1-SNAPSHOT.jar
+
+### API 문서
+
+- https://documenter.getpostman.com/view/12275872/2sA3kYjfLs
+
+### 실행 후 API 제외 추가 테스트용 경로
+
+- Swagger : /swagger-ui/index.html
+  - (ex. http://localhost:8080/swagger-ui/index.html)
+- H2 Console : /h2-console
+  - (ex. http://localhost:8080/h2-console)
+
+### 구현 특이사항
+
+- Hexagonal Architecture를 기반으로 의존성을 분리하여 추후 확장 및 멀티 모듈화에 유리하도록 구성하였습니다.
+  - Request의 책임 : Swagger 명세, Controller에서 데이터 양식 정의
+  - Command의 책임 : UseCase의 동작 전 데이터 양식 검증
+  - PersistenceAdapter의 책임 : 각 Root 도메인 별 DB 의존성 처리
+- 기존 폼을 수정할 가능성이 적고, 양식 그대로 조회하는 경우가 많을 것이라고 판단하여 설문조사 폼과 응답 폼을 Converter를 통해 Json으로 DB에 저장합니다.
+  - 각 설문조사 폼에 대해 관리 포인트가 적어지고, 트래픽이 많아지고 조회가 빈번하게 일어나게 되었을 때 Table Join보다 성능 상 유리할 것이라고 판단하였습니다.
+- 설문조사 동시 수정 시 동시성 이슈는 시간 관계상 일단 Unique Constraint로 대응하였습니다. 추후 동시성 처리를 더 신경쓰면 좋을 것 같습니다.
+
+---
+
 ## Introduction
 
 - “설문조사 서비스"를 구현하려고 합니다.
