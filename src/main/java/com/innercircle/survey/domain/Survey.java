@@ -22,8 +22,6 @@ public class Survey {
 
     private String description;
 
-    private Integer version = 1;
-
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -32,8 +30,4 @@ public class Survey {
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private List<Question> questions;
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 }
