@@ -1,1 +1,1 @@
-rootProject.name = "adapter"
+rootProject.name = "presentation"
