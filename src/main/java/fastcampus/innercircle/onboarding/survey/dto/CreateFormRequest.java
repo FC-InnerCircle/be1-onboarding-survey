@@ -1,18 +1,26 @@
 package fastcampus.innercircle.onboarding.survey.dto;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyForm;
-import fastcampus.innercircle.onboarding.survey.domain.SurveyQuestion;
-import fastcampus.innercircle.onboarding.survey.domain.SurveyQuestionOption;
-import fastcampus.innercircle.onboarding.survey.domain.SurveyResponseType;
+import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionEmptyException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public record CreateFormRequest(
         String title,
         String desc,
-        List<CreateFormRequest.CreateSurveyQuestion> questions
+        List<CreateQuestionRequest> questions
 ) {
+    public CreateFormRequest {
+        Objects.requireNonNull(title, "설문 제목은 필수입니다.");
+        Objects.requireNonNull(desc, "설문 설명은 필수입니다.");
+        Objects.requireNonNull(questions, "질문 항목은 필수입니다.");
+        if (questions.isEmpty()) {
+            throw new SurveyQuestionEmptyException("질문 항목은 최소 하나 이상 등록 되어야 합니다.");
+        }
+    }
+
     public SurveyForm toEntity() {
         return SurveyForm.builder()
                 .version(1L)
@@ -20,42 +28,8 @@ public record CreateFormRequest(
                 .desc(desc())
                 .createAt(LocalDateTime.now())
                 .questions(questions().stream()
-                        .map(CreateSurveyQuestion::toEntity)
+                        .map(CreateQuestionRequest::toEntity)
                         .toList())
                 .build();
-    }
-
-    public record CreateSurveyQuestion(
-            Integer position,
-            String title,
-            String desc,
-            boolean isRequired,
-            SurveyResponseType type,
-            List<CreateSurveyQuestionOption> options
-    ) {
-        public SurveyQuestion toEntity() {
-            return SurveyQuestion.builder()
-                    .version(1L)
-                    .title(title())
-                    .desc(desc())
-                    .isRequired(isRequired())
-                    .responseType(type())
-                    .position(position())
-                    .options(options().stream()
-                            .map(CreateSurveyQuestionOption::toEntity)
-                            .toList())
-                    .build();
-        }
-
-        public record CreateSurveyQuestionOption(
-                Integer position,
-                String name
-        ) {
-            public SurveyQuestionOption toEntity() {
-                return SurveyQuestionOption.builder()
-                        .name(name())
-                        .build();
-            }
-        }
     }
 }

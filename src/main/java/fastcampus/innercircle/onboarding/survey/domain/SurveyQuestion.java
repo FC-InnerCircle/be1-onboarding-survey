@@ -1,10 +1,13 @@
 package fastcampus.innercircle.onboarding.survey.domain;
 
+import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionOptionNotAllowedException;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static fastcampus.innercircle.onboarding.survey.domain.SurveyResponseType.*;
 
 @ToString(exclude = {"form"})
 @Getter
@@ -66,7 +69,14 @@ public class SurveyQuestion {
     }
 
     public void addOption(final SurveyQuestionOption option) {
+        if (responseType.isSubjectiveType()) {
+            throw new SurveyQuestionOptionNotAllowedException("선택형 질문이 아닙니다.");
+        }
         options.add(option);
         option.setQuestion(this);
+    }
+
+    private boolean isOptionalQuestion() {
+        return MULTI.equals(responseType) || SINGLE.equals(responseType);
     }
 }
