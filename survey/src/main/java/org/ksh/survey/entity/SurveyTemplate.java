@@ -3,7 +3,9 @@ package org.ksh.survey.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.ksh.survey.model.SurveyUpdateRequest;
 
 import java.util.List;
 
@@ -12,6 +14,7 @@ import java.util.List;
 public class SurveyTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
 
     private String name;
@@ -24,4 +27,8 @@ public class SurveyTemplate {
         this.description = description;
     }
 
+    public void update(SurveyUpdateRequest surveySaveRequest) {
+        this.name = surveySaveRequest.getSurveyName();
+        this.description = surveySaveRequest.getSurveyDescription();
+    }
 }
