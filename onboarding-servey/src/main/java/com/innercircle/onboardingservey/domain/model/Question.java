@@ -44,7 +44,7 @@ public class Question {
     private Integer displayOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Survey survey;
+    private SurveyVersion surveyVersion;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> questionOptions;
@@ -55,7 +55,7 @@ public class Question {
         final QuestionType questionType,
         final Boolean required,
         final Integer displayOrder,
-        final Survey survey,
+        final SurveyVersion surveyVersion,
         final List<QuestionOption> questionOptions
     ) {
         this.title = title;
@@ -63,7 +63,7 @@ public class Question {
         this.questionType = questionType;
         this.required = required;
         this.displayOrder = displayOrder;
-        this.survey = survey;
+        this.surveyVersion = surveyVersion;
         this.questionOptions = questionOptions;
         valid();
     }
@@ -83,7 +83,7 @@ public class Question {
             "required must not be null"
         );
         Assert.notNull(
-            this.survey,
+            this.surveyVersion,
             "survey must not be null"
         );
 
@@ -107,14 +107,14 @@ public class Question {
         final String description,
         final Boolean required,
         final Integer displayOrder,
-        final Survey survey
+        final SurveyVersion surveyVersion
     ) {
         return new Question(title,
             description,
             QuestionType.SHORT_TEXT,
             required,
             displayOrder,
-            survey,
+            surveyVersion,
             new ArrayList<>()
         );
     }
@@ -124,14 +124,14 @@ public class Question {
         final String description,
         final Boolean required,
         final Integer displayOrder,
-        final Survey survey
+        final SurveyVersion surveyVersion
     ) {
         return new Question(title,
             description,
             QuestionType.LONG_TEXT,
             required,
             displayOrder,
-            survey,
+            surveyVersion,
             new ArrayList<>()
         );
     }
@@ -140,7 +140,7 @@ public class Question {
         final String title,
         final Boolean required,
         final Integer displayOrder,
-        final Survey survey,
+        final SurveyVersion surveyVersion,
         final List<QuestionOption> questionOptionList
     ) {
         return new Question(title,
@@ -148,7 +148,7 @@ public class Question {
             QuestionType.SINGLE_CHOICE,
             required,
             displayOrder,
-            survey,
+            surveyVersion,
             questionOptionList
         );
     }
@@ -158,7 +158,7 @@ public class Question {
 
         final Boolean required,
         final Integer displayOrder,
-        final Survey survey,
+        final SurveyVersion surveyVersion,
         final List<QuestionOption> questionOptionList
     ) {
         return new Question(
@@ -167,7 +167,7 @@ public class Question {
             QuestionType.MULTIPLE_CHOICE,
             required,
             displayOrder,
-            survey,
+            surveyVersion,
             questionOptionList
         );
     }
@@ -177,7 +177,7 @@ public class Question {
         this.description = question.getDescription();
         this.questionType = question.getQuestionType();
         this.required = question.getRequired();
-        this.survey = question.getSurvey();
+        this.surveyVersion = question.getSurveyVersion();
         this.displayOrder = question.getDisplayOrder();
         this.questionOptions = update(question.getQuestionOptions());
         valid();

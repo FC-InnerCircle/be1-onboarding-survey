@@ -7,6 +7,7 @@ import com.innercircle.onboardingservey.domain.model.Survey;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import com.innercircle.onboardingservey.domain.model.SurveyVersion;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,9 +19,11 @@ public class QuestionTest {
     @Test
     @DisplayName("텍스트 기반의 질문을 생성할 수 있다.")
     void create_question_text_test_success() {
-        final Survey survey = new Survey(
-            "텍스트 기반 질문",
-            "텍스트 기반의 질문을 생성한다."
+        final Survey survey = new Survey();
+        final SurveyVersion surveyVersion = new SurveyVersion(
+            "버전1",
+            "버전1이지롱",
+            survey
         );
         final String title = "이름을 입력해주세요";
         final String description = "본인의 이름을 성과 함께 입력해주세요";
@@ -30,7 +33,7 @@ public class QuestionTest {
             description,
             required,
             1,
-            survey
+            surveyVersion
         );
 
         assertThat(question).isNotNull();
@@ -42,9 +45,11 @@ public class QuestionTest {
     @Test
     @DisplayName("장문형 질문을 생성할 수 있다.")
     void create_question_long_test_success() {
-        final Survey survey = new Survey(
+
+        final SurveyVersion surveyVersion = new SurveyVersion(
             "장문형 질문",
-            "장문형 질문을 생성한다."
+            "장문형 질문을 생성한다.",
+            new Survey()
         );
         final String title = "이름을 입력해주세요";
         final String description = "본인의 이름을 성과 함께 입력해주세요";
@@ -54,7 +59,7 @@ public class QuestionTest {
             description,
             required,
             1,
-            survey
+            surveyVersion
         );
 
         assertThat(question).isNotNull();
@@ -66,9 +71,11 @@ public class QuestionTest {
     @Test
     @DisplayName("단일 선택 리스트를 생성할 수 있다.")
     void create_single_choice_test_success() {
-        final Survey survey = new Survey(
+        final Survey survey = new Survey();
+        final SurveyVersion surveyVersion = new SurveyVersion(
             "단일 선택 리스트 질문",
-            "단문 선택 리스트 질문을 생성한다."
+            "단문 선택 리스트 질문을 생성한다.",
+            survey
         );
         final String title = "이름을 입력해주세요";
         final Boolean required = Boolean.TRUE;
@@ -89,7 +96,7 @@ public class QuestionTest {
             title,
             required,
             1,
-            survey,
+            surveyVersion,
             questionOptions
         );
 
@@ -104,9 +111,10 @@ public class QuestionTest {
     @Test
     @DisplayName("멀티 선택 리스트를 생성할 수 있다.")
     void create_multi_choice_test_success() {
-        final Survey survey = new Survey(
+        final SurveyVersion survey = new SurveyVersion(
             "단일 선택 리스트 질문",
-            "단문 선택 리스트 질문을 생성한다."
+            "단문 선택 리스트 질문을 생성한다.",
+            new Survey()
         );
         final String title = "이름을 입력해주세요";
         final Boolean required = Boolean.TRUE;

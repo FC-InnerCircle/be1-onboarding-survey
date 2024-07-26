@@ -13,14 +13,15 @@ public class SurveyResult {
     ) {
 
         public static SurveyDetailResult from(
-            Survey survey,
+            Long surveyId,
+            SurveyVersion surveyVersion,
             List<Question> questions
         ) {
 
             return new SurveyDetailResult(
-                survey.getSurveyId(),
-                survey.getTitle(),
-                survey.getDescription(),
+                surveyId,
+                surveyVersion.getTitle(),
+                surveyVersion.getDescription(),
                 questions.stream()
                     .map(QuestionDetailResult::from)
                     .toList()

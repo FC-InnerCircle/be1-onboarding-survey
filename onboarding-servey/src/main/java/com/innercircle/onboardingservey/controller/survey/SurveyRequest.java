@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SurveyRequest {
 
-    public record SurveyCreateRequest(
+    public record SurveyVersionCreateRequest(
         String surveyTitle,
         String surveyDescription,
         List<QuestionCreateRequest> questionCreateRequests
@@ -12,14 +12,6 @@ public class SurveyRequest {
 
     }
 
-    public record SurveyUpdateRequest(
-        Long surveyId,
-        String surveyTitle,
-        String surveyDescription,
-        List<QuestionUpdateRequest> questionUpdateRequests
-    ) {
-
-    }
 
     public record QuestionCreateRequest(
         String questionTitle,
@@ -31,25 +23,7 @@ public class SurveyRequest {
 
     }
 
-    public record QuestionUpdateRequest(
-        Long questionId,
-        String questionTitle,
-        String questionDescription,
-        Boolean isRequired,
-        String questionType,
-        List<QuestionOptionUpdateRequest> questionOptionUpdateRequests
-    ) {
-
-    }
-
     public record QuestionOptionCreateRequest(
-        String questionOptionTitle
-    ) {
-
-    }
-
-    public record QuestionOptionUpdateRequest(
-        Long questionOptionId,
         String questionOptionTitle
     ) {
 

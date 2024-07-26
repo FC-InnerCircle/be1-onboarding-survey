@@ -2,16 +2,11 @@ package com.innercircle.onboardingservey.controller.survey;
 
 import com.innercircle.onboardingservey.controller.survey.SurveyAdminResponse.SurveyDetailResponse;
 import com.innercircle.onboardingservey.domain.SurveyService;
-import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyCreateCommand;
-import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyUpdateCommand;
+import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyVersionCreateCommand;
 import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/survey")
@@ -21,18 +16,19 @@ public class SurveyAdminController {
     private final SurveyService surveyService;
 
     @PostMapping
-    public ResponseEntity<SurveyDetailResponse> create(
-        @RequestBody SurveyRequest.SurveyCreateRequest request
+    public ResponseEntity<SurveyDetailResponse> surveyCreate(
+        @RequestBody SurveyRequest.SurveyVersionCreateRequest request
     ) {
-        final SurveyDetailResult surveyDetailResult = surveyService.create(SurveyCreateCommand.from(request));
+        final SurveyDetailResult surveyDetailResult = surveyService.createSurvey(SurveyVersionCreateCommand.from(request));
         return ResponseEntity.ok(SurveyDetailResponse.from(surveyDetailResult));
     }
 
-    @PutMapping
-    public ResponseEntity<SurveyDetailResponse> update(
-        @RequestBody SurveyRequest.SurveyUpdateRequest request
+    @PostMapping("/{surveyId}")
+    public ResponseEntity<SurveyDetailResponse> surveyVersionCreate(
+        @PathVariable Long surveyId,
+        @RequestBody SurveyRequest.SurveyVersionCreateRequest request
     ) {
-        final SurveyDetailResult surveyDetailResult = surveyService.update(SurveyUpdateCommand.from(request));
+        final SurveyDetailResult surveyDetailResult = surveyService.addSurveyVersion(surveyId, SurveyVersionCreateCommand.from(request));
         return ResponseEntity.ok(SurveyDetailResponse.from(surveyDetailResult));
     }
 
