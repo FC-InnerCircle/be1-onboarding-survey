@@ -46,4 +46,21 @@ public class SurveyService {
         });
         return SurveyResponseDto.fromEntity(survey);
     }
+
+    @Transactional
+    public SurveyResponseDto updateSurvey(Long surveyId, SurveyUpdateRequestDto request) {
+        Survey survey = findById(surveyId);
+        Integer surveyVersion = survey.update(request.getTitle(), request.getDescription());
+        surveyRepository.save(survey);
+
+        request.getQuestions()
+                .forEach(surveyQuestionUpdateRequestDto -> {
+                    Question questionEntity = surveyQuestionUpdateRequestDto.toQuestionEntity(survey);
+                    questionRepository.save(questionEntity);
+                    List<QuestionOption> questionOptionEntities = surveyQuestionUpdateRequestDto.toQuestionOptionEntities(questionEntity);
+                    questionOptionRepository.saveAll(questionOptionEntities);
+                    questionEntity.setQuestionOptions(questionOptionEntities);
+                });
+        return SurveyResponseDto.fromEntity(survey);
+    }
 }
