@@ -54,9 +54,7 @@ class FeedbackRegisterServiceTest {
         val feedback = Feedback(formId, answers)
         given(formRepository.findById(formId)).willReturn(Optional.of(givenForm))
 
-        assertThrows<IllegalArgumentException> {
-            feedbackRegisterService.register(feedback)
-        }
+        assertThrows<IllegalArgumentException> { feedbackRegisterService.register(feedback) }
     }
 
     @Test
@@ -70,8 +68,6 @@ class FeedbackRegisterServiceTest {
         val feedback = Feedback(formId, answers = emptyList())
         given(formRepository.findById(formId)).willReturn(Optional.of(givenForm))
 
-        assertThrows<IllegalArgumentException> {
-            feedbackRegisterService.register(feedback)
-        }
+        assertThrows<IllegalArgumentException> { feedbackRegisterService.register(feedback) }
     }
 }
