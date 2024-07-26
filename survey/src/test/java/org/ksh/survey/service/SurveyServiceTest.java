@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -78,7 +79,7 @@ class SurveyServiceTest {
 
 		verify(surveyTemplateRepository, times(1)).save(any(SurveyTemplate.class));
 		verify(surveyTemplateItemRepository, times(1)).saveAll(anyList());
-		assertEquals(BaseStatusCode.SUCCESS.getMessage(), response.getBody());
+		assertEquals(BaseStatusCode.SUCCESS, response.getBody());
 	}
 
 }
