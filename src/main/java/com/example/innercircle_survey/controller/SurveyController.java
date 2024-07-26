@@ -53,7 +53,6 @@ public class SurveyController {
     @GetMapping("/surveys/{surveyId}/responses")
     public List<ResponseDTO> readSurveyResponses(@PathVariable("surveyId") Long surveyId) {
 
-        service.readSurveyResponses(surveyId);
-        return null;
+        return service.readSurveyResponses(surveyId);
     }
 }
