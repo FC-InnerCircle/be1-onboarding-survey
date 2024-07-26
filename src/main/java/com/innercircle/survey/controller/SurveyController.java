@@ -4,7 +4,6 @@ import com.innercircle.survey.dto.request.SubmitResponseRequestDto;
 import com.innercircle.survey.dto.request.SurveyCreateRequestDto;
 import com.innercircle.survey.dto.request.SurveyUpdateRequestDto;
 import com.innercircle.survey.dto.response.SurveyResponseDto;
-import com.innercircle.survey.dto.response.SurveyResponseResponseDto;
 import com.innercircle.survey.dto.response.SurveyResponseResponseDtos;
 import com.innercircle.survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +40,13 @@ public class SurveyController {
     ) {
         surveyService.submitResponse(surveyId, submitResponseRequestDto);
         return ResponseEntity.ok("Successfully submitted");
+    }
+
+    @GetMapping("/{surveyId}/responses")
+    public ResponseEntity<SurveyResponseResponseDtos> getSurveyResponses(
+            @PathVariable("surveyId") Long surveyId
+    ) {
+        SurveyResponseResponseDtos answers = surveyService.getSurveyResponses(surveyId);
+        return ResponseEntity.ok(answers);
     }
 }

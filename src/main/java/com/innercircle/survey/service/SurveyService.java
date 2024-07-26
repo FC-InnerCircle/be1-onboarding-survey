@@ -70,4 +70,10 @@ public class SurveyService {
         responseRepository.save(response);
     }
 
+    public SurveyResponseResponseDtos getSurveyResponses(Long surveyId) {
+        Survey survey = findById(surveyId);
+        Integer version = survey.getVersion();
+        List<Response> responseEntities = responseRepository.findBySurveyAndVersion(survey, version);
+        return SurveyResponseResponseDtos.fromResponseEntities(responseEntities);
+    }
 }
