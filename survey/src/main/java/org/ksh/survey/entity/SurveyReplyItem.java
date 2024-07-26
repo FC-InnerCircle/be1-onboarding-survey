@@ -8,8 +8,11 @@ public class SurveyReplyItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private SurveyItem surveyItem;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SurveyTemplateItem surveyTemplateItem;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private SurveyReply surveyReply;
 
     private String response;
 }

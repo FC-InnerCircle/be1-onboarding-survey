@@ -13,7 +13,4 @@ public class SurveyReply {
     @ManyToOne(fetch = FetchType.LAZY)
     private SurveyTemplate surveyTemplate;
 
-    @OneToMany
-    private List<SurveyReplyItem> responseItems;
-
 }
