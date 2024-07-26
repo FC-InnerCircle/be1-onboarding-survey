@@ -29,9 +29,9 @@ public class SurveyObject {
     @JoinColumn(name = "survey_id")
     private Survey survey;
 
-    private int surveyVersionId;
+    private Long surveyVersionId;
 
-    public void updateSurveyVersion(int version) {
+    public void updateSurveyVersion(Long version) {
         this.surveyVersionId = version;
     }
 

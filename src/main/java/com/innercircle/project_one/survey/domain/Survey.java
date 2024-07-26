@@ -1,13 +1,16 @@
 package com.innercircle.project_one.survey.domain;
 
+import com.innercircle.project_one.survey.api.dto.SurveyDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class Survey {
 
     @Id
@@ -28,7 +31,7 @@ public class Survey {
         this.description = description;
     }
 
-    public int updateSurveyVersion(SurveyVersion surveyVersion) {
+    public Long updateSurveyVersion(SurveyVersion surveyVersion) {
         this.surveyVersion = surveyVersion;
         return surveyVersion.getVersion();
     }
@@ -36,6 +39,11 @@ public class Survey {
     public int updateSurveyObjects(List<SurveyObject> surveyObjects) {
         this.surveyObjects = surveyObjects;
         return surveyObjects.size();
+    }
+
+    public void updateSurveyTitleAndDescription(SurveyDTO surveyDTO) {
+        this.title = surveyDTO.title();
+        this.description = surveyDTO.description();
     }
 
 }
