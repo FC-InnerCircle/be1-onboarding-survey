@@ -113,3 +113,564 @@
 빌드 결과물을 Executable jar 형태로 만들어 위 Branch에 함께 업로드 하시고, README에 다운로드 링크 정보를 넣어주시기 바랍니다. GitHub의 용량 문제로 업로드가 안되는 경우 다른 곳(개인 구글 드라이브 등)에 업로드 한 후 해당 다운로드 링크 정보를 README에 넣어주셔도 됩니다.
 
 해당 파일을 다운로드 및 실행(e.g. java -jar project.jar)하여 요구 사항 기능 검증을 진행하게 됩니다. 해당 파일을 다운로드할 수 없거나 실행 시 에러가 발생하는 경우에는 기능 점검을 진행하지 않습니다. 온보딩 프로젝트 제출 전 해당 실행 파일 다운로드 및 정상 동작 여부를 체크해 주시기 바랍니다.
+
+---
+
+# 1. 설문조사 생성 API
+
+## POST /v1/api/surveys
+
+### request body
+
+- title: string
+- description: string
+- questions: object[]
+  - question: string
+  - description: string
+  - questionType: string
+  - isRequired: boolean
+  - questionOrder: number
+  - questionOptions: object[]
+    - questionOptionOrder: number
+    - questionOptionvalue: string
+### request body 예시
+```json
+{
+    "title": "테스트 설문조사1 제목",
+    "description": "테스트 설문조사1 본문",
+    "questions": [
+        {
+            "question": "테스트 설문조사1 질문1",
+            "description": "테스트 설문조사1 질문1 설명",
+            "questionType": "SHORT_ANSWER",
+            "isRequired": true,
+            "questionOrder": 0
+        },
+        {
+            "question": "테스트 설문조사1 질문2",
+            "questionType": "LONG_ANSWER",
+            "isRequired": false,
+            "questionOrder": 1
+        },
+        {
+            "question": "테스트 설문조사1 질문3",
+            "description": "테스트 설문조사1 질문3 설명",
+            "questionType": "SINGLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 2,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지5"
+                }
+            ]
+        },
+        {
+            "question": "테스트 설문조사 질문4",
+            "description": "테스트 설문조사 질문4 설명",
+            "questionType": "MULTIPLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 3,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지5"
+                }
+            ]
+        }
+    ]
+}
+```
+
+### response
+
+- title: string
+- description: string
+- questions: object[]
+  - question: string
+  - description: string
+  - questionType: string
+  - isRequired: boolean
+  - questionOrder: number
+  - questionOptions: object[]
+    - questionOptionOrder: number
+    - questionOptionvalue: string
+
+### response 예시
+
+```json
+{
+    "title": "테스트 설문조사1 제목",
+    "description": "테스트 설문조사1 본문",
+    "questions": [
+        {
+            "question": "테스트 설문조사1 질문1",
+            "questionType": "SHORT_ANSWER",
+            "isRequired": true,
+            "questionOrder": 0,
+            "questionOptions": []
+        },
+        {
+            "question": "테스트 설문조사1 질문2",
+            "questionType": "LONG_ANSWER",
+            "isRequired": false,
+            "questionOrder": 1,
+            "questionOptions": []
+        },
+        {
+            "question": "테스트 설문조사1 질문3",
+            "questionType": "SINGLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 2,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지5"
+                }
+            ]
+        },
+        {
+            "question": "테스트 설문조사 질문4",
+            "questionType": "MULTIPLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 3,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지5"
+                }
+            ]
+        }
+    ]
+}
+```
+
+# 2. 설문조사 수정 API
+
+## PUT /v1/api/surveys/{surveyId}
+
+### request body
+
+- title: string
+- description: string
+- questions: object[]
+  - question: string
+  - description: string
+  - questionType: string
+  - isRequired: boolean
+  - questionOrder: number
+  - questionOptions: object[]
+    - questionOptionOrder: number
+    - questionOptionValue: string
+
+### request body 예시
+
+```json
+{
+    "title": "테스트 설문조사1 제목 수정",
+    "description": "테스트 설문조사1 본문",
+    "questions": [
+        {
+            "question": "테스트 설문조사1 질문1",
+            "description": "테스트 설문조사1 질문1 설명 수정",
+            "questionType": "SHORT_ANSWER",
+            "isRequired": true,
+            "questionOrder": 0
+        },
+        {
+            "question": "테스트 설문조사1 질문3",
+            "description": "테스트 설문조사1 질문3 설명",
+            "questionType": "SINGLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 1,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지2 수정"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지5"
+                }
+            ]
+        },
+        {
+            "question": "테스트 설문조사 질문4 수정",
+            "description": "테스트 설문조사 질문4 설명",
+            "questionType": "MULTIPLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 2,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지4 수정"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지5"
+                },
+                {
+                    "questionOptionOrder": 5,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지6 추가"
+                }
+            ]
+        }
+    ]
+}
+```
+### response
+
+- title: string
+- description: string
+- questions: object[]
+  - question: string
+  - description: string
+  - questionType: string
+  - isRequired: boolean
+  - questionOrder: number
+  - questionOptions: object[]
+    - questionOptionOrder: number
+    - questionOptionvalue: string
+
+### response 예시
+
+```json
+{
+    "title": "테스트 설문조사1 제목 수정",
+    "description": "테스트 설문조사1 본문",
+    "questions": [
+        {
+            "question": "테스트 설문조사1 질문1",
+            "questionType": "SHORT_ANSWER",
+            "isRequired": true,
+            "questionOrder": 0,
+            "questionOptions": []
+        },
+        {
+            "question": "테스트 설문조사1 질문2",
+            "questionType": "LONG_ANSWER",
+            "isRequired": false,
+            "questionOrder": 1,
+            "questionOptions": []
+        },
+        {
+            "question": "테스트 설문조사1 질문3",
+            "questionType": "SINGLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 2,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문3 선택지5"
+                }
+            ]
+        },
+        {
+            "question": "테스트 설문조사 질문4",
+            "questionType": "MULTIPLE_CHOICE",
+            "isRequired": true,
+            "questionOrder": 3,
+            "questionOptions": [
+                {
+                    "questionOptionOrder": 0,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지1"
+                },
+                {
+                    "questionOptionOrder": 1,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지2"
+                },
+                {
+                    "questionOptionOrder": 2,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지3"
+                },
+                {
+                    "questionOptionOrder": 3,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지4"
+                },
+                {
+                    "questionOptionOrder": 4,
+                    "questionOptionValue": "테스트 설문조사1 질문4 선택지5"
+                }
+            ]
+        }
+    ]
+}
+```
+
+# 3. 설문조사 응답 제출 API
+
+## POST /v1/api/surveys/{surveyId}/responses
+
+### request body
+
+- answers: object[]
+  - questionOrder: number
+  - questionType: string
+  - answerValue: string
+  - answerSingleOption: number
+  - answerMultipleOptions: string
+
+### request body 예시
+
+```json
+{
+    "answers": [
+        {
+            "questionOrder": 0,
+            "questionType": "SHORT_ANSWER",
+            "answerValue": "테스트 설문조사1 답변1 짧은답변"
+        },
+        {
+            "questionOrder": 1,
+            "questionType": "LONG_ANSWER",
+            "answerValue": "테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변"
+        },
+        {
+            "questionOrder": 2,
+            "questionType": "SINGLE_CHOICE",
+            "answerSingleOption": 0
+        },
+        {
+            "questionOrder": 3,
+            "questionType": "MULTIPLE_CHOICE",
+            "answerMultipleOptions": "0,1,2"
+        }
+    ]
+}
+```
+
+### response
+
+- message: string
+
+### response 예시
+```json
+"Successfully submitted"
+```
+
+# 4. 설문조사 응답 조회 API
+
+## GET /v1/api/surveys/{surveyId}/responses
+
+### request body
+
+- 없음
+
+### response
+
+- responses: object[]
+  - answers: object[]
+    - questionOrder: number
+    - questionType: string
+    - answerValue: string
+    - answerSingleOption: number
+    - answerMultipleOptions: string
+
+### response 예시
+
+```json
+{
+    "responses": [
+        {
+            "answers": [
+                {
+                    "questionOrder": 0,
+                    "questionType": "SHORT_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변1 짧은답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 1,
+                    "questionType": "LONG_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 2,
+                    "questionType": "SINGLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": 0,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 3,
+                    "questionType": "MULTIPLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": "0,1,2"
+                }
+            ]
+        },
+        {
+            "answers": [
+                {
+                    "questionOrder": 0,
+                    "questionType": "SHORT_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변1 짧은답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 1,
+                    "questionType": "LONG_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 2,
+                    "questionType": "SINGLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": 0,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 3,
+                    "questionType": "MULTIPLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": "0,1,2"
+                }
+            ]
+        },
+        {
+            "answers": [
+                {
+                    "questionOrder": 0,
+                    "questionType": "SHORT_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변1 짧은답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 1,
+                    "questionType": "LONG_ANSWER",
+                    "answerValue": "테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변테스트 설문조사1 답변2 긴답변",
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 2,
+                    "questionType": "SINGLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": 0,
+                    "answerMultipleOptions": null
+                },
+                {
+                    "questionOrder": 3,
+                    "questionType": "MULTIPLE_CHOICE",
+                    "answerValue": null,
+                    "answerSingleOption": null,
+                    "answerMultipleOptions": "0,1,2"
+                }
+            ]
+        }
+    ]
+}
+```
