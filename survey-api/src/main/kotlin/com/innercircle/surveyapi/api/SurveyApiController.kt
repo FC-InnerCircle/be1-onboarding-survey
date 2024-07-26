@@ -14,15 +14,12 @@ import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.*
 
 // RESTful API를 정의하는 인터페이스입니다.
 // API의 구현체는 SurveyApiControllerImpl 클래스에 정의되어 있습니다.
 // API를 설명하는 Swagger 문서를 별도 생성 및 관리하기 위해 구현체 별도 분리합니다.
-@Component
 @Tag(name = "Surveys", description = "Survey operations")
-@RestController
 @RequestMapping("/v1/api")
 interface SurveyApiController {
     @Operation(

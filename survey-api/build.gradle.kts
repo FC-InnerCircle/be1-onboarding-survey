@@ -11,6 +11,8 @@ dependencies {
     implementation(project(":survey-common"))
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("jakarta.servlet:jakarta.servlet-api:5.0.0")
 }
 
 // main가 없으므로 jar task를 비활성화
