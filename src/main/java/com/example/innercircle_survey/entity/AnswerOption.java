@@ -1,11 +1,15 @@
 package com.example.innercircle_survey.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter @Setter @Builder
 public class AnswerOption {
 
     @Id
@@ -22,4 +26,10 @@ public class AnswerOption {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    public static AnswerOption create(String text) {
+        return AnswerOption.builder()
+                .text(text)
+                .build();
+    }
 }

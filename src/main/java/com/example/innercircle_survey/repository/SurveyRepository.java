@@ -1,8 +1,7 @@
 package com.example.innercircle_survey.repository;
 
-import org.springframework.stereotype.Repository;
+import com.example.innercircle_survey.entity.Survey;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-//@Repository
-public class SurveyRepository {
-
+public interface SurveyRepository extends JpaRepository<Survey, Long> {
 }

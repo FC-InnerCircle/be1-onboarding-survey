@@ -1,13 +1,13 @@
 package com.example.innercircle_survey.controller;
 
-import com.example.innercircle_survey.dto.SurveyRequestDTO;
+import com.example.innercircle_survey.dto.SurveyVersionDTO;
+import com.example.innercircle_survey.dto.ResponseDTO;
 import com.example.innercircle_survey.service.SurveyService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.net.http.HttpResponse;
+import java.util.List;
 
 /**
  *
@@ -20,39 +20,40 @@ import java.net.http.HttpResponse;
  * */
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class SurveyController {
 
     private final SurveyService service;
 
     // 설문조사 등록
-    @PostMapping("/survey")
-    public HttpResponse<Object> createSurvey(@RequestBody @Valid SurveyRequestDTO request) {
-
-        return null;
+    @PostMapping("/surveys")
+    public void createSurvey(@RequestBody @Valid SurveyVersionDTO request) {
+        service.createSurvey(request);
     }
 
     // 설문조사 수정
     @PutMapping("/survey/{surveyId}")
-    public HttpResponse<Object> updateSurvey(
-            @PathVariable("surveyId") String surveyId,
-            @RequestBody @Valid SurveyRequestDTO request
+    public void updateSurvey(
+            @PathVariable("surveyId") Long surveyId,
+            @RequestBody @Valid SurveyVersionDTO request
     ) {
-
-        return null;
+        service.updateSurvey(surveyId, request);
     }
 
     // 설문조사 응답 제출
-    @PostMapping("/survey/{surveyId}")
-    public HttpResponse<Object> createResponse(@PathVariable("surveyId") String surveyId) {
+    @PostMapping("/surveys/{surveyId}/responses")
+    public void createResponse(
+            @PathVariable("surveyId") Long surveyId,
+            @RequestBody @Valid ResponseDTO request) {
 
-        return null;
+        service.createResponse(surveyId, request);
     }
 
     // 설문조사 응답 조회
-    @GetMapping("/survey/{surveyId}")
-    public HttpResponse<Object> readSurveyResponses(@PathVariable("surveyId") String surveyId) {
+    @GetMapping("/surveys/{surveyId}/responses")
+    public List<ResponseDTO> readSurveyResponses(@PathVariable("surveyId") Long surveyId) {
 
+        service.readSurveyResponses(surveyId);
         return null;
     }
 }

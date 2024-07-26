@@ -1,5 +1,6 @@
 package com.example.innercircle_survey.entity;
 
+import com.example.innercircle_survey.dto.AnswerDTO;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -33,4 +34,20 @@ public class Answer {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    public static Answer create(AnswerDTO dto) {
+        Answer answer = new Answer();
+
+        List<AnswerOption> options = dto.getOptions().stream()
+                .map(text -> {
+                    AnswerOption option = AnswerOption.create(text);
+                    option.setAnswer(answer);
+                    return option;
+                })
+                .toList();
+
+        answer.setAnswerOptions(options);
+
+        return answer;
+    }
 }

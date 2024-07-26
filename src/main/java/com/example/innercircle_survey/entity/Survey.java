@@ -1,10 +1,12 @@
 package com.example.innercircle_survey.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@Builder
 @RequiredArgsConstructor
 public class Survey {
 
@@ -28,4 +31,15 @@ public class Survey {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    @Transient
+    private SurveyVersion recentVersion;
+
+    public static Survey create(SurveyVersion surveyVersion) {
+        Survey survey = new Survey();
+        survey.setRecentVersion(surveyVersion);
+        surveyVersion.setSurvey(survey);  // 관계의 주인에서 관계 매핑 위함. 너무 억지스럽다...
+        survey.setSurveyVersions(new ArrayList<>(List.of(surveyVersion)));
+        return survey;
+    }
 }

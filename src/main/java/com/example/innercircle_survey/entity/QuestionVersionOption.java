@@ -1,6 +1,7 @@
 package com.example.innercircle_survey.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@Builder
 @RequiredArgsConstructor
 public class QuestionVersionOption {
 
@@ -27,4 +29,10 @@ public class QuestionVersionOption {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+
+    public static QuestionVersionOption create(String text) {
+        return QuestionVersionOption.builder()
+                .text(text)
+                .build();
+    }
 }
