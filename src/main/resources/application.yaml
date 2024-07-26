@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+    show_sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        format_sql: true
+        use_sql_comments: true
