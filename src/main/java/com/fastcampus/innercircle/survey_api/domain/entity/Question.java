@@ -4,6 +4,7 @@ import com.fastcampus.innercircle.survey_api.domain.QuestionType;
 import com.fastcampus.innercircle.survey_api.domain.request.QuestionRequest;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,15 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "form_id", nullable = false)
     private SurveyForm form;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
+
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
+    @Column(name = "removed_at")
+    private LocalDateTime removedAt = null;
 
     public Long getQuestionId() {
         return questionId;
@@ -88,6 +98,14 @@ public class Question {
 
     public void setForm(SurveyForm form) {
         this.form = form;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setRemovedAt(LocalDateTime removedAt) {
+        this.removedAt = removedAt;
     }
 
     public static Question of(QuestionRequest request) {

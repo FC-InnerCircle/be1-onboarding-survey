@@ -6,11 +6,17 @@ import java.util.List;
 
 public class QuestionRequest {
 
+    private final Long id;
+
     private final String title; // 항목 이름
     private final String description;   // 항목 설명
     private final QuestionType questionType;    // 항목 입력 형태
     private final boolean isRequired;   // 항목 필수 여부
     private final List<String> options; // 단일 선택 리스트, 다중 선택 리스트에서 선택 할 수 있는 후보
+
+    public Long getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;
@@ -32,7 +38,8 @@ public class QuestionRequest {
         return options;
     }
 
-    public QuestionRequest(String title, String description, QuestionType questionType, boolean isRequired, List<String> options) {
+    public QuestionRequest(Long id, String title, String description, QuestionType questionType, boolean isRequired, List<String> options) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.questionType = questionType;
