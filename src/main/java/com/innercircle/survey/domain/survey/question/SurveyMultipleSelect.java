@@ -22,5 +22,5 @@ public class SurveyMultipleSelect extends SurveyQuestion {
     private Long id;
 
     @OneToMany(mappedBy = "question")
-    private List<SurveyMultipleSelect> multipleSelects = new ArrayList<>();
+    private List<MultipleSelectOption> options = new ArrayList<>();
 }

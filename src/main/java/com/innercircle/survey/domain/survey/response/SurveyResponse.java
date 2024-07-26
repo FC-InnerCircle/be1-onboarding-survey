@@ -1,16 +1,17 @@
-package com.innercircle.survey.domain.survey.question;
-
+package com.innercircle.survey.domain.survey.response;
 
 import com.innercircle.survey.domain.AbstractEntity;
 import com.innercircle.survey.domain.survey.Survey;
 import jakarta.persistence.*;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
-@Table(name = "survey_questions")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class SurveyQuestion extends AbstractEntity {
+@Table(name = "survey_responses")
+public class SurveyResponse extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +21,6 @@ public class SurveyQuestion extends AbstractEntity {
     @JoinColumn(name = "survey_id")
     private Survey survey;
 
-    private String questionText;
-    private Long version;
-    private Long sequence;
-
-    @Enumerated(EnumType.STRING)
-    private QuestionType questionType;
+    @OneToMany(mappedBy = "response")
+    private List<QuestionResponse> questionResponses = new ArrayList<>();
 }

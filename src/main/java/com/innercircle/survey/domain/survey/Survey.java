@@ -3,6 +3,7 @@ package com.innercircle.survey.domain.survey;
 import com.innercircle.survey.common.util.TokenGenerator;
 import com.innercircle.survey.domain.AbstractEntity;
 import com.innercircle.survey.domain.survey.question.*;
+import com.innercircle.survey.domain.survey.response.SurveyResponse;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -27,8 +28,6 @@ public class Survey extends AbstractEntity {
     @OneToMany(mappedBy = "survey")
     private List<SurveyQuestion> surveyQuestions = new ArrayList<>();
 
-    public Survey() {
-        this.surveyToken = TokenGenerator.randomCharacterWithPrefix(SURVEY_PREFIX);
-        this.surveyCreatedAt = ZonedDateTime.now();
-    }
+    @OneToMany(mappedBy = "survey")
+    private List<SurveyResponse> surveyResponses = new ArrayList<>();
 }
