@@ -1,0 +1,147 @@
+###
+POST http://localhost:8080/surveys
+Content-Type: application/json
+
+{
+  "name": "고객 만족도 설문조사",
+  "description": "고객 만족도를 측정하기 위한 설문조사입니다",
+  "questions": [
+    {
+      "name": "서비스 품질",
+      "description": "저희 서비스의 품질을 어떻게 평가하시겠습니까?",
+      "inputType": "SINGLE_CHOICE",
+      "required": true,
+      "options": [
+        {
+          "content": "매우 만족",
+          "seq": 1
+        },
+        {
+          "content": "만족",
+          "seq": 2
+        },
+        {
+          "content": "보통",
+          "seq": 3
+        },
+        {
+          "content": "불만족",
+          "seq": 4
+        },
+        {
+          "content": "매우 불만족",
+          "seq": 5
+        }
+      ]
+    },
+    {
+      "name": "전반적인 경험",
+      "description": "저희와의 전반적인 경험을 어떻게 평가하시겠습니까?",
+      "inputType": "MULTI_CHOICE",
+      "required": true,
+      "options": [
+        {
+          "content": "매우 좋음",
+          "seq": 1
+        },
+        {
+          "content": "좋음",
+          "seq": 2
+        },
+        {
+          "content": "보통",
+          "seq": 3
+        },
+        {
+          "content": "나쁨",
+          "seq": 4
+        },
+        {
+          "content": "매우 나쁨",
+          "seq": 5
+        }
+      ]
+    }
+  ]
+}
+
+<> 2024-07-26T084548.200.json
+
+###
+PUT http://localhost:8080/surveys/1
+Content-Type: application/json
+
+{
+  "name": "고객 만족도 설문조사",
+  "description": "고객 만족도를 측정하기 위한 설문조사입니다",
+  "questions": [
+    {
+      "questionId": 1,
+      "name": "서비스 품질2",
+      "description": "저희 서비스의 품질을 어떻게 평가하시겠습니까?",
+      "inputType": "SINGLE_CHOICE",
+      "required": true,
+      "options": [
+        {
+          "optionId" : 1,
+          "content": "매우 만족2",
+          "seq": 1
+        },
+        {
+          "optionId" : 2,
+          "content": "만족",
+          "seq": 2
+        },
+        {
+          "optionId" : 3,
+          "content": "보통",
+          "seq": 3
+        },
+        {
+          "optionId" : 4,
+          "content": "불만족",
+          "seq": 4
+        },
+        {
+          "optionId" : 5,
+          "content": "매우 불만족",
+          "seq": 5
+        }
+      ]
+    },
+    {
+      "questionId": 2,
+      "name": "전반적인 경험",
+      "description": "저희와의 전반적인 경험을 어떻게 평가하시겠습니까?",
+      "inputType": "MULTI_CHOICE",
+      "required": true,
+      "options": [
+        {
+          "optionId" : 6,
+          "content": "매우 좋음",
+          "seq": 1
+        },
+        {
+          "optionId" : 7,
+          "content": "좋음",
+          "seq": 2
+        },
+        {
+          "optionId" : 8,
+          "content": "보통",
+          "seq": 3
+        },
+        {
+          "optionId" : 9,
+          "content": "나쁨",
+          "seq": 4
+        },
+        {
+          "optionId" : 10,
+          "content": "매우 나쁨",
+          "seq": 5
+        }
+      ]
+    }
+  ]
+}

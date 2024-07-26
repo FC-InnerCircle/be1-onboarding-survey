@@ -16,8 +16,6 @@ class Form(
     var description: String? = null,
     @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var questions: MutableList<Question> = mutableListOf(),
-    @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val responses: MutableList<Response> = mutableListOf(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val formId: Long = 0,
 ) {

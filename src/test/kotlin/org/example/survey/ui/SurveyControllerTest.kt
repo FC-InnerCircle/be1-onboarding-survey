@@ -2,7 +2,7 @@ package org.example.survey.ui
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.example.survey.application.FormRegisterService
-import org.example.survey.dto.SurveyRequest
+import org.example.survey.dto.servey.SurveyRequest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any

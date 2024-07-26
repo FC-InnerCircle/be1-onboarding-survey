@@ -30,9 +30,6 @@ class Question(
     @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val options: MutableList<Option> = mutableListOf()
 
-    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val answers: MutableList<Answer> = mutableListOf()
-
     var name: String = name
         protected set
 

@@ -25,30 +25,30 @@ CREATE TABLE `option` (
                           FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`)
 );
 
-CREATE TABLE `response` (
-                            `response_id` bigint NOT NULL AUTO_INCREMENT,
-                            `responded_at` datetime NULL,
+CREATE TABLE `feedback` (
+                            `feedback_id` bigint NOT NULL AUTO_INCREMENT,
+                            `feedback_at` datetime NULL,
                             `form_id` bigint NOT NULL,
-                            PRIMARY KEY (`response_id`),
+                            PRIMARY KEY (`feedback_id`),
                             FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`)
 );
 
 CREATE TABLE `answer` (
                           `answer_id` bigint NOT NULL AUTO_INCREMENT,
-                          `response_id` bigint NOT NULL,
+                          `feedback_id` bigint NOT NULL,
                           `question_id` bigint NOT NULL,
                           `content` varchar(255) NULL,
                           PRIMARY KEY (`answer_id`),
-                          FOREIGN KEY (`response_id`) REFERENCES `response` (`response_id`),
+                          FOREIGN KEY (`feedback_id`) REFERENCES `feedback` (`feedback_id`),
                           FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`)
 );
 
-CREATE TABLE `response_history` (
-                                    `response_history_id` bigint NOT NULL AUTO_INCREMENT,
+CREATE TABLE `feedback_history` (
+                                    `feedback_history_id` bigint NOT NULL AUTO_INCREMENT,
                                     `form_id` bigint NOT NULL,
                                     `questions` text NULL,
                                     `answers` text NULL,
                                     `created_at` datetime NULL,
-                                    PRIMARY KEY (`response_history_id`),
+                                    PRIMARY KEY (`feedback_history_id`),
                                     FOREIGN KEY (`form_id`) REFERENCES `form` (`form_id`)
 );

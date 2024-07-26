@@ -1,4 +1,4 @@
-package org.example.survey.dto
+package org.example.survey.dto.servey
 
 data class QuestionRequest(
     val questionId: Long,

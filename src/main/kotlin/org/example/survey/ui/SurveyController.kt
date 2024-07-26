@@ -1,7 +1,7 @@
 package org.example.survey.ui
 
 import org.example.survey.application.FormRegisterService
-import org.example.survey.dto.SurveyRequest
+import org.example.survey.dto.servey.SurveyRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

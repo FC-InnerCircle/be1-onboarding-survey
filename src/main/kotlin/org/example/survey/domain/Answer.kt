@@ -12,13 +12,18 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "answer")
 class Answer(
+    content: String,
+    questionId: Long,
+) {
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "response_id")
-    val response: Response,
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id")
-    val question: Question,
-    val content: String? = null,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val answerId: Long = 0,
-)
+    @JoinColumn(name = "feedback_id")
+    var feedback: Feedback? = null
+
+    val questionId: Long = questionId
+
+    val content: String? = content
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val answerId: Long = 0
+}

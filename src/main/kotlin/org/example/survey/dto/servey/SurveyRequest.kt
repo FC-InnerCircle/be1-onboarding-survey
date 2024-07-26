@@ -1,4 +1,4 @@
-package org.example.survey.dto
+package org.example.survey.dto.servey
 
 import org.example.survey.domain.Form
 import org.example.survey.domain.Option
