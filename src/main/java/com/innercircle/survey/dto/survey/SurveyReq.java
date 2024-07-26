@@ -2,6 +2,8 @@ package com.innercircle.survey.dto.survey;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import java.time.LocalDateTime;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,7 @@ public class SurveyReq {
 
     private String title;
     private String description;
-    private String endAt;
+    private LocalDateTime endAt;
+    private List<QuestionReq> questions;
 
 }
