@@ -4,7 +4,6 @@ import com.psh10066.survey.survey_management.domain.SurveyQuestion;
 import com.psh10066.survey.survey_management.domain.SurveyQuestionType;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
@@ -19,8 +18,6 @@ public record SurveyQuestionDto(
     @NotNull
     SurveyQuestionType type,
 
-    @NotNull
-    @NotEmpty
     @Valid
     List<@NotBlank String> selectInputs,
 
