@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/survey;MVCC=TRUE
+    url: jdbc:h2:mem:survey
     username: sa
     password:
     driver-class-name: org.h2.Driver
@@ -13,7 +13,8 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.H2Dialect
         naming:
-          physical-strategy: org.hibernate.boot.model.naming.SpringPhysicalNamingStrategy
+          physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+          implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 
   h2:
     console:

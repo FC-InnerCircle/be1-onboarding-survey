@@ -15,7 +15,7 @@ public class Option {
     @Column(name = "option_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
 
