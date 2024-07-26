@@ -1,4 +1,6 @@
 # 이너써클 BE 온보딩 프로젝트 (장현호)
+> [🚀기능 점검을 위한 빌드 결과물 바로가기](#)
+
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
 - `[API 명세서] 노션`: [바로가기](https://hyunolike.notion.site/API-3c10372e54c34612976fb7ff0c00c5f1?pvs=4)

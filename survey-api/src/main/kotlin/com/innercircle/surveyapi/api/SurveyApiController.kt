@@ -80,15 +80,15 @@ interface SurveyApiController {
         summary = "폼 생성",
         description = "새로운 폼을 생성합니다.",
         requestBody =
-            io.swagger.v3.oas.annotations.parameters.RequestBody(
-                content = [
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = CreateFormRequest::class),
-                        examples = [
-                            ExampleObject(
-                                name = "예시 요청값",
-                                value = """
+        io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = CreateFormRequest::class),
+                    examples = [
+                        ExampleObject(
+                            name = "예시 요청값",
+                            value = """
                         {
                           "title": "신규 사용자 설문",
                           "description": "신규 사용자 경험 개선을 위한 설문조사",
@@ -119,11 +119,11 @@ interface SurveyApiController {
                           ]
                         }
                         """,
-                            ),
-                        ],
-                    ),
-                ],
-            ),
+                        ),
+                    ],
+                ),
+            ],
+        ),
         responses = [
             ApiResponse(
                 responseCode = "201",
@@ -197,16 +197,16 @@ interface SurveyApiController {
             ),
         ],
         requestBody =
-            io.swagger.v3.oas.annotations.parameters.RequestBody(
-                required = true,
-                content = [
-                    Content(
-                        mediaType = "application/json",
-                        schema = Schema(implementation = FormSubmissionRequest::class),
-                        examples = [
-                            ExampleObject(
-                                name = "예시 요청값",
-                                value = """
+        io.swagger.v3.oas.annotations.parameters.RequestBody(
+            required = true,
+            content = [
+                Content(
+                    mediaType = "application/json",
+                    schema = Schema(implementation = FormSubmissionRequest::class),
+                    examples = [
+                        ExampleObject(
+                            name = "예시 요청값",
+                            value = """
                         {
                           "respondent_info": "anonymous",
                           "responses": [
@@ -221,11 +221,11 @@ interface SurveyApiController {
                           ]
                         }
                         """,
-                            ),
-                        ],
-                    ),
-                ],
-            ),
+                        ),
+                    ],
+                ),
+            ],
+        ),
         responses = [
             ApiResponse(
                 responseCode = "200",
@@ -259,6 +259,6 @@ interface SurveyApiController {
     @PostMapping("/forms/{forms_id}/submissions")
     fun submitForm(
         @PathVariable forms_id: Long,
-        @RequestBody submission: FormSubmissionRequest,
+        @RequestBody request: FormSubmissionRequest,
     ): FormSubmissionResponse
 }

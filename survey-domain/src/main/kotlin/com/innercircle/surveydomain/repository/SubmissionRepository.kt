@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SubmissionRepository : JpaRepository<Submission, Int> {
     fun findByFormIdAndRespondentInfo(
-        forms_id: Long,
-        respondent_info: String,
+        formsId: Long,
+        respondentInfo: String,
     ): Submission?
 }

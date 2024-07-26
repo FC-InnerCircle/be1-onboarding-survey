@@ -3,27 +3,23 @@
 package com.innercircle.surveyapplication
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.runApplication
-import org.springframework.context.annotation.ComponentScan
-import org.springframework.context.annotation.EnableAspectJAutoProxy
-import org.springframework.context.annotation.Import
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories
+import org.springframework.context.annotation.*
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = ["com.innercircle"])
 @EnableAspectJAutoProxy
 @Import(
 //    com.innercircle.surveyapi.common.RequestLoggingAspect::class,
     com.innercircle.surveyapi.api.SurveyApiControllerImpl::class,
 )
-@EntityScan(basePackages = ["com.innercircle.surveydomain.model"])
-@EnableJpaRepositories(basePackages = ["com.innercircle.surveydomain.repository"])
 @ComponentScan(
     basePackages = [
         "com.innercircle.surveyapi",
         "com.innercircle.surveyapplication",
         "com.innercircle.surveydomain",
         "com.innercircle.surveycommon",
+        "com.innercircle.surveydomain.repository",
+        "com.innercircle.surveydomain.service",
     ],
 )
 class SurveyApplication
