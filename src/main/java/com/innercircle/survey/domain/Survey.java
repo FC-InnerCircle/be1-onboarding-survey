@@ -12,16 +12,28 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Survey {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "survey_id")
     private Long id;
+
     private String title;
+
     private String description;
+
+    private Integer version = 1;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
+
     private LocalDateTime endAt;
 
     @OneToMany(mappedBy = "survey", cascade = CascadeType.ALL)
     private List<Question> questions;
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }

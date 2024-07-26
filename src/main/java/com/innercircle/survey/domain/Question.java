@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Question {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "question_id")
@@ -29,12 +30,6 @@ public class Question {
 
     private boolean isDeleted = false;
 
-    private Integer version = 1;
-
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 }
