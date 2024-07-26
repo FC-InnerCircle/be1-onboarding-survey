@@ -1,6 +1,8 @@
 package com.fastcampus.innercircle.survey_api.controller;
 
+import com.fastcampus.innercircle.survey_api.domain.request.ResponseRequest;
 import com.fastcampus.innercircle.survey_api.domain.request.SurveyFormRequest;
+import com.fastcampus.innercircle.survey_api.service.ResponseService;
 import com.fastcampus.innercircle.survey_api.service.SurveyFormService;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 public class SurveyController {
 
     private final SurveyFormService surveyFormService;
+    private final ResponseService responseService;
 
-    public SurveyController(SurveyFormService surveyFormService) {
+    public SurveyController(SurveyFormService surveyFormService, ResponseService responseService) {
         this.surveyFormService = surveyFormService;
+        this.responseService = responseService;
     }
 
     @PostMapping("/v1/forms")
@@ -26,5 +30,13 @@ public class SurveyController {
             @RequestBody SurveyFormRequest surveyFormRequest
     ) {
         surveyFormService.updateSurveyForm(formId, surveyFormRequest);
+    }
+
+    @PostMapping("/v1/forms/{formId}/responses")
+    public void submitResponse(
+            @PathVariable(value = "formId") Long formId,
+            @RequestBody ResponseRequest responseRequest
+            ) {
+        responseService.submitResponse(formId, responseRequest);
     }
 }
