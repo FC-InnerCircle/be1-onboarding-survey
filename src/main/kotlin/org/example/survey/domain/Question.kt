@@ -55,6 +55,19 @@ class Question(
         option.question = this
     }
 
+    fun updateQuestion(question: Question) {
+        this.name = question.name
+        this.description = question.description
+        this.inputType = question.inputType
+        this.required = question.required
+        question.options.forEach { option ->
+            options
+                .find { it == option }
+                ?.updateOption(option)
+                ?: addOption(option)
+        }
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Question) return false
@@ -65,11 +78,4 @@ class Question(
     }
 
     override fun hashCode(): Int = questionId.hashCode()
-
-    fun updateQuestion(question: Question) {
-        this.name = question.name
-        this.description = question.description
-        this.inputType = question.inputType
-        this.required = question.required
-    }
 }

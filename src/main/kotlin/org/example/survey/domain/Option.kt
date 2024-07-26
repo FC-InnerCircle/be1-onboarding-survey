@@ -12,6 +12,7 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "option")
 class Option(
+    optionId: Long = 0,
     question: Question,
     content: String,
     seq: Int,
@@ -20,10 +21,27 @@ class Option(
     @JoinColumn(name = "question_id")
     var question: Question = question
 
-    val content: String = content
-    val seq: Int = seq
+    var content: String = content
+    var seq: Int = seq
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val optionId: Long = 0
+    var optionId: Long = optionId
+        protected set
+
+    fun updateOption(option: Option) {
+        this.content = option.content
+        this.seq = option.seq
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Option) return false
+
+        if (optionId != other.optionId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int = optionId.hashCode()
 }

@@ -30,6 +30,7 @@ data class SurveyRequest(
             questionRequest.options.forEach { optionRequest ->
                 val option =
                     Option(
+                        optionId = optionRequest.optionId,
                         question = question,
                         content = optionRequest.content,
                         seq = optionRequest.seq,
