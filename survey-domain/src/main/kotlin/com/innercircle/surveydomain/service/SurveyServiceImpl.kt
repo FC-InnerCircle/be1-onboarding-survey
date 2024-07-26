@@ -15,10 +15,10 @@ import java.time.LocalDateTime
 @Service
 class SurveyServiceImpl : SurveyService {
     @Autowired
-    private lateinit var submissionRepository: SubmissionRepository
+    private lateinit var formRepository: FormRepository
 
     @Autowired
-    private lateinit var formRepository: FormRepository
+    private lateinit var submissionRepository: SubmissionRepository
 
     @Autowired
     private lateinit var responseRepository: ResponseRepository
@@ -109,14 +109,14 @@ class SurveyServiceImpl : SurveyService {
                     isRequired = question.isRequired,
                     additionalConfig = question.additionalConfig,
                     questionOptions =
-                        question.questionOptions.map { option ->
-                            QuestionOptionDto(
-                                id = option.id,
-                                questionId = option.question.id,
-                                optionText = option.optionText,
-                                optionOrder = option.optionOrder,
-                            )
-                        },
+                    question.questionOptions.map { option ->
+                        QuestionOptionDto(
+                            id = option.id,
+                            questionId = option.question.id,
+                            optionText = option.optionText,
+                            optionOrder = option.optionOrder,
+                        )
+                    },
                 )
             }
 

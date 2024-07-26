@@ -24,17 +24,17 @@ class SurveyApiControllerImpl : SurveyApiController {
     override fun getForms(active: Boolean?): FormsResponse =
         FormsResponse(
             forms =
-                listOf(
-                    FormDto(
-                        id = 1,
-                        title = "고객 만족도 조사",
-                        description = "서비스 품질 개선을 위한 설문조사",
-                        createdAt = "2024-07-23T10:00:00Z",
-                        updatedAt = "2024-07-23T10:00:00Z",
-                        isActive = true,
-                        version = 1,
-                    ),
+            listOf(
+                FormDto(
+                    id = 1,
+                    title = "고객 만족도 조사",
+                    description = "서비스 품질 개선을 위한 설문조사",
+                    createdAt = "2024-07-23T10:00:00Z",
+                    updatedAt = "2024-07-23T10:00:00Z",
+                    isActive = true,
+                    version = 1,
                 ),
+            ),
         )
 
     // CreateFormResponse

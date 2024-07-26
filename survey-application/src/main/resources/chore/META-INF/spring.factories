@@ -1,0 +1,13 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.innercircle.surveyapi.api.SurveyApiControllerImpl,\
+com.innercircle.surveydomain.model.Form,\
+com.innercircle.surveydomain.model.Question,\
+com.innercircle.surveydomain.model.QuestionOption,\
+com.innercircle.surveydomain.model.Response,\
+com.innercircle.surveydomain.model.Submission,\
+com.innercircle.surveydomain.repository.FormRepository,\
+com.innercircle.surveydomain.repository.QuestionRepository,\
+com.innercircle.surveydomain.repository.QuestionOptionRepository,\
+com.innercircle.surveydomain.repository.ResponseRepository,\
+com.innercircle.surveydomain.repository.SubmissionRepository,\
+com.innercircle.surveydomain.service.SurveyServiceImpl
