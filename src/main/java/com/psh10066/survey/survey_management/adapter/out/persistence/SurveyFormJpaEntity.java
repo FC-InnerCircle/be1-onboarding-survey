@@ -1,5 +1,6 @@
 package com.psh10066.survey.survey_management.adapter.out.persistence;
 
+import com.psh10066.survey.common.adapter.out.persistence.AuditingFields;
 import com.psh10066.survey.survey_management.domain.Survey;
 import com.psh10066.survey.survey_management.domain.SurveyForm;
 import com.psh10066.survey.survey_management.domain.SurveyQuestion;
@@ -20,7 +21,7 @@ import java.util.UUID;
     }
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SurveyFormJpaEntity {
+public class SurveyFormJpaEntity extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

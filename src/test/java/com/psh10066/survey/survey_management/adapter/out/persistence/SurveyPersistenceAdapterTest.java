@@ -64,5 +64,7 @@ class SurveyPersistenceAdapterTest {
         assertThat(surveyFormJpaEntity.getName()).isEqualTo("name");
         assertThat(surveyFormJpaEntity.getDescription()).isEqualTo("description");
         assertThat(surveyFormJpaEntity.getQuestions()).isEqualTo(questions);
+        assertThat(surveyFormJpaEntity.getCreatedAt()).isNotNull();
+        assertThat(surveyFormJpaEntity.getUpdatedAt()).isNotNull();
     }
 }

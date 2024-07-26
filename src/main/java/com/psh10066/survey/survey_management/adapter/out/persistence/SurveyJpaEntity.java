@@ -1,5 +1,6 @@
 package com.psh10066.survey.survey_management.adapter.out.persistence;
 
+import com.psh10066.survey.common.adapter.out.persistence.AuditingFields;
 import com.psh10066.survey.survey_management.domain.Survey;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Table(name = "survey")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SurveyJpaEntity {
+public class SurveyJpaEntity extends AuditingFields {
 
     @Id
     private UUID id;

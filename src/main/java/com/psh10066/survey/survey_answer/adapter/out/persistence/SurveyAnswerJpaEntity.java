@@ -1,5 +1,6 @@
 package com.psh10066.survey.survey_answer.adapter.out.persistence;
 
+import com.psh10066.survey.common.adapter.out.persistence.AuditingFields;
 import com.psh10066.survey.survey_answer.domain.SurveyAnswer;
 import com.psh10066.survey.survey_answer.domain.SurveyQuestionAnswer;
 import com.psh10066.survey.survey_management.domain.Survey;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Table(name = "survey_answer")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class SurveyAnswerJpaEntity {
+public class SurveyAnswerJpaEntity extends AuditingFields {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +44,6 @@ public class SurveyAnswerJpaEntity {
     }
 
     public SurveyAnswer toModel() {
-        return new SurveyAnswer(id, new Survey.SurveyId(surveyId), surveyVersion, answers);
+        return new SurveyAnswer(id, new Survey.SurveyId(surveyId), surveyVersion, answers, getCreatedAt());
     }
 }
