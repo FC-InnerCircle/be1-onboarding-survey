@@ -33,4 +33,13 @@ public class SurveyController {
         SurveyResponseDto responseDto = surveyService.updateSurvey(surveyId, surveyUpdateRequestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    @PostMapping("/{surveyId}")
+    public ResponseEntity<String> submitResponse(
+            @PathVariable("surveyId") Long surveyId,
+            @RequestBody SubmitResponseRequestDto submitResponseRequestDto
+    ) {
+        surveyService.submitResponse(surveyId, submitResponseRequestDto);
+        return ResponseEntity.ok("Successfully submitted");
+    }
 }

@@ -63,4 +63,11 @@ public class SurveyService {
                 });
         return SurveyResponseDto.fromEntity(survey);
     }
+
+    public void submitResponse(Long surveyId, SubmitResponseRequestDto request) {
+        Survey survey = findById(surveyId);
+        Response response = request.toResponseEntity(survey);
+        responseRepository.save(response);
+    }
+
 }
