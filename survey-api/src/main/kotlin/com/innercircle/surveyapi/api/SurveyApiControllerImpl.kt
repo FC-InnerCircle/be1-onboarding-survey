@@ -8,11 +8,15 @@ import com.innercircle.surveycommon.dto.response.FormSubmissionResponse
 import com.innercircle.surveycommon.dto.response.FormsResponse
 import com.innercircle.surveydomain.service.SurveyService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.stereotype.Component
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 
+@Component
+@RestController
 class SurveyApiControllerImpl : SurveyApiController {
     @Autowired
     private lateinit var surveyService: SurveyService

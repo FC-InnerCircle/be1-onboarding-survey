@@ -12,6 +12,8 @@ springdoc:
 
 logging:
   level:
+    root: INFO
+    com.innercircle.surveyapi.common.RequestLoggingAspect: INFO
     org:
       springframework:
         web: DEBUG

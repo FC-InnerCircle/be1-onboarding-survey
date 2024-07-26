@@ -23,6 +23,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+
     runtimeOnly("com.h2database:h2")
 }
 
