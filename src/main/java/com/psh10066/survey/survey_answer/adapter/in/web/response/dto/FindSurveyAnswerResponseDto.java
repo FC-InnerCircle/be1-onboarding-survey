@@ -2,6 +2,7 @@ package com.psh10066.survey.survey_answer.adapter.in.web.response.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record FindSurveyAnswerResponseDto(
@@ -10,6 +11,9 @@ public record FindSurveyAnswerResponseDto(
     Long surveyVersion,
 
     @Schema(description = "설문조사 응답 항목 목록", requiredMode = Schema.RequiredMode.REQUIRED)
-    List<SurveyQuestionAnswerResponseDto> answers
+    List<SurveyQuestionAnswerResponseDto> answers,
+
+    @Schema(description = "설문 응답 시각", requiredMode = Schema.RequiredMode.REQUIRED)
+    LocalDateTime createdAt
 ) {
 }
