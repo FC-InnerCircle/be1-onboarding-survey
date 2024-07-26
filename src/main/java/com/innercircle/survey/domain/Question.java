@@ -26,16 +26,23 @@ public class Question {
 
     private String text;
 
-    private Integer version = 1;
+    private Integer version;
 
     private boolean isRequired;
 
     private boolean isDeleted = false;
 
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     private List<Option> options;
+
+    @PrePersist
+    public void prePersist() {
+        this.version = 1;
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.version = this.version + 1;
+    }
 }

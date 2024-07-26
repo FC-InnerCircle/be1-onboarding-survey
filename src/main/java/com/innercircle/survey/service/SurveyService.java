@@ -1,5 +1,7 @@
 package com.innercircle.survey.service;
 
+import com.innercircle.survey.common.exception.CustomException;
+import com.innercircle.survey.common.exception.ErrorCode;
 import com.innercircle.survey.domain.Option;
 import com.innercircle.survey.domain.Question;
 import com.innercircle.survey.domain.QuestionType;
@@ -10,9 +12,10 @@ import com.innercircle.survey.dto.survey.SurveyReq;
 import com.innercircle.survey.repository.OptionRepository;
 import com.innercircle.survey.repository.QuestionRepository;
 import com.innercircle.survey.repository.SurveyRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,10 @@ public class SurveyService {
     private final OptionRepository optionRepository;
 
     public void createSurvey(SurveyReq surveyReq) {
+        if (surveyReq.getQuestions().isEmpty()) {
+            throw new CustomException(ErrorCode.QUESTION_NOT_FOUND);
+        }
+
         Survey survey = Survey.builder().title(surveyReq.getTitle())
             .description(surveyReq.getDescription()).endAt(surveyReq.getEndAt()).build();
         survey = surveyRepository.save(survey);

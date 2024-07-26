@@ -20,3 +20,10 @@ spring:
     console:
       path: /h2-console
       enabled: true
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.springframework.web: DEBUG
+    com.innercircle.survey: DEBUG
