@@ -33,7 +33,7 @@ public class SurveyController {
         return ResponseEntity.ok(responseDto);
     }
 
-    @PostMapping("/{surveyId}")
+    @PostMapping("/{surveyId}/responses")
     public ResponseEntity<String> submitResponse(
             @PathVariable("surveyId") Long surveyId,
             @RequestBody SubmitResponseRequestDto submitResponseRequestDto
