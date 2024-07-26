@@ -3,7 +3,9 @@
 package com.innercircle.surveyapi.api
 
 import com.innercircle.surveycommon.dto.request.CreateFormRequest
+import com.innercircle.surveycommon.dto.request.FormSubmissionRequest
 import com.innercircle.surveycommon.dto.response.CreateFormResponse
+import com.innercircle.surveycommon.dto.response.FormSubmissionResponse
 import com.innercircle.surveycommon.dto.response.FormsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -184,4 +186,82 @@ interface SurveyApiController {
     fun createForm(
         @RequestBody request: CreateFormRequest,
     ): CreateFormResponse
+
+    @Operation(
+        summary = "폼 제출",
+        description = "사용자가 작성한 폼을 제출합니다.",
+        parameters = [
+            Parameter(
+                name = "forms_id",
+                description = "제출할 폼의 ID",
+                required = true,
+                schema = Schema(type = "integer", format = "int64"),
+                example = "1",
+            ),
+        ],
+        requestBody =
+            io.swagger.v3.oas.annotations.parameters.RequestBody(
+                required = true,
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = FormSubmissionRequest::class),
+                        examples = [
+                            ExampleObject(
+                                name = "예시 요청값",
+                                value = """
+                        {
+                          "respondent_info": "anonymous",
+                          "responses": [
+                            {
+                              "question_id": 1,
+                              "response_data": "4"
+                            },
+                            {
+                              "question_id": 2,
+                              "question_option_id": 2
+                            }
+                          ]
+                        }
+                        """,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "폼이 성공적으로 제출되었습니다.",
+                content = [
+                    Content(
+                        mediaType = "application/json",
+                        schema = Schema(implementation = FormSubmissionResponse::class),
+                        examples = [
+                            ExampleObject(
+                                name = "예시 응답값",
+                                value = """
+                            {
+                              "id": 1,
+                              "form_id": 1,
+                              "form_version": 1,
+                              "submitted_at": "2024-07-23T14:30:00Z",
+                              "respondent_info": "anonymous"
+                            }
+                            """,
+                            ),
+                        ],
+                    ),
+                ],
+            ),
+//            ApiResponse(responseCode = "400", description = "잘못된 요청입니다."),
+//            ApiResponse(responseCode = "404", description = "요청한 폼을 찾을 수 없습니다."),
+//            ApiResponse(responseCode = "500", description = "서버 오류가 발생했습니다.")
+        ],
+    )
+    @PostMapping("/forms/{forms_id}/submissions")
+    fun submitForm(
+        @PathVariable forms_id: Long,
+        @RequestBody submission: FormSubmissionRequest,
+    ): FormSubmissionResponse
 }
