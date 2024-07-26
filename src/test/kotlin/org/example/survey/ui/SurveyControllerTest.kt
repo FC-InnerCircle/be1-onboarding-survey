@@ -13,6 +13,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -52,5 +53,27 @@ class SurveyControllerTest {
                     .content(objectMapper.writeValueAsString(surveyRequest)),
             ).andExpect(status().isOk)
             .andExpect(content().string(expectedFormId.toString()))
+    }
+
+    @Test
+    fun `updateForm returns 200`() {
+        val formId = 1L
+        val updatedSurveyRequest =
+            SurveyRequest(
+                name = "Updated Survey",
+                description = "This is an updated survey",
+                questions = listOf(),
+            )
+
+        whenever(formRegisterService.updateForm(any(), any()))
+            .thenReturn(formId)
+
+        mockMvc
+            .perform(
+                put("/surveys/$formId")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(updatedSurveyRequest)),
+            ).andExpect(status().isOk)
+            .andExpect(content().string(formId.toString()))
     }
 }

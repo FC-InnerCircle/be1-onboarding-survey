@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.BDDMockito.given
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import java.util.Optional
 
 class FormRegisterServiceTest {
     private lateinit var formRepository: FormRepository
@@ -28,5 +29,18 @@ class FormRegisterServiceTest {
 
         assertThat(formId).isEqualTo(form.formId)
         verify(formRepository).save(form)
+    }
+
+    @Test
+    fun `Form을 수정하고 formId를 리턴한다`() {
+        val formId = 1L
+        val form = Form(name = "Form", description = "form description")
+        `given`(formRepository.findById(formId)).willReturn(Optional.of(form))
+
+        val updatedForm = Form(name = "Updated Form", description = "updated form")
+        val updatedFormId = formRegisterService.updateForm(formId, updatedForm)
+
+        assertThat(updatedFormId).isEqualTo(formId)
+        verify(formRepository).findById(formId)
     }
 }
