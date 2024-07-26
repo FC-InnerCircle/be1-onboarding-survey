@@ -12,6 +12,7 @@ import org.ksh.survey.model.SurveyInputType;
 public class SurveyTemplateItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
     @Getter
     private Long version;
