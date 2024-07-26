@@ -1,8 +1,8 @@
 package fastcampus.innercircle.onboarding.survey.domain;
 
-import fastcampus.innercircle.onboarding.survey.dto.CreateFormRequest;
-import fastcampus.innercircle.onboarding.survey.dto.CreateQuestionOptionRequest;
-import fastcampus.innercircle.onboarding.survey.dto.CreateQuestionRequest;
+import fastcampus.innercircle.onboarding.survey.dto.request.CreateFormRequest;
+import fastcampus.innercircle.onboarding.survey.dto.request.CreateQuestionOptionRequest;
+import fastcampus.innercircle.onboarding.survey.dto.request.CreateQuestionRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 

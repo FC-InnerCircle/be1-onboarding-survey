@@ -1,4 +1,4 @@
-package fastcampus.innercircle.onboarding.survey.dto;
+package fastcampus.innercircle.onboarding.survey.dto.request;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyQuestionOption;
 
