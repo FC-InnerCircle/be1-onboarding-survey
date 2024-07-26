@@ -75,4 +75,8 @@ class Question(
     }
 
     override fun hashCode(): Int = questionId.hashCode()
+
+    override fun toString(): String =
+        "Question(questionId=$questionId, name='$name', description='$description', " +
+            "inputType=$inputType, required=$required, options=$options)"
 }

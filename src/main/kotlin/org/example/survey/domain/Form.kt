@@ -34,4 +34,6 @@ class Form(
         this.questions.add(question)
         question.form = this
     }
+
+    override fun toString(): String = "Form(name=$name, description=$description, questions=$questions, formId=$formId)"
 }

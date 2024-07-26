@@ -26,4 +26,6 @@ class Answer(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val answerId: Long = 0
+
+    override fun toString(): String = "Answer(questionId=$questionId, content=$content, answerId=$answerId)"
 }

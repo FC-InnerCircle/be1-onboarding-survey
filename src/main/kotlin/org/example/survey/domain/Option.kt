@@ -44,4 +44,6 @@ class Option(
     }
 
     override fun hashCode(): Int = optionId.hashCode()
+
+    override fun toString(): String = "Option(optionId=$optionId, content='$content', seq=$seq)"
 }

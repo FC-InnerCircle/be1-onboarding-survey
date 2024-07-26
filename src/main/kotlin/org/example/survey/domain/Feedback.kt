@@ -48,4 +48,6 @@ class Feedback(
             throw IllegalArgumentException("필수 질문의 경우 값이 입력되어야합니다. 질문 id: ${question.questionId}")
         }
     }
+
+    override fun toString(): String = "Feedback(feedbackAt=$feedbackAt, formId=$formId, answers=$answers, feedbackId=$feedbackId)"
 }
