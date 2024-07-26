@@ -1,9 +1,30 @@
 server:
   servlet:
     context-path: /api
-  port: 8080
+  port: 8090
 
 ---
+#spring:
+#  profiles:
+#    default: local
+#  application:
+#    name: inner-circle-survey
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:mysql://localhost:43306/survey?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+#      driver-class-name: com.mysql.cj.jdbc.Driver
+#      username: root
+#      password: 1234
+#  jpa:
+#    hibernate:
+#      ddl-auto: none
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        dialect: org.hibernate.dialect.MySQLDialect
+#        default_batch_fetch_size: 500
+
 spring:
   profiles:
     default: local
