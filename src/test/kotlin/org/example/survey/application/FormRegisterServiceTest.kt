@@ -23,7 +23,7 @@ class FormRegisterServiceTest {
     @Test
     fun `Form을 저장하고 formId를 리턴한다`() {
         val form = Form(name = "Test Form", description = "This is a test form")
-        `given`(formRepository.save(form)).willReturn(form)
+        given(formRepository.save(form)).willReturn(form)
 
         val formId = formRegisterService.register(form)
 
@@ -35,7 +35,7 @@ class FormRegisterServiceTest {
     fun `Form을 수정하고 formId를 리턴한다`() {
         val formId = 1L
         val form = Form(name = "Form", description = "form description")
-        `given`(formRepository.findById(formId)).willReturn(Optional.of(form))
+        given(formRepository.findById(formId)).willReturn(Optional.of(form))
 
         val updatedForm = Form(name = "Updated Form", description = "updated form")
         val updatedFormId = formRegisterService.updateForm(formId, updatedForm)

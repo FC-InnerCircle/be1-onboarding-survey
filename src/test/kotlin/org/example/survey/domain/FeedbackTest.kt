@@ -9,13 +9,7 @@ class FeedbackTest {
         val feedback =
             Feedback(
                 formId = 1,
-                answers =
-                    listOf(
-                        Answer(
-                            content = "This is a test answer",
-                            questionId = 1,
-                        ),
-                    ),
+                answers = listOf(Answer(content = "This is a test answer", questionId = 1)),
             )
 
         assertThat(feedback.feedbackId).isEqualTo(0)

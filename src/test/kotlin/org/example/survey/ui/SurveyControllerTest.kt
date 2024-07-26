@@ -56,7 +56,7 @@ class SurveyControllerTest {
     }
 
     @Test
-    fun `updateForm returns 200`() {
+    fun `설문을 업데이트 하고 200을 리턴한다`() {
         val formId = 1L
         val updatedSurveyRequest =
             SurveyRequest(

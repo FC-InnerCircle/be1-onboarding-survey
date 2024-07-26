@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.example.survey.domain.enums.InputType
 import java.time.LocalDateTime
 
 @Entity
@@ -31,5 +32,20 @@ class Feedback(
     fun addAnswer(answer: Answer) {
         this.answers.add(answer)
         answer.feedback = this
+    }
+
+    fun checkQuestions(form: Form) {
+        form.questions.forEach { checkQuestions(it) }
+    }
+
+    private fun checkQuestions(question: Question) {
+        val answers = this.answers.filter { it.questionId == question.questionId }
+
+        if (question.inputType == InputType.SINGLE_CHOICE && answers.size > 1) {
+            throw IllegalArgumentException("단일 질문의 경우 하나만 선택 되어야합니다. 질문 id: ${question.questionId}")
+        }
+        if (question.required && answers.isEmpty()) {
+            throw IllegalArgumentException("필수 질문의 경우 값이 입력되어야합니다. 질문 id: ${question.questionId}")
+        }
     }
 }
