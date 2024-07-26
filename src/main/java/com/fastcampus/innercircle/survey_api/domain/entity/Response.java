@@ -27,6 +27,10 @@ public class Response {
         return responseId;
     }
 
+    public Long getFormId() {
+        return formId;
+    }
+
     public List<Answer> getAnswers() {
         return answers;
     }

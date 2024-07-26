@@ -26,7 +26,7 @@ public class ResponseService {
     }
 
     @Transactional
-    public void submitResponse(Long formId, ResponseRequest responseRequest) {
+    public Response submitResponse(Long formId, ResponseRequest responseRequest) {
         SurveyForm surveyForm = surveyFormRepository.findById(formId).orElseThrow();
 
         Response response = new Response();
@@ -49,7 +49,7 @@ public class ResponseService {
 
         response.setAnswers(answers);
 
-        responseRepository.save(response);
+        return responseRepository.save(response);
     }
 
     public List<SurveyResponse> getResponses(Long formId) {

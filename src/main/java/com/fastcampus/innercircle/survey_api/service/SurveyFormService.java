@@ -22,7 +22,7 @@ public class SurveyFormService {
     }
 
     @Transactional
-    public void saveSurveyForm(SurveyFormRequest surveyFormRequest) {
+    public SurveyForm saveSurveyForm(SurveyFormRequest surveyFormRequest) {
         SurveyForm surveyForm = new SurveyForm(surveyFormRequest.getTitle(), surveyFormRequest.getDescription());
 
         List<Question> questions = surveyFormRequest.getQuestions().stream()
@@ -30,11 +30,13 @@ public class SurveyFormService {
                 .collect(Collectors.toList());
         surveyForm.addQuestions(questions);
 
-        surveyFormRepository.save(surveyForm);
+        SurveyForm result = surveyFormRepository.save(surveyForm);
+
+        return result;
     }
 
     @Transactional
-    public void updateSurveyForm(Long formId, SurveyFormRequest surveyFormRequest) {
+    public SurveyForm updateSurveyForm(Long formId, SurveyFormRequest surveyFormRequest) {
         SurveyForm surveyForm = surveyFormRepository.findById(formId).orElseThrow();
         surveyForm.setTitle(surveyFormRequest.getTitle());
         surveyForm.setDescription(surveyFormRequest.getDescription());
@@ -65,7 +67,8 @@ public class SurveyFormService {
         }
 
         surveyForm.setUpdatedAt(LocalDateTime.now());
-        surveyFormRepository.save(surveyForm);
+        SurveyForm result = surveyFormRepository.save(surveyForm);
+        return result;
     }
 
     private QuestionRequest findQuestionRequestById(List<QuestionRequest> requests, Long id) {

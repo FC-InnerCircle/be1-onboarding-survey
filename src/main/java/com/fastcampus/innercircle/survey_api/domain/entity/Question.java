@@ -5,6 +5,7 @@ import com.fastcampus.innercircle.survey_api.domain.request.QuestionRequest;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -114,7 +115,9 @@ public class Question {
         question.setDescription(request.getDescription());
         question.setType(request.getQuestionType());
         question.setRequired(request.isRequired());
-        question.setOptions(request.getOptions());
+        if (Arrays.asList(QuestionType.SINGLE_CHOICE, QuestionType.MULTIPLE_CHOICE).contains(request.getQuestionType())) {
+            question.setOptions(request.getOptions());
+        }
         return question;
     }
 }
