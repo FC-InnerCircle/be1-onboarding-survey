@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SurveyTemplateItemRepository extends JpaRepository<SurveyTemplateItem, Long> {
-	List<SurveyTemplateItem> findAllBySurveyTemplateId(Long id);
+	List<SurveyTemplateItem> findBySurveyTemplateId(Long id);
 
 }
