@@ -24,26 +24,25 @@ public class SurveyTemplateService {
 
 	private final SurveyTemplateRepository surveyTemplateRepository;
 	private final SurveyTemplateItemRepository surveyTemplateItemRepository;
-	private final EntityManager entityManager;
 
 	@Transactional
 	public BaseResponse saveSurveyTemplate(SurveySaveRequest surveySaveRequest) {
 		SurveyTemplate surveyTemplate = surveyTemplateRepository.save(surveySaveRequest.createSurveyTemplate());
 		List<SurveyTemplateItem> surveyTemplateItems = surveySaveRequest.createSurveyTemplateItems(surveyTemplate);
 		surveyTemplateItemRepository.saveAll(surveyTemplateItems);
-		return new BaseResponse(BaseStatusCode.SUCCESS.getMessage());
+		return new BaseResponse(BaseStatusCode.SUCCESS);
 	}
 
 	@Transactional
 	public BaseResponse updateSurveyTemplate(SurveyUpdateRequest surveySaveRequest) {
 		SurveyTemplate surveyTemplate = surveyTemplateRepository.findById(surveySaveRequest.getSurveyId())
 				.orElseThrow(() -> new DataNotFoundException("아이디에 맞는 설문조사가 없습니다."));
-		surveyTemplate.update(surveySaveRequest);
+		surveyTemplate.update(surveySaveRequest, surveyTemplate.getVersion());
 
 		List<SurveyTemplateItem> surveyTemplateItems = surveySaveRequest.createSurveyTemplateItems(surveyTemplate);
 		surveyTemplateItemRepository.saveAll(surveyTemplateItems);
 
-		return new BaseResponse(BaseStatusCode.SUCCESS.getMessage());
+		return new BaseResponse(BaseStatusCode.SUCCESS);
 	}
 
 }

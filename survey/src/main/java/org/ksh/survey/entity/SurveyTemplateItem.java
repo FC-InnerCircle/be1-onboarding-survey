@@ -3,6 +3,7 @@ package org.ksh.survey.entity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.ksh.survey.model.SurveyInputType;
 
@@ -12,6 +13,8 @@ public class SurveyTemplateItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Getter
+    private Long version;
 
     private String name;
     private String description;
@@ -25,9 +28,9 @@ public class SurveyTemplateItem {
     private SurveyTemplate surveyTemplate;
 
     @Builder
-
-    public SurveyTemplateItem(Long id, String name, String description, SurveyInputType surveyInputType, boolean isRequired, SurveyTemplate surveyTemplate) {
+    public SurveyTemplateItem(Long id, Long version, String name, String description, SurveyInputType surveyInputType, boolean isRequired, SurveyTemplate surveyTemplate) {
         this.id = id;
+        this.version = version;
         this.name = name;
         this.description = description;
         this.surveyInputType = surveyInputType;

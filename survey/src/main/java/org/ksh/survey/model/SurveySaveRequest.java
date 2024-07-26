@@ -5,6 +5,7 @@ import org.ksh.survey.entity.SurveyTemplate;
 import org.ksh.survey.entity.SurveyTemplateItem;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class SurveySaveRequest {
@@ -16,6 +17,7 @@ public class SurveySaveRequest {
 		return SurveyTemplate.builder()
 				.name(surveyName)
 				.description(surveyDescription)
+				.version(0L)
 				.build();
 	}
 

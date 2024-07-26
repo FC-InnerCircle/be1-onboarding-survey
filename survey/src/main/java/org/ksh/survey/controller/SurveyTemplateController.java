@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/survey")
 @RequiredArgsConstructor
-public class SurveyController {
+public class SurveyTemplateController {
 
 	private final SurveyTemplateService surveyTemplateService;
 
