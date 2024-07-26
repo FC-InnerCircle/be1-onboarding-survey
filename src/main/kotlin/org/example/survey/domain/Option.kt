@@ -12,12 +12,18 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "option")
 class Option(
+    question: Question,
+    content: String,
+    seq: Int,
+) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
-    val question: Question,
-    val content: String? = null,
-    val seq: Int? = 0,
+    var question: Question = question
+
+    val content: String = content
+    val seq: Int = seq
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val optionId: Long = 0,
-)
+    val optionId: Long = 0
+}

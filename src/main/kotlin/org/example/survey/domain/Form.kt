@@ -12,12 +12,28 @@ import jakarta.persistence.Table
 @Entity
 @Table(name = "form")
 class Form(
-    val name: String? = null,
-    val description: String? = null,
+    var name: String? = null,
+    var description: String? = null,
     @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val questions: MutableList<Question> = mutableListOf(),
+    var questions: MutableList<Question> = mutableListOf(),
     @OneToMany(mappedBy = "form", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     val responses: MutableList<Response> = mutableListOf(),
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val formId: Long = 0,
-)
+) {
+    fun updateForm(updatedForm: Form) {
+        this.name = updatedForm.name
+        this.description = updatedForm.description
+        updatedForm.questions.forEach { question ->
+            questions
+                .find { it == question }
+                ?.updateQuestion(question)
+                ?: addQuestion(question)
+        }
+    }
+
+    fun addQuestion(question: Question) {
+        this.questions.add(question)
+        question.form = this
+    }
+}

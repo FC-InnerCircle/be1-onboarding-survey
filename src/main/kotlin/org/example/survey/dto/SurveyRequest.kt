@@ -20,7 +20,7 @@ data class SurveyRequest(
         this.questions.forEach { questionRequest ->
             val question =
                 Question(
-                    form = form,
+                    questionId = questionRequest.questionId,
                     name = questionRequest.name,
                     description = questionRequest.description,
                     inputType = InputType.valueOf(questionRequest.inputType),
@@ -34,10 +34,10 @@ data class SurveyRequest(
                         content = optionRequest.content,
                         seq = optionRequest.seq,
                     )
-                question.options.add(option)
+                question.addOption(option)
             }
 
-            form.questions.add(question)
+            form.addQuestion(question)
         }
         return form
     }

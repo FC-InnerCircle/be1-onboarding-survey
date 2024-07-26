@@ -21,11 +21,6 @@ class ResponseTest {
             )
         val question =
             Question(
-                form =
-                    Form(
-                        name = "Test Form",
-                        description = "This is a test form",
-                    ),
                 name = "Test Question",
                 description = "This is a test question",
                 inputType = InputType.SINGLE_CHOICE,

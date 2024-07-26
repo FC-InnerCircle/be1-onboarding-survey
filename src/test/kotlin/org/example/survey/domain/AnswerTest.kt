@@ -16,7 +16,6 @@ class AnswerTest {
 
         val question =
             Question(
-                form = form,
                 name = "Test Question",
                 description = "This is a test question",
                 inputType = InputType.MULTI_CHOICE,

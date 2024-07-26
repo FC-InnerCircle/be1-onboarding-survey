@@ -17,19 +17,59 @@ import org.example.survey.domain.enums.InputType
 @Entity
 @Table(name = "question")
 class Question(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val questionId: Long = 0,
+    questionId: Long = 0,
+    name: String = "",
+    description: String = "",
+    inputType: InputType,
+    required: Boolean,
+) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "form_id")
-    val form: Form,
-    val name: String? = null,
-    val description: String? = null,
+    var form: Form? = null
+
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val options: MutableList<Option> = mutableListOf()
+
+    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val answers: MutableList<Answer> = mutableListOf()
+
+    var name: String = name
+        protected set
+
+    var description: String = description
+        protected set
+
     @Enumerated(EnumType.STRING)
-    val inputType: InputType? = null,
-    val required: Boolean? = null,
-    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val options: MutableList<Option> = mutableListOf(),
-    @OneToMany(mappedBy = "question", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    val answers: MutableList<Answer> = mutableListOf(),
-)
+    var inputType: InputType = inputType
+        protected set
+    var required: Boolean = required
+        protected set
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var questionId: Long = questionId
+        protected set
+
+    fun addOption(option: Option) {
+        this.options.add(option)
+        option.question = this
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Question) return false
+
+        if (questionId != other.questionId) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int = questionId.hashCode()
+
+    fun updateQuestion(question: Question) {
+        this.name = question.name
+        this.description = question.description
+        this.inputType = question.inputType
+        this.required = question.required
+    }
+}
