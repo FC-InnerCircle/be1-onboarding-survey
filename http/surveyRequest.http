@@ -35,29 +35,29 @@ Content-Type: application/json
       ]
     },
     {
-      "name": "전반적인 경험",
-      "description": "저희와의 전반적인 경험을 어떻게 평가하시겠습니까?",
+      "name": "서비스 사용장소",
+      "description": "해당 서비스를 어디에서 사용중입니까?",
       "inputType": "MULTI_CHOICE",
       "required": true,
       "options": [
         {
-          "content": "매우 좋음",
+          "content": "집",
           "seq": 1
         },
         {
-          "content": "좋음",
+          "content": "학교",
           "seq": 2
         },
         {
-          "content": "보통",
+          "content": "직장",
           "seq": 3
         },
         {
-          "content": "나쁨",
+          "content": "카페",
           "seq": 4
         },
         {
-          "content": "매우 나쁨",
+          "content": "기타",
           "seq": 5
         }
       ]

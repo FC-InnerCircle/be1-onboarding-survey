@@ -1,0 +1,20 @@
+POST http://localhost:8080/feedbacks
+Content-Type: application/json
+
+{
+  "formId": 1,
+  "answers": [
+    {
+      "content": "매우 만족",
+      "questionId": 1
+    },
+    {
+      "content": "학교",
+      "questionId": 2
+    },
+    {
+      "content": "집",
+      "questionId": 2
+    }
+  ]
+}

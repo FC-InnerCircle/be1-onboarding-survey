@@ -16,7 +16,7 @@ class Feedback(
     formId: Long = 0,
     answers: List<Answer> = listOf(),
 ) {
-    val respondedAt: LocalDateTime = LocalDateTime.now()
+    val feedbackAt: LocalDateTime = LocalDateTime.now()
 
     var formId: Long = formId
         protected set

@@ -1,7 +1,7 @@
 package org.example.survey.ui
 
 import org.example.survey.application.FeedbackRegisterService
-import org.example.survey.dto.result.FeedbackRequest
+import org.example.survey.dto.feedback.FeedbackRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
