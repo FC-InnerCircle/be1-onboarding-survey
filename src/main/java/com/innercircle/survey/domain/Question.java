@@ -28,9 +28,9 @@ public class Question {
 
     private Integer version;
 
-    private boolean isRequired;
+    private Boolean isRequired;
 
-    private boolean isDeleted = false;
+    private Boolean isDeleted = false;
 
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)

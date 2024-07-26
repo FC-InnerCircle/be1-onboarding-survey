@@ -12,8 +12,7 @@ public class QuestionReq {
 
     private String type;
     private String text;
-    private boolean isRequired;
-    private Integer order;
+    private Boolean isRequired;
     private List<OptionReq> options;
 
 }

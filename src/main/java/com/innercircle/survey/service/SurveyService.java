@@ -38,7 +38,7 @@ public class SurveyService {
         for (QuestionReq questionDto : questionDtos) {
             Question question = Question.builder().survey(survey)
                 .type(QuestionType.valueOf(questionDto.getType())).text(questionDto.getText())
-                .isRequired(questionDto.isRequired()).build();
+                .isRequired(questionDto.getIsRequired()).build();
             question = questionRepository.save(question);
 
             List<OptionReq> optionDtos = questionDto.getOptions();
