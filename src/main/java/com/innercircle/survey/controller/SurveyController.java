@@ -24,4 +24,13 @@ public class SurveyController {
         SurveyResponseDto responseDto = surveyService.createSurvey(surveyCreateRequestDto);
         return ResponseEntity.ok(responseDto);
     }
+
+    @PutMapping("/{surveyId}")
+    public ResponseEntity<SurveyResponseDto> updateSurvey(
+            @PathVariable("surveyId") Long surveyId,
+            @RequestBody SurveyUpdateRequestDto surveyUpdateRequestDto
+    ) {
+        SurveyResponseDto responseDto = surveyService.updateSurvey(surveyId, surveyUpdateRequestDto);
+        return ResponseEntity.ok(responseDto);
+    }
 }
