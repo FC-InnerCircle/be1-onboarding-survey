@@ -27,7 +27,7 @@ public class Question {
     private String text;
 
     private Integer version = 1;
-    
+
     private boolean isRequired;
 
     private boolean isDeleted = false;
