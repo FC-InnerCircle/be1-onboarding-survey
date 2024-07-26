@@ -1,5 +1,5 @@
 # 이너써클 BE 온보딩 프로젝트 (장현호)
-> [🚀기능 점검을 위한 빌드 결과물 바로가기](#)
+> [🚀기능 점검을 위한 빌드 결과물 바로가기](https://github.com/hyunolike/be1-onboarding-survey/tree/main/build-output/result)
 
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
