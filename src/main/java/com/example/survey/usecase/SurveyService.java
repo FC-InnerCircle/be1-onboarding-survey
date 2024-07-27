@@ -8,6 +8,7 @@ import com.example.survey.adapter.persistence.SurveyPersistence;
 import com.example.survey.adapter.persistence.SurveyVersionPersistence;
 import com.example.survey.domain.mapper.SurveyMapper;
 import com.example.survey.domain.model.Survey;
+import com.example.survey.domain.model.SurveyItem;
 import com.example.survey.domain.model.SurveyVersion;
 import com.example.survey.exception.SurveyNotFoundException;
 
@@ -51,7 +52,7 @@ public class SurveyService {
             // 설문조사 업데이트
             survey.setName(surveyDto.getName());
             survey.setDescription(surveyDto.getDescription());
-            survey.setItems(surveyDto.getItems().stream()
+            survey.setSurveyItems(surveyDto.getItems().stream()
                 .map(SurveyMapper::surveyItemDtoToSurveyItem)
                 .collect(Collectors.toList()));
             survey.setCurrentVersion(newVersion);

@@ -75,7 +75,7 @@ class SurveyServiceTest {
             .id(1L)
             .name("Test Survey")
             .description("Test Description")
-            .items(SurveyMapper.surveyItemDtosToSurveyItems(Arrays.asList(item1, item2)))
+            .surveyItems(SurveyMapper.surveyItemDtosToSurveyItems(Arrays.asList(item1, item2)))
             .currentVersion(1)
             .build();
     }
@@ -100,7 +100,7 @@ class SurveyServiceTest {
 
         SurveyVersion capturedVersion = versionCaptor.getValue();
         assertEquals(1, capturedVersion.getVersion());
-        assertEquals(survey.getId(), capturedVersion.getSurveyId());
+        assertEquals(survey, capturedVersion.getSurvey());
     }
 
     @Test

@@ -8,14 +8,14 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Table(name = "survey_items")
+@Getter @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SurveyItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "survey_item_id")
     private Long id;
 
     private String name;
@@ -28,6 +28,14 @@ public class SurveyItem {
 
     @ElementCollection
     private List<String> options;
+
+    @ManyToOne
+    @JoinColumn(name = "survey_id")
+    private Survey survey;
+
+    @ManyToOne
+    @JoinColumn(name = "survey_version_id")
+    private SurveyVersion surveyVersion;
 
     @SuppressWarnings("CopyConstructorMissesField")
     public SurveyItem(SurveyItem item) {
