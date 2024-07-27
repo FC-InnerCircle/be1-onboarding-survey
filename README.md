@@ -3,6 +3,7 @@
 
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
 
+- 🚀**프로젝트 기간**: 2024.07.20 ~ 2024.07.27 (7일)
 - `[API 명세서] 노션`: [바로가기](https://hyunolike.notion.site/API-3c10372e54c34612976fb7ff0c00c5f1?pvs=4)
 - `[API 명세서] swagger-ui`: http://localhost:8080/swagger-ui/index.html
 - 사용 기술스택
@@ -18,6 +19,12 @@
 # 코드 스타일 위반 사항 검사
 ./gradlew ktlintCheck
 ```
+
+### 🧑🏼‍🌾개발 일지
+- [[기본] ERD 설계](https://github.com/hyunolike/be1-onboarding-survey/wiki/%EA%B0%9C%EB%B0%9C%EA%B8%B0%EB%A1%9D-02.-ERD-%EC%B5%9C%EC%A2%85%EB%B3%B8-(%EB%85%BC%EB%A6%AC%EC%A0%81-%EC%84%A4%EA%B3%84))
+- [[우대사항]트래픽이 많고, 저장되어 있는 데이터가 많음을 염두에 둔 구현](#)
+- [[우대사항]동시성 이슈가 발생할 수 있는 부분을 염두에 둔 구현](#)
+
 ---
 ## Introduction
 
