@@ -1,7 +1,7 @@
 package org.example.survey.dto.feedback.response
 
 data class AnswerResponse(
-    val questionId: Int,
+    val questionId: Long,
     val content: String,
-    val answerId: Int,
+    val answerId: Long,
 )

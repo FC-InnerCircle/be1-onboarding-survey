@@ -35,19 +35,19 @@ private fun parseFeedbackString(feedbackString: String): FeedbackResponse {
             .find(feedbackString)
             ?.groupValues
             ?.get(1)
-            ?.toInt() ?: 0
+            ?.toLong() ?: 0
     val feedbackId =
         feedbackIdRegex
             .find(feedbackString)
             ?.groupValues
             ?.get(1)
-            ?.toInt() ?: 0
+            ?.toLong() ?: 0
 
     val answers = mutableListOf<AnswerResponse>()
     for (match in answerRegex.findAll(feedbackString)) {
-        val questionId = match.groupValues[1].toInt()
+        val questionId = match.groupValues[1].toLong()
         val content = match.groupValues[2]
-        val answerId = match.groupValues[3].toInt()
+        val answerId = match.groupValues[3].toLong()
         answers.add(AnswerResponse(questionId, content, answerId))
     }
 
