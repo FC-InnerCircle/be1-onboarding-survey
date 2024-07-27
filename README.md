@@ -113,3 +113,56 @@
 빌드 결과물을 Executable jar 형태로 만들어 위 Branch에 함께 업로드 하시고, README에 다운로드 링크 정보를 넣어주시기 바랍니다. GitHub의 용량 문제로 업로드가 안되는 경우 다른 곳(개인 구글 드라이브 등)에 업로드 한 후 해당 다운로드 링크 정보를 README에 넣어주셔도 됩니다.
 
 해당 파일을 다운로드 및 실행(e.g. java -jar project.jar)하여 요구 사항 기능 검증을 진행하게 됩니다. 해당 파일을 다운로드할 수 없거나 실행 시 에러가 발생하는 경우에는 기능 점검을 진행하지 않습니다. 온보딩 프로젝트 제출 전 해당 실행 파일 다운로드 및 정상 동작 여부를 체크해 주시기 바랍니다.
+
+### API 설계서
+response 
+```
+{
+  "code": 200,
+  "message": "success",
+  "data": {}
+}
+```
+
+[설문조사]
+ - API: /v1/surveys
+ - Method: POST
+ - Request :
+```
+{
+  "title": "title",
+  "description": "description",
+  "endAt": "2024-07-26T23:01:12",
+  "questions": [
+    {
+      "text": "test",
+      "type": "SINGLE_CHOICE",
+      "isRequired": true,
+        "options": [
+            {
+            "text": "option1",
+            },
+          {
+            "text": "option2",
+          },
+            {
+                "text": "option3",
+            }
+        ]
+    }
+  ]
+}
+title: string / 제목
+description: string / 내용
+endAt: LocalDateTime / 종료시간
+questions: Array / 설문 질문 객체 목록
+ {
+  text: string / 질문의 텍스트
+  type: string / 질문 유형 (SINGLE_CHOICE, MULTIPLE_CHOICE, SHORT_ANSWER, LONG_ANSWER)
+  isRequired: boolean / 질문의 필수 여부
+  options: Array / 선택형 질문의 경우, 선택지 목록
+    {
+        text: string / 선택지의 텍스트
+    }    
+ }
+```
