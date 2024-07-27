@@ -18,3 +18,6 @@ Content-Type: application/json
     }
   ]
 }
+
+###
+GET http://localhost:8080/forms/{{formId}}/history
