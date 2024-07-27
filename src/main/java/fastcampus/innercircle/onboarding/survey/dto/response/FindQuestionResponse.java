@@ -1,7 +1,7 @@
 package fastcampus.innercircle.onboarding.survey.dto.response;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyQuestion;
-import fastcampus.innercircle.onboarding.survey.domain.SurveyResponseType;
+import fastcampus.innercircle.onboarding.survey.domain.SurveyResultType;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public record FindQuestionResponse(
         String title,
         String desc,
         boolean isRequired,
-        SurveyResponseType type,
+        SurveyResultType type,
         Integer position,
         List<FindQuestionOptionResponse> options
 ) {
@@ -23,7 +23,7 @@ public record FindQuestionResponse(
 
         return new FindQuestionResponse(
                 question.getId(), question.getVersion(), question.getTitle(),
-                question.getDesc(), question.isRequired(), question.getResponseType(),
+                question.getDesc(), question.isRequired(), question.getResultType(),
                 question.getPosition(), options)
         ;
     }

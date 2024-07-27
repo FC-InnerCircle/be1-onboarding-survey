@@ -1,7 +1,7 @@
 package fastcampus.innercircle.onboarding.survey.dto.request;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyQuestion;
-import fastcampus.innercircle.onboarding.survey.domain.SurveyResponseType;
+import fastcampus.innercircle.onboarding.survey.domain.SurveyResultType;
 import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionOptionEmptyException;
 
 import java.util.List;
@@ -12,7 +12,7 @@ public record CreateQuestionRequest(
         String title,
         String desc,
         boolean isRequired,
-        SurveyResponseType type,
+        SurveyResultType type,
         List<CreateQuestionOptionRequest> options
 ) {
     public CreateQuestionRequest {
@@ -34,7 +34,7 @@ public record CreateQuestionRequest(
                 .title(title())
                 .desc(desc())
                 .isRequired(isRequired())
-                .responseType(type())
+                .resultType(type())
                 .position(position())
                 .options(options().stream()
                         .map(CreateQuestionOptionRequest::toEntity)

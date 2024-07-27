@@ -30,7 +30,7 @@ public class SurveyForm {
     private final List<SurveyQuestion> questions = new ArrayList<>();
 
     @OneToMany(mappedBy = "form", cascade = CascadeType.ALL, orphanRemoval = true)
-    private final List<SurveyResponse> responses = new ArrayList<>();
+    private final List<SurveyResult> results = new ArrayList<>();
 
     @Builder
     public SurveyForm(

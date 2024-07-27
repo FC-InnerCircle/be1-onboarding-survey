@@ -2,15 +2,20 @@ package fastcampus.innercircle.onboarding.survey.domain;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "SURVEY_RESPONSE")
-public class SurveyResponse {
+@Table(name = "SURVEY_RESULT")
+public class SurveyResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RESPONSE_ID")
+    @Column(name = "RESULT_ID")
     private Long id;
+
+    @Column(name = "CREATE_AT")
+    private LocalDateTime createAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
@@ -19,6 +24,6 @@ public class SurveyResponse {
     })
     private SurveyForm form;
 
-    @OneToMany(mappedBy = "response")
-    private List<SurveyResponseDetail> details;
+    @OneToMany(mappedBy = "result", cascade = CascadeType.ALL, orphanRemoval = true)
+    private final List<SurveyResultDetail> details = new ArrayList<>();
 }

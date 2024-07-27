@@ -23,8 +23,8 @@ class SurveyFormTest {
         );
 
         List<CreateQuestionRequest> questions = Arrays.asList(
-                new CreateQuestionRequest(1, "과일", "좋아하는 과일", true, SurveyResponseType.MULTI, options1),
-                new CreateQuestionRequest(2, "운동", "좋아하는 운동", true, SurveyResponseType.SINGLE, options2)
+                new CreateQuestionRequest(1, "과일", "좋아하는 과일", true, SurveyResultType.MULTI, options1),
+                new CreateQuestionRequest(2, "운동", "좋아하는 운동", true, SurveyResultType.SINGLE, options2)
         );
 
         CreateFormRequest formRequest = new CreateFormRequest("설문1", "설문 내용", questions);

@@ -7,7 +7,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static fastcampus.innercircle.onboarding.survey.domain.SurveyResponseType.*;
+import static fastcampus.innercircle.onboarding.survey.domain.SurveyResultType.*;
 
 @ToString(exclude = {"form"})
 @Getter
@@ -21,8 +21,8 @@ public class SurveyQuestion {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "RESPONSE_TYPE")
-    private SurveyResponseType responseType;
+    @Column(name = "RESULT_TYPE")
+    private SurveyResultType resultType;
 
     @Column(name = "QUESTION_TITLE")
     private String title;
@@ -53,7 +53,7 @@ public class SurveyQuestion {
             final String title,
             final String desc,
             final boolean isRequired,
-            final SurveyResponseType responseType,
+            final SurveyResultType resultType,
             final Integer position,
             final List<SurveyQuestionOption> options
     ) {
@@ -61,13 +61,13 @@ public class SurveyQuestion {
         this.title = title;
         this.desc = desc;
         this.isRequired = isRequired;
-        this.responseType = responseType;
+        this.resultType = resultType;
         this.position = position;
         options.forEach(this::addOption);
     }
 
     public void addOption(final SurveyQuestionOption option) {
-        if (responseType.isSubjectiveType()) {
+        if (resultType.isSubjectiveType()) {
             throw new SurveyQuestionOptionNotAllowedException("선택형 질문이 아닙니다.");
         }
         options.add(option);
@@ -75,7 +75,7 @@ public class SurveyQuestion {
     }
 
     private boolean isOptionalQuestion() {
-        return MULTI.equals(responseType) || SINGLE.equals(responseType);
+        return MULTI.equals(resultType) || SINGLE.equals(resultType);
     }
 
     public Long getVersion() {

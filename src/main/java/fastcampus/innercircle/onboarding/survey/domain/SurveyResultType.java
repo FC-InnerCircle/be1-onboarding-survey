@@ -1,6 +1,6 @@
 package fastcampus.innercircle.onboarding.survey.domain;
 
-public enum SurveyResponseType {
+public enum SurveyResultType {
     SHORT {
         public boolean isSubjectiveType() {
             return true;
