@@ -54,6 +54,7 @@ public class SurveyFormService {
                 question.setUpdatedAt(LocalDateTime.now());
             } else {
                 // 삭제
+                question.setRemoved(true);
                 question.setRemovedAt(LocalDateTime.now());
             }
         }

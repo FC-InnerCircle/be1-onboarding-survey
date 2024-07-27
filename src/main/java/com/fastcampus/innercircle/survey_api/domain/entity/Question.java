@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 public class Question {
@@ -29,7 +30,7 @@ public class Question {
     @Column(nullable = false)
     private boolean isRequired;   // 항목 필수 여부
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> options;   // 단일 선택 리스트, 다중 선택 리스트에서 선택 할 수 있는 후보
 
     @ManyToOne
@@ -44,6 +45,8 @@ public class Question {
 
     @Column(name = "removed_at")
     private LocalDateTime removedAt = null;
+
+    private boolean isRemoved = false;
 
     public Long getQuestionId() {
         return questionId;
@@ -109,6 +112,10 @@ public class Question {
         this.removedAt = removedAt;
     }
 
+    public void setRemoved(boolean removed) {
+        this.isRemoved = removed;
+    }
+
     public static Question of(QuestionRequest request) {
         Question question = new Question();
         question.setTitle(request.getTitle());
@@ -116,7 +123,10 @@ public class Question {
         question.setType(request.getQuestionType());
         question.setRequired(request.isRequired());
         if (Arrays.asList(QuestionType.SINGLE_CHOICE, QuestionType.MULTIPLE_CHOICE).contains(request.getQuestionType())) {
-            question.setOptions(request.getOptions());
+            List<String> options = request.getOptions().stream()
+                    .distinct()
+                    .collect(Collectors.toList());
+            question.setOptions(options);
         }
         return question;
     }
