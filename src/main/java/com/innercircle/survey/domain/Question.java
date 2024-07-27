@@ -3,6 +3,7 @@ package com.innercircle.survey.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,19 +31,37 @@ public class Question {
 
     private Boolean isRequired;
 
-    private Boolean isDeleted = false;
+    private Boolean isDeleted;
 
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Option> options;
 
     @PrePersist
     public void prePersist() {
-        this.version = 1;
+        if (this.version == null) {
+            this.version = 1;
+        }
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.version = this.version + 1;
+    public void delete() {
+        this.isDeleted = true;
+    }
+
+    public Question createNewVersion(String text, QuestionType type, Integer version, Boolean isRequired) {
+        Question newQuestion = Question.builder()
+                .survey(this.survey)
+                .text(text)
+                .type(type)
+                .version(version)
+                .isRequired(isRequired)
+                .options(new ArrayList<>())
+                .build();
+
+        for (Option option : this.options) {
+            Option newOption = Option.builder().question(newQuestion).text(option.getText()).build();
+            newQuestion.getOptions().add(newOption);
+        }
+
+        return newQuestion;
     }
 }

@@ -42,4 +42,10 @@ public class Survey {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void update(String title, String description, LocalDateTime endAt) {
+        this.title = title;
+        this.description = description;
+        this.endAt = endAt;
+    }
+
 }

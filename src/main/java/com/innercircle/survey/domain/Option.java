@@ -20,4 +20,8 @@ public class Option {
     private Question question;
 
     private String text;
+
+    public void update(String text) {
+        this.text = text;
+    }
 }

@@ -13,6 +13,8 @@ public enum ErrorCode {
 
     // Survey
     QUESTION_NOT_FOUND(404, "S001", "질문을 찾을 수 없습니다."),
+    SURVEY_NOT_FOUND(404, "S002", "설문을 찾을 수 없습니다."),
+    OPTION_NOT_FOUND(404, "S003", "옵션을 찾을 수 없습니다.")
     ;
 
     private final int status;
