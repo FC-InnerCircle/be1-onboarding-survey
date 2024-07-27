@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -14,14 +15,17 @@ public class Option {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Setter
   @ManyToOne
   private Question question;
 
   @Column(name = "option_order")
   private int order;
 
-  private String answer;
+  @Setter
   private boolean latest;
+
+  private String answer;
 
   public Option(Question question, String answer, int order) {
     this.question = question;

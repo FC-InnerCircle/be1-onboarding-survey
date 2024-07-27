@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -23,10 +24,12 @@ public class Question {
   @Column(name = "question_order")
   private int order;
 
+  @Setter
+  private boolean latest;
+
   private String title;
   private String description;
   private boolean required;
-  private boolean latest;
 
   public Question(Survey survey, AnswerType type, String title, String description, boolean required, int order) {
     this.survey = survey;

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
-  List<Question> findBySurveyAndLatestTrue(Survey survey);
+  List<Question> findBySurveyAndLatestTrueOrderByOrder(Survey survey);
 }

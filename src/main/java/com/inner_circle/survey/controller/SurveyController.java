@@ -46,11 +46,11 @@ public class SurveyController {
   }
 
   @PutMapping("/{surveyId}")
-  public ResponseEntity<String> updateSurvey(
+  public ResponseEntity<SurveyResponse> updateSurvey(
       @PathVariable("surveyId") Long surveyId,
       @RequestBody SurveyRequest surveyRequest
   ) {
-    System.out.println(surveyId);
-    return ResponseEntity.ok("update survey api called");
+    SurveyResponse surveyResponse = surveyService.updateSurvey(surveyId, surveyRequest);
+    return ResponseEntity.ok(surveyResponse);
   }
 }

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -51,12 +52,81 @@ public class SurveyService {
   }
 
   @Transactional
-  public SurveyResponse updateSurvey(SurveyRequest surveyRequest) {
-    return null;
+  public SurveyResponse updateSurvey(Long surveyId, SurveyRequest surveyRequest) {
+    Survey survey = surveyRepository.findById(surveyId).orElseThrow();
+    if (
+        !survey.getTitle().equals(surveyRequest.title()) ||
+            !survey.getDescription().equals(surveyRequest.description())
+    ) {
+      survey.update(surveyRequest.title(), surveyRequest.description());
+    }
+
+    List<Question> questions = questionRepository.findBySurveyAndLatestTrueOrderByOrder(survey);
+    questions.sort(Comparator.comparing(Question::getOrder));
+
+    List<QuestionRequest> questionRequests = surveyRequest.questions();
+    questionRequests.sort(Comparator.comparing(QuestionRequest::order));
+
+    for (int i = 0; i < Math.min(questions.size(), questionRequests.size()); i++) {
+      Question question = questions.get(i);
+      QuestionRequest questionRequest = questionRequests.get(i);
+      updateQuestion(question, questionRequest);
+    }
+
+    return responseFromSurvey(survey);
+  }
+
+  private void updateQuestion(Question question, QuestionRequest questionRequest) {
+    List<Option> options = optionRepository.findByQuestionAndLatestTrueOrderByOrder(question);
+    options.sort(Comparator.comparing(Option::getOrder));
+
+    List<OptionRequest> optionRequests = questionRequest.options();
+    optionRequests.sort(Comparator.comparing(OptionRequest::order));
+
+    if (
+        !question.getTitle().equals(questionRequest.title()) ||
+            !question.getDescription().equals(questionRequest.description()) ||
+            question.isRequired() != questionRequest.required() ||
+            question.getType() != questionRequest.type()
+    ) {
+      question.setLatest(false);
+      Question latestQuestion = new Question(
+          question.getSurvey(),
+          questionRequest.type(),
+          questionRequest.title(),
+          questionRequest.description(),
+          questionRequest.required(),
+          questionRequest.order()
+      );
+      question = questionRepository.save(latestQuestion);
+    }
+
+    for (int i = 0; i < Math.min(options.size(), optionRequests.size()); i++) {
+      Option option = options.get(i);
+      OptionRequest optionRequest = optionRequests.get(i);
+      updateOption(question, option, optionRequest);
+    }
+  }
+
+  private void updateOption(Question question, Option option, OptionRequest optionRequest) {
+    if (
+        !option.getAnswer().equals(optionRequest.answer()) ||
+            option.getOrder() != optionRequest.order()
+    ) {
+      option.setLatest(false);
+      Option latestOption = new Option(
+          question,
+          optionRequest.answer(),
+          optionRequest.order()
+      );
+      optionRepository.save(latestOption);
+      return;
+    }
+    option.setQuestion(question);
   }
 
   private SurveyResponse responseFromSurvey(Survey survey) {
-    List<QuestionResponse> questionResponses = questionRepository.findBySurveyAndLatestTrue(survey)
+    List<QuestionResponse> questionResponses = questionRepository.findBySurveyAndLatestTrueOrderByOrder(survey)
         .stream()
         .map(this::responseFromQuestion)
         .toList();
@@ -67,7 +137,7 @@ public class SurveyService {
   }
 
   private QuestionResponse responseFromQuestion(Question question) {
-    List<OptionResponse> optionResponses = optionRepository.findByQuestionAndLatestTrue(question)
+    List<OptionResponse> optionResponses = optionRepository.findByQuestionAndLatestTrueOrderByOrder(question)
         .stream()
         .map(this::responseFromOption)
         .toList();

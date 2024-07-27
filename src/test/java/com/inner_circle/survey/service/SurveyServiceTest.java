@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -59,7 +60,7 @@ class SurveyServiceTest {
     entityManager.persist(question2);
     entityManager.flush();
 
-    Option option1 = new Option(question2, "test option1", 1);
+    Option option1 = new Option(question1, "test option1", 1);
     entityManager.persist(option1);
     Option option2 = new Option(question2, "test option2", 2);
     entityManager.persist(option2);
@@ -122,13 +123,16 @@ class SurveyServiceTest {
   void updateSurvey() {
     // given
     OptionRequest option = new OptionRequest("option", 1);
+    List<OptionRequest> optionRequests = new ArrayList<>(List.of(option));
     QuestionRequest question = new QuestionRequest(
-        "question", "desc", AnswerType.SINGLE, 1, true, List.of(option)
+        "question", "desc", AnswerType.SINGLE, 1, true, optionRequests
     );
-    SurveyRequest survey = new SurveyRequest("survey", "survey desc", List.of(question));
+    List<QuestionRequest> questionRequests = new ArrayList<>(List.of(question));
+    SurveyRequest surveyRequest = new SurveyRequest("survey", "survey desc", questionRequests);
 
     // when
-    SurveyResponse surveyResponse = surveyService.updateSurvey(survey);
+    List<Survey> surveys = surveyRepository.findAll();
+    SurveyResponse surveyResponse = surveyService.updateSurvey(surveys.get(0).getId(), surveyRequest);
     entityManager.flush();
 
     // then
