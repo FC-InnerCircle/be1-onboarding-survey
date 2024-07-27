@@ -1,23 +1,22 @@
 package com.inner_circle.survey.service;
 
-import com.inner_circle.survey.dto.request.OptionRequest;
-import com.inner_circle.survey.dto.request.QuestionRequest;
-import com.inner_circle.survey.dto.request.SurveyRequest;
-import com.inner_circle.survey.dto.response.OptionResponse;
-import com.inner_circle.survey.dto.response.QuestionResponse;
-import com.inner_circle.survey.dto.response.SurveyResponse;
+import com.inner_circle.survey.dto.request.*;
+import com.inner_circle.survey.dto.response.*;
 import com.inner_circle.survey.entity.request.Option;
 import com.inner_circle.survey.entity.request.Question;
 import com.inner_circle.survey.entity.request.Survey;
-import com.inner_circle.survey.repository.OptionRepository;
-import com.inner_circle.survey.repository.QuestionRepository;
-import com.inner_circle.survey.repository.SurveyRepository;
+import com.inner_circle.survey.entity.response.Respondent;
+import com.inner_circle.survey.entity.response.ResponseOption;
+import com.inner_circle.survey.entity.response.UserResponse;
+import com.inner_circle.survey.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +26,9 @@ public class SurveyService {
   private final SurveyRepository surveyRepository;
   private final QuestionRepository questionRepository;
   private final OptionRepository optionRepository;
+  private final RespondentRepository respondentRepository;
+  private final UserResponseRepository userResponseRepository;
+  private final ResponseOptionRepository responseOptionRepository;
 
   public List<SurveyResponse> getAllSurvey() {
     List<Survey> surveys = surveyRepository.findAll();
@@ -36,6 +38,29 @@ public class SurveyService {
   public SurveyResponse getSurvey(Long surveyId) {
     Survey survey = surveyRepository.findById(surveyId).orElseThrow();
     return responseFromSurvey(survey);
+  }
+
+  public List<RespondentResponse> getAnswers(Long surveyId) {
+    Survey survey = surveyRepository.findById(surveyId).orElseThrow();
+    List<Respondent> respondents = respondentRepository.findBySurvey(survey);
+
+    return respondents.stream().map(respondent -> {
+      List<UserResponseResponse> userResponseResponses = userResponseRepository.findByRespondent(respondent).stream().map(userResponse -> {
+        List<ResponseOptionResponse> optionResponses = responseOptionRepository.findByUserResponse(userResponse).stream()
+            .map(responseOption -> new ResponseOptionResponse(responseOption.getId(), responseOption.getOption().getAnswer()))
+            .collect(Collectors.toList());
+
+        return new UserResponseResponse(
+            userResponse.getId(),
+            userResponse.getQuestion().getTitle(),
+            userResponse.getQuestion().getDescription(),
+            userResponse.getAnswer(),
+            optionResponses
+        );
+      }).collect(Collectors.toList());
+
+      return new RespondentResponse(respondent.getId(), respondent.getName(), userResponseResponses);
+    }).collect(Collectors.toList());
   }
 
   @Transactional
@@ -54,41 +79,70 @@ public class SurveyService {
   @Transactional
   public SurveyResponse updateSurvey(Long surveyId, SurveyRequest surveyRequest) {
     Survey survey = surveyRepository.findById(surveyId).orElseThrow();
-    if (
-        !survey.getTitle().equals(surveyRequest.title()) ||
-            !survey.getDescription().equals(surveyRequest.description())
-    ) {
+    if (!survey.getTitle().equals(surveyRequest.title()) || !survey.getDescription().equals(surveyRequest.description())) {
       survey.update(surveyRequest.title(), surveyRequest.description());
     }
 
     List<Question> questions = questionRepository.findBySurveyAndLatestTrueOrderByOrder(survey);
-    questions.sort(Comparator.comparing(Question::getOrder));
-
     List<QuestionRequest> questionRequests = surveyRequest.questions();
-    questionRequests.sort(Comparator.comparing(QuestionRequest::order));
 
-    for (int i = 0; i < Math.min(questions.size(), questionRequests.size()); i++) {
-      Question question = questions.get(i);
-      QuestionRequest questionRequest = questionRequests.get(i);
-      updateQuestion(question, questionRequest);
-    }
+    updateQuestions(survey, questions, questionRequests);
 
     return responseFromSurvey(survey);
   }
 
-  private void updateQuestion(Question question, QuestionRequest questionRequest) {
+  @Transactional
+  public Long answerToSurvey(Long surveyId, RespondentRequest respondentRequest) {
+    Survey survey = surveyRepository.findById(surveyId).orElseThrow();
+    Respondent respondent = new Respondent(survey, respondentRequest.name());
+    respondentRepository.save(respondent);
+
+    respondentRequest.responses().forEach(userResponseRequest -> {
+      Question question = questionRepository.findById(userResponseRequest.id()).orElseThrow();
+      UserResponse userResponse = new UserResponse(respondent, question, userResponseRequest.answer());
+      userResponseRepository.save(userResponse);
+
+      userResponseRequest.options().forEach(optionId -> {
+        Option option = optionRepository.findById(optionId).orElseThrow();
+        ResponseOption responseOption = new ResponseOption(userResponse, option);
+        responseOptionRepository.save(responseOption);
+      });
+    });
+    return respondent.getId();
+  }
+
+  private void updateQuestions(Survey survey, List<Question> questions, List<QuestionRequest> questionRequests) {
+    int maxSize = Math.max(questions.size(), questionRequests.size());
+
+    IntStream.range(0, maxSize).forEach(i -> {
+      if (i >= questions.size()) {
+        createNewQuestionWithNewOptions(survey, questionRequests.get(i));
+      } else if (i >= questionRequests.size()) {
+        setQuestionAndOptionsAsOld(questions.get(i));
+      } else {
+        updateExistingQuestion(questions.get(i), questionRequests.get(i));
+      }
+    });
+  }
+
+  private void createNewQuestionWithNewOptions(Survey survey, QuestionRequest questionRequest) {
+    Question newQuestion = questionRepository.save(questionFromRequest(survey, questionRequest));
+    questionRequest.options().forEach(optionRequest ->
+        optionRepository.save(optionFromRequest(newQuestion, optionRequest))
+    );
+  }
+
+  private void setQuestionAndOptionsAsOld(Question question) {
+    question.setLatest(false);
+    optionRepository.findByQuestionAndLatestTrueOrderByOrder(question)
+        .forEach(option -> option.setLatest(false));
+  }
+
+  private void updateExistingQuestion(Question question, QuestionRequest questionRequest) {
     List<Option> options = optionRepository.findByQuestionAndLatestTrueOrderByOrder(question);
-    options.sort(Comparator.comparing(Option::getOrder));
-
     List<OptionRequest> optionRequests = questionRequest.options();
-    optionRequests.sort(Comparator.comparing(OptionRequest::order));
 
-    if (
-        !question.getTitle().equals(questionRequest.title()) ||
-            !question.getDescription().equals(questionRequest.description()) ||
-            question.isRequired() != questionRequest.required() ||
-            question.getType() != questionRequest.type()
-    ) {
+    if (isQuestionUpdated(question, questionRequest)) {
       question.setLatest(false);
       Question latestQuestion = new Question(
           question.getSurvey(),
@@ -100,30 +154,40 @@ public class SurveyService {
       );
       question = questionRepository.save(latestQuestion);
     }
+    updateOptions(question, options, optionRequests);
+  }
 
-    for (int i = 0; i < Math.min(options.size(), optionRequests.size()); i++) {
-      Option option = options.get(i);
-      OptionRequest optionRequest = optionRequests.get(i);
-      updateOption(question, option, optionRequest);
-    }
+  private boolean isQuestionUpdated(Question question, QuestionRequest questionRequest) {
+    return !question.getTitle().equals(questionRequest.title()) ||
+        !question.getDescription().equals(questionRequest.description()) ||
+        question.isRequired() != questionRequest.required() ||
+        question.getType() != questionRequest.type();
+  }
+
+  private void updateOptions(Question question, List<Option> options, List<OptionRequest> optionRequests) {
+    int maxSize = Math.max(options.size(), optionRequests.size());
+
+    IntStream.range(0, maxSize).forEach(i -> {
+      if (i >= options.size()) {
+        optionRepository.save(new Option(question, optionRequests.get(i).answer(), optionRequests.get(i).order()));
+      } else if (i >= optionRequests.size()) {
+        options.get(i).setLatest(false);
+      } else {
+        updateOption(question, options.get(i), optionRequests.get(i));
+      }
+    });
   }
 
   private void updateOption(Question question, Option option, OptionRequest optionRequest) {
-    if (
-        !option.getAnswer().equals(optionRequest.answer()) ||
-            option.getOrder() != optionRequest.order()
-    ) {
+    if (!option.getAnswer().equals(optionRequest.answer()) || option.getOrder() != optionRequest.order()) {
       option.setLatest(false);
-      Option latestOption = new Option(
-          question,
-          optionRequest.answer(),
-          optionRequest.order()
-      );
+      Option latestOption = new Option(question, optionRequest.answer(), optionRequest.order());
       optionRepository.save(latestOption);
-      return;
+    } else {
+      option.setQuestion(question);
     }
-    option.setQuestion(question);
   }
+
 
   private SurveyResponse responseFromSurvey(Survey survey) {
     List<QuestionResponse> questionResponses = questionRepository.findBySurveyAndLatestTrueOrderByOrder(survey)

@@ -1,7 +1,9 @@
 package com.inner_circle.survey.controller;
 
+import com.inner_circle.survey.dto.request.RespondentRequest;
 import com.inner_circle.survey.dto.request.SurveyRequest;
 import com.inner_circle.survey.dto.response.RespondentResponse;
+import com.inner_circle.survey.dto.response.RespondentResponseList;
 import com.inner_circle.survey.dto.response.SurveyResponse;
 import com.inner_circle.survey.dto.response.SurveyResponseList;
 import com.inner_circle.survey.service.SurveyService;
@@ -31,6 +33,12 @@ public class SurveyController {
     return ResponseEntity.ok(surveyResponse);
   }
 
+  @GetMapping("/{surveyId}/respondents")
+  public ResponseEntity<RespondentResponseList> getRespondents(@PathVariable("surveyId") Long surveyId) {
+    List<RespondentResponse> answers = surveyService.getAnswers(surveyId);
+    return ResponseEntity.ok(new RespondentResponseList(answers));
+  }
+
   @PostMapping
   public ResponseEntity<SurveyResponse> createSurvey(@RequestBody SurveyRequest surveyRequest) {
     SurveyResponse surveyResponse = surveyService.saveSurvey(surveyRequest);
@@ -38,11 +46,12 @@ public class SurveyController {
   }
 
   @PostMapping("/{surveyId}")
-  public ResponseEntity<RespondentResponse> answerToSurvey(
+  public ResponseEntity<Long> answerToSurvey(
       @PathVariable("surveyId") Long surveyId,
-      @RequestBody RespondentResponse respondentResponse
+      @RequestBody RespondentRequest respondentRequest
   ) {
-    return null;
+    Long respondentId = surveyService.answerToSurvey(surveyId, respondentRequest);
+    return ResponseEntity.status(HttpStatus.CREATED).body(respondentId);
   }
 
   @PutMapping("/{surveyId}")
