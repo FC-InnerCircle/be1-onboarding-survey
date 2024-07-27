@@ -29,6 +29,7 @@ dependencies {
 
 val currentDate = LocalDate.now().toString()
 
+// 커스텀 jar task 설정 (기존 의도와 다르게 동작해 하단 bootJar task를 추가 설정) 24.07.27
 tasks.register<Jar>("fatJar") {
 
     archiveClassifier.set("all")
@@ -161,4 +162,9 @@ tasks.register("checkBuild") {
 tasks.bootJar {
     archiveFileName.set("survey-application.jar")
     mainClass.set("com.innercircle.surveyapplication.SurveyApplicationKt")
+    destinationDirectory.set(file("${rootProject.projectDir}/build-output/result"))
+
+    doLast {
+        println("JAR file has been created at: ${destinationDirectory.get().asFile.absolutePath}/${archiveFileName.get()}")
+    }
 }
