@@ -2,12 +2,13 @@ package com.chanki.form.web.domain.forms;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
+import java.io.Serializable;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class FormItemOptionId {
+public class FormItemOptionId implements Serializable {
 
   @EqualsAndHashCode.Include
   @Id

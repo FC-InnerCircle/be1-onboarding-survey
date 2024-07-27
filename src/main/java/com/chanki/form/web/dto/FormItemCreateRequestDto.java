@@ -1,5 +1,6 @@
 package com.chanki.form.web.dto;
 
+import com.chanki.form.web.domain.forms.Form;
 import com.chanki.form.web.domain.forms.FormItem;
 import com.chanki.form.web.domain.forms.FormItemOption;
 import com.chanki.form.web.domain.forms.FormItemType;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -19,21 +21,22 @@ public class FormItemCreateRequestDto {
   private FormItemType type;
   private List<FormItemOptionCreateRequestDto> formItemOptions;
 
-  public FormItem toEntity(long formId, long version, long sequence) {
-    AtomicLong atomicLong = new AtomicLong();
-
-    List<FormItemOption> formItemOptions = Optional.ofNullable(this.formItemOptions).orElseGet(ArrayList::new).stream()
-        .map(option -> option.toEntity(formId, version, sequence, atomicLong.incrementAndGet()))
-        .toList();
-
+  public FormItem toEntity(Form form, long version, long sequence) {
     return FormItem.builder()
-        .formId(formId)
+        .form(form)
         .version(version)
         .sequence(sequence)
         .description(this.description)
-        .type(this.type)
-        .formItemOptions(formItemOptions)
         .required(this.required)
+        .type(type)
         .build();
+  }
+
+  public Stream<FormItemOption> getFormItemOptionList(FormItem formItem) {
+    AtomicLong atomicLong = new AtomicLong();
+
+    return this.formItemOptions
+        .stream()
+        .map(formItemOption-> formItemOption.toEntity(formItem, atomicLong.incrementAndGet()));
   }
 }

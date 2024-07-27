@@ -1,5 +1,6 @@
 package com.chanki.form.web.domain.forms;
 
+import jakarta.persistence.IdClass;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -16,18 +17,21 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.JoinFormula;
 
 @ToString
 @Getter
 @NoArgsConstructor
 @Entity
+@IdClass(FormId.class)
 @Table(name = "form")
 public class Form {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "form_id")
-  private Long formID;
+  private Long formId;
 
   @Column(length = 100, nullable = false)
   private String title;
@@ -35,14 +39,9 @@ public class Form {
   @Column(length = 500, nullable = false)
   private String description;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(name = "form_id", referencedColumnName = "form_id")
-  private List<FormItem> formItems;
-
   @Builder
-  public Form(String title, String description, List<FormItem> formItems) {
+  public Form(String title, String description) {
     this.title = title;
     this.description = description;
-    this.formItems = formItems;
   }
 }

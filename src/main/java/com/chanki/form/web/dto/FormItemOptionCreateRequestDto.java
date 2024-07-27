@@ -1,9 +1,9 @@
 package com.chanki.form.web.dto;
 
+import com.chanki.form.web.domain.forms.FormItem;
 import com.chanki.form.web.domain.forms.FormItemOption;
-import jakarta.persistence.Column;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Stream;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,11 +13,10 @@ public class FormItemOptionCreateRequestDto {
 
   private String description;
 
-  public FormItemOption toEntity(long formId, long version, long sequence, long optionSequence) {
+
+  public FormItemOption toEntity(FormItem formItem, long optionSequence) {
     return FormItemOption.builder()
-        .formId(formId)
-        .version(version)
-        .sequence(sequence)
+        .formItem(formItem)
         .optionSequence(optionSequence)
         .description(this.description)
         .build();

@@ -1,16 +1,13 @@
 package com.chanki.form.web.domain.forms;
 
-import java.io.Serializable;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class FormItemId implements Serializable {
+public class FormSubmitId {
 
   @EqualsAndHashCode.Include
   @Id
@@ -24,4 +21,14 @@ public class FormItemId implements Serializable {
   @EqualsAndHashCode.Include
   @Id
   private long sequence;
+
+  @EqualsAndHashCode.Include
+  @Id
+  @Column(name = "option_sequence")
+  private long optionSequence;
+
+  @EqualsAndHashCode.Include
+  @Id
+  @Column(name = "answer_sequence")
+  private long answerSequence;
 }

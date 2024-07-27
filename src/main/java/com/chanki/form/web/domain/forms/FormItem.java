@@ -1,5 +1,8 @@
 package com.chanki.form.web.domain.forms;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.ManyToOne;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -29,7 +32,6 @@ public class FormItem {
 
   @Id
   @Column(name = "form_id")
-  @JoinColumn(name = "form_id")
   private long formId;
 
   @Id
@@ -37,6 +39,11 @@ public class FormItem {
 
   @Id
   private long sequence;
+
+  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "form_id", referencedColumnName = "form_id")
+  private Form form;
+
 
   @Column(length = 500)
   private String description;
@@ -46,23 +53,16 @@ public class FormItem {
   @Enumerated(EnumType.STRING)
   private FormItemType type;
 
-  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumns({
-      @JoinColumn(name = "form_id", referencedColumnName = "form_id"),
-      @JoinColumn(name = "version", referencedColumnName = "version"),
-      @JoinColumn(name = "sequence", referencedColumnName = "sequence")
-  })
-  private List<FormItemOption> formItemOptions;
 
   @Builder
-  public FormItem(long formId, long version, long sequence, boolean required, String description, FormItemType type, List<FormItemOption> formItemOptions) {
-    this.formId = formId;
+  public FormItem(Form form, long version, long sequence, boolean required, String description,
+      FormItemType type) {
+    this.form = form;
     this.version = version;
     this.sequence = sequence;
     this.required = required;
     this.description = description;
     this.type = type;
-    this.formItemOptions = formItemOptions;
   }
 
 }

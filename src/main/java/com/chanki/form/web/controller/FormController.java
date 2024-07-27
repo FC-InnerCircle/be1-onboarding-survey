@@ -1,6 +1,7 @@
 package com.chanki.form.web.controller;
 
 import com.chanki.form.web.dto.FormEditRequestDto;
+import com.chanki.form.web.dto.FormSubmitDto;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,5 +34,10 @@ public class FormController {
   @PutMapping("/api/form")
   public long edit(@RequestBody FormEditRequestDto formEditRequestDto) {
     return formService.editForm(formEditRequestDto);
+  }
+
+  @PostMapping("/api/form/{formId}")
+  public long submit(@PathVariable("formId") long formId, @RequestBody FormSubmitDto formSubmitDto) {
+    return formService.submitForm(formId, formSubmitDto);
   }
 }
