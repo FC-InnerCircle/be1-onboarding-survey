@@ -22,8 +22,9 @@
 
 ### 🧑🏼‍🌾개발 일지
 - [[기본] ERD 설계](https://github.com/hyunolike/be1-onboarding-survey/wiki/%EA%B0%9C%EB%B0%9C%EA%B8%B0%EB%A1%9D-02.-ERD-%EC%B5%9C%EC%A2%85%EB%B3%B8-(%EB%85%BC%EB%A6%AC%EC%A0%81-%EC%84%A4%EA%B3%84))
-- [[우대사항]트래픽이 많고, 저장되어 있는 데이터가 많음을 염두에 둔 구현](#)
-- [[우대사항]동시성 이슈가 발생할 수 있는 부분을 염두에 둔 구현](#)
+- [[기본] 테스트코드 설계](https://github.com/hyunolike/be1-onboarding-survey/wiki/%EA%B0%9C%EB%B0%9C%EA%B8%B0%EB%A1%9D-05.-%ED%85%8C%EC%8A%A4%ED%8A%B8%EC%BD%94%EB%93%9C-%EC%84%A4%EA%B3%84)
+- [[우대사항]트래픽이 많고, 저장되어 있는 데이터가 많음을 염두에 둔 구현](https://github.com/hyunolike/be1-onboarding-survey/wiki/%EA%B0%9C%EB%B0%9C%EA%B8%B0%EB%A1%9D-03.-%ED%8A%B8%EB%9E%98%ED%94%BD,-%EC%A0%80%EC%9E%A5%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%8B%A4%EC%88%98-%EC%84%9C%EB%B2%84-%EA%B5%AC%EC%A1%B0-%EC%84%A4%EA%B3%84)
+- [[우대사항]동시성 이슈가 발생할 수 있는 부분을 염두에 둔 구현](https://github.com/hyunolike/be1-onboarding-survey/wiki/%EA%B0%9C%EB%B0%9C%EA%B8%B0%EB%A1%9D-04.-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%B2%98%EB%A6%AC-(%EC%95%A0%ED%94%8C%EB%A6%AC%EC%BC%80%EC%9D%B4%EC%85%98%EB%8B%A8-%EC%B2%98%EB%A6%AC))
 
 ---
 ## Introduction
