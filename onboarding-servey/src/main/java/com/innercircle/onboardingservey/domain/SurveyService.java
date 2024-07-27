@@ -183,11 +183,12 @@ public class SurveyService {
         SurveyCommand.SurveyVersionCreateCommand command,
         Survey survey
     ) {
-        final SurveyVersion surveyVersion = new SurveyVersion(
-            command.surveyTitle(),
-            command.surveyDescription(),
-            survey
-        );
+        final SurveyVersion surveyVersion = surveyStore.store(
+            new SurveyVersion(
+                command.surveyTitle(),
+                command.surveyDescription(),
+                survey
+            ));
 
         final List<Question> questions = questionStore.store(command.questionCreateRequests()
             .stream()
