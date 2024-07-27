@@ -66,7 +66,7 @@ public class SurveyQuestion {
         options.forEach(this::addOption);
     }
 
-    public void addOption(final SurveyQuestionOption option) {
+    private void addOption(final SurveyQuestionOption option) {
         if (resultType.isSubjectiveType()) {
             throw new SurveyQuestionOptionNotAllowedException("선택형 질문이 아닙니다.");
         }

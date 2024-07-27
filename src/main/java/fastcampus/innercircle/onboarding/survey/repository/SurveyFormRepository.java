@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 import java.util.UUID;
 
-@Repository
 public interface SurveyFormRepository extends JpaRepository<SurveyForm, FormId> {
     Optional<SurveyForm> findTop1ByFormId_IdOrderByFormId_VersionDesc(UUID id);
 }
