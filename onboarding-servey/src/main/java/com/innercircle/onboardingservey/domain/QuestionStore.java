@@ -1,6 +1,6 @@
 package com.innercircle.onboardingservey.domain;
 
-import com.innercircle.onboardingservey.domain.model.Question;
+import com.innercircle.onboardingservey.domain.model.entity.Question;
 import java.util.Collection;
 import java.util.List;
 

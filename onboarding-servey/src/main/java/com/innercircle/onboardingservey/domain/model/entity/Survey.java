@@ -1,4 +1,4 @@
-package com.innercircle.onboardingservey.domain.model;
+package com.innercircle.onboardingservey.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

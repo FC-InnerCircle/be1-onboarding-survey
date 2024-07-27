@@ -1,8 +1,8 @@
 package com.innercircle.onboardingservey.infrastructure;
 
 import com.innercircle.onboardingservey.domain.SurveyStore;
-import com.innercircle.onboardingservey.domain.model.Survey;
-import com.innercircle.onboardingservey.domain.model.SurveyVersion;
+import com.innercircle.onboardingservey.domain.model.entity.Survey;
+import com.innercircle.onboardingservey.domain.model.entity.SurveyVersion;
 import com.innercircle.onboardingservey.infrastructure.repository.SurveyRepository;
 import com.innercircle.onboardingservey.infrastructure.repository.SurveyVersionRepository;
 import lombok.RequiredArgsConstructor;

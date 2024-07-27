@@ -1,9 +1,9 @@
 package com.innercircle.onboardingservey.domain.model;
 
-import com.innercircle.onboardingservey.controller.survey.SurveyRequest.QuestionCreateRequest;
-import com.innercircle.onboardingservey.controller.survey.SurveyRequest.QuestionOptionCreateRequest;
+import com.innercircle.onboardingservey.controller.survey.SurveyAdminRequest.QuestionCreateAdminRequest;
+import com.innercircle.onboardingservey.controller.survey.SurveyAdminRequest.QuestionOptionCreateAdminRequest;
 
-import com.innercircle.onboardingservey.controller.survey.SurveyRequest.SurveyVersionCreateRequest;
+import com.innercircle.onboardingservey.controller.survey.SurveyAdminRequest.SurveyCreateAdminRequest;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -17,20 +17,20 @@ public class SurveyCommand {
         List<QuestionCreateCommand> questionCreateRequests
     ) {
 
-        public static SurveyVersionCreateCommand from(SurveyVersionCreateRequest surveyVersionCreateRequest) {
+        public static SurveyVersionCreateCommand from(SurveyCreateAdminRequest surveyCreateAdminRequest) {
             return new SurveyVersionCreateCommand(
-                surveyVersionCreateRequest.surveyTitle(),
-                surveyVersionCreateRequest.surveyDescription(),
-                CollectionUtils.isEmpty(surveyVersionCreateRequest.questionCreateRequests())
+                surveyCreateAdminRequest.surveyTitle(),
+                surveyCreateAdminRequest.surveyDescription(),
+                CollectionUtils.isEmpty(surveyCreateAdminRequest.questionCreateAdminRequests())
                     ? null
                     : IntStream.range(
                         0,
-                        surveyVersionCreateRequest.questionCreateRequests()
+                        surveyCreateAdminRequest.questionCreateAdminRequests()
                             .size()
                     )
                     .mapToObj(i ->
                         QuestionCreateCommand.from(
-                            surveyVersionCreateRequest.questionCreateRequests()
+                            surveyCreateAdminRequest.questionCreateAdminRequests()
                                 .get(i),
                             i
                         ))
@@ -49,24 +49,24 @@ public class SurveyCommand {
     ) {
 
         public static QuestionCreateCommand from(
-            QuestionCreateRequest questionCreateRequest,
+            QuestionCreateAdminRequest questionCreateAdminRequest,
             Integer displayOrder
         ) {
             return new QuestionCreateCommand(
-                questionCreateRequest.questionTitle(),
-                questionCreateRequest.questionDescription(),
-                questionCreateRequest.isRequired(),
-                QuestionType.valueOf(questionCreateRequest.questionType()),
+                questionCreateAdminRequest.questionTitle(),
+                questionCreateAdminRequest.questionDescription(),
+                questionCreateAdminRequest.isRequired(),
+                QuestionType.valueOf(questionCreateAdminRequest.questionType()),
                 displayOrder,
-                CollectionUtils.isEmpty(questionCreateRequest.questionOptionCreateRequests())
+                CollectionUtils.isEmpty(questionCreateAdminRequest.questionOptionCreateAdminRequests())
                     ? null
                     : IntStream.range(
                         0,
-                        questionCreateRequest.questionOptionCreateRequests()
+                        questionCreateAdminRequest.questionOptionCreateAdminRequests()
                             .size()
                     )
                     .mapToObj(i -> QuestionOptionCreateCommand.from(
-                        questionCreateRequest.questionOptionCreateRequests()
+                        questionCreateAdminRequest.questionOptionCreateAdminRequests()
                             .get(i),
                         i
                     ))
@@ -81,11 +81,11 @@ public class SurveyCommand {
     ) {
 
         public static QuestionOptionCreateCommand from(
-            QuestionOptionCreateRequest questionOptionCreateRequest,
+            QuestionOptionCreateAdminRequest questionOptionCreateAdminRequest,
             Integer displayOrder
         ) {
             return new QuestionOptionCreateCommand(
-                questionOptionCreateRequest.questionOptionTitle(),
+                questionOptionCreateAdminRequest.questionOptionTitle(),
                 displayOrder
             );
         }

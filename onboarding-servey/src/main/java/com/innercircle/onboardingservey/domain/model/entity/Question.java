@@ -1,31 +1,17 @@
-package com.innercircle.onboardingservey.domain.model;
+package com.innercircle.onboardingservey.domain.model.entity;
 
 
 
-import com.google.common.collect.Sets;
-import com.google.common.collect.Sets.SetView;
+import com.innercircle.onboardingservey.domain.model.QuestionType;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
-import org.springframework.util.CollectionUtils;
 
 @Entity
 @Table(name = "questions")
@@ -36,6 +22,7 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
+
     private String title;
     @Nullable
     private String description;
@@ -49,7 +36,7 @@ public class Question {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<QuestionOption> questionOptions;
 
-    public Question(
+    private Question(
         final String title,
         final String description,
         final QuestionType questionType,
@@ -93,12 +80,6 @@ public class Question {
                 "questionOptionsDetailResponse must not be empty or null"
             );
         }
-        if (this.questionType.isText()) {
-            Assert.hasText(
-                this.description,
-                "describe must not be null"
-            );
-        }
     }
 
 
@@ -109,7 +90,8 @@ public class Question {
         final Integer displayOrder,
         final SurveyVersion surveyVersion
     ) {
-        return new Question(title,
+        return new Question(
+            title,
             description,
             QuestionType.SHORT_TEXT,
             required,
@@ -126,7 +108,8 @@ public class Question {
         final Integer displayOrder,
         final SurveyVersion surveyVersion
     ) {
-        return new Question(title,
+        return new Question(
+            title,
             description,
             QuestionType.LONG_TEXT,
             required,
@@ -138,13 +121,15 @@ public class Question {
 
     public static Question singleChoice(
         final String title,
+        final String description,
         final Boolean required,
         final Integer displayOrder,
         final SurveyVersion surveyVersion,
         final List<QuestionOption> questionOptionList
     ) {
-        return new Question(title,
-            null,
+        return new Question(
+            title,
+            description,
             QuestionType.SINGLE_CHOICE,
             required,
             displayOrder,
@@ -155,7 +140,7 @@ public class Question {
 
     public static Question multiChoice(
         final String title,
-
+        final String description,
         final Boolean required,
         final Integer displayOrder,
         final SurveyVersion surveyVersion,
@@ -163,71 +148,12 @@ public class Question {
     ) {
         return new Question(
             title,
-            null,
+            description,
             QuestionType.MULTIPLE_CHOICE,
             required,
             displayOrder,
             surveyVersion,
             questionOptionList
         );
-    }
-
-    public Question update(Question question) {
-        this.title = question.getTitle();
-        this.description = question.getDescription();
-        this.questionType = question.getQuestionType();
-        this.required = question.getRequired();
-        this.surveyVersion = question.getSurveyVersion();
-        this.displayOrder = question.getDisplayOrder();
-        this.questionOptions = update(question.getQuestionOptions());
-        valid();
-        return this;
-    }
-
-    private List<QuestionOption> update(List<QuestionOption> questionOptions) {
-        if (CollectionUtils.isEmpty(questionOptions)) {
-            this.questionOptions = new ArrayList<>();
-            return this.questionOptions;
-        }
-        if (CollectionUtils.isEmpty(this.questionOptions)) {
-            this.questionOptions = new ArrayList<>();
-        }
-
-        final Map<Long, QuestionOption> beforeQuestionOptionMap =
-            this.questionOptions
-                .stream()
-                .collect(Collectors.toMap(
-                    QuestionOption::getQuestionOptionId,
-                    Function.identity()
-                ));
-        final Map<Long, QuestionOption> updateQuestionOptionMap =
-            questionOptions
-                .stream()
-                .collect(Collectors.toMap(
-                    QuestionOption::getQuestionOptionId,
-                    Function.identity()
-                ));
-
-        Sets.difference(
-                beforeQuestionOptionMap.keySet(),
-                updateQuestionOptionMap.keySet()
-            )
-            .stream()
-            .map(beforeQuestionOptionMap::get)
-            .filter(Objects::nonNull)
-            .forEach(this.questionOptions::remove);
-
-        final List<QuestionOption> addQuestionOptions = Sets.difference(
-                updateQuestionOptionMap.keySet(),
-                beforeQuestionOptionMap.keySet()
-            )
-            .stream()
-            .map(updateQuestionOptionMap::get)
-            .filter(Objects::nonNull)
-            .toList();
-
-        this.questionOptions.addAll(addQuestionOptions);
-
-        return this.questionOptions;
     }
 }

@@ -2,8 +2,8 @@ package com.innercircle.onboardingservey.domain;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.innercircle.onboardingservey.domain.model.Survey;
-import com.innercircle.onboardingservey.domain.model.SurveyVersion;
+import com.innercircle.onboardingservey.domain.model.entity.Survey;
+import com.innercircle.onboardingservey.domain.model.entity.SurveyVersion;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

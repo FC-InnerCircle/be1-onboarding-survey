@@ -1,6 +1,9 @@
 package com.innercircle.onboardingservey.domain.model;
 
 import com.innercircle.onboardingservey.domain.model.SurveyCommand.QuestionCreateCommand;
+import com.innercircle.onboardingservey.domain.model.entity.Question;
+import com.innercircle.onboardingservey.domain.model.entity.QuestionOption;
+import com.innercircle.onboardingservey.domain.model.entity.SurveyVersion;
 
 public class QuestionFactory {
 
@@ -25,6 +28,7 @@ public class QuestionFactory {
             );
             case SINGLE_CHOICE -> Question.singleChoice(
                 command.questionTitle(),
+                command.questionDescription(),
                 command.required(),
                 command.displayOrder(),
                 surveyVersion,
@@ -38,6 +42,7 @@ public class QuestionFactory {
             );
             case MULTIPLE_CHOICE -> Question.multiChoice(
                 command.questionTitle(),
+                command.questionDescription(),
                 command.required(),
                 command.displayOrder(),
                 surveyVersion,

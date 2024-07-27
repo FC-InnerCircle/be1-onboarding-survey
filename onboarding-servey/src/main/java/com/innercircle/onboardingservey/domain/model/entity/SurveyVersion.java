@@ -1,4 +1,4 @@
-package com.innercircle.onboardingservey.domain.model;
+package com.innercircle.onboardingservey.domain.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -16,7 +16,7 @@ public class SurveyVersion {
     private String title;
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Survey survey;
 
     public SurveyVersion(

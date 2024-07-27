@@ -2,70 +2,72 @@ package com.innercircle.onboardingservey.controller.survey;
 
 
 import com.innercircle.onboardingservey.domain.model.QuestionType;
-import com.innercircle.onboardingservey.domain.model.SurveyResult.QuestionDetailResult;
-import com.innercircle.onboardingservey.domain.model.SurveyResult.QuestionOptionDetailResult;
-import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.QuestionResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.QuestionOptionResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyResult;
+import lombok.experimental.UtilityClass;
 
 import java.util.List;
 
+@UtilityClass
 public class SurveyAdminResponse {
 
-    public record SurveyDetailResponse(
+    public record SurveyDetailAdminResponse(
         Long surveyId,
         String title,
         String description,
-        List<QuestionDetailResponse> questionDetailResponses
+        List<QuestionDetailAdminResponse> questionDetailAdminRespons
     ) {
 
-        public static SurveyDetailResponse from(
-            SurveyDetailResult surveyDetailResult
+        public static SurveyDetailAdminResponse from(
+            SurveyResult surveyResult
         ) {
 
-            return new SurveyDetailResponse(
-                surveyDetailResult.surveyId(),
-                surveyDetailResult.title(),
-                surveyDetailResult.description(),
-                surveyDetailResult.questionDetailResults()
+            return new SurveyDetailAdminResponse(
+                surveyResult.surveyId(),
+                surveyResult.title(),
+                surveyResult.description(),
+                surveyResult.questionResults()
                     .stream()
-                    .map(QuestionDetailResponse::from)
+                    .map(QuestionDetailAdminResponse::from)
                     .toList()
             );
         }
     }
 
-    public record QuestionDetailResponse(
+    public record QuestionDetailAdminResponse(
         Long questionId,
         String title,
         String description,
         Boolean required,
         QuestionType questionType,
-        List<QuestionOptionDetailResponse> questionOptionsDetailResponse
+        List<QuestionOptionDetailAdminResponse> questionOptionsDetailResponse
     ) {
 
-        public static QuestionDetailResponse from(QuestionDetailResult questionDetailResult) {
-            return new QuestionDetailResponse(
-                questionDetailResult.questionId(),
-                questionDetailResult.title(),
-                questionDetailResult.description(),
-                questionDetailResult.required(),
-                questionDetailResult.questionType(),
-                questionDetailResult.questionOptionDetails()
+        public static QuestionDetailAdminResponse from(QuestionResult questionResult) {
+            return new QuestionDetailAdminResponse(
+                questionResult.questionId(),
+                questionResult.title(),
+                questionResult.description(),
+                questionResult.required(),
+                questionResult.questionType(),
+                questionResult.questionOptionDetails()
                     .stream()
-                    .map(QuestionOptionDetailResponse::from)
+                    .map(QuestionOptionDetailAdminResponse::from)
                     .toList()
             );
         }
     }
 
-    public record QuestionOptionDetailResponse(
+    public record QuestionOptionDetailAdminResponse(
         Long questOptionId,
         String title
     ) {
 
-        public static QuestionOptionDetailResponse from(QuestionOptionDetailResult questionOptionDetailResult) {
-            return new QuestionOptionDetailResponse(
-                questionOptionDetailResult.questOptionId(),
-                questionOptionDetailResult.title()
+        public static QuestionOptionDetailAdminResponse from(QuestionOptionResult questionOptionResult) {
+            return new QuestionOptionDetailAdminResponse(
+                questionOptionResult.questOptionId(),
+                questionOptionResult.title()
             );
         }
     }

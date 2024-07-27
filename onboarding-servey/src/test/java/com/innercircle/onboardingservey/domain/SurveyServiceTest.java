@@ -2,7 +2,7 @@ package com.innercircle.onboardingservey.domain;
 
 import com.innercircle.onboardingservey.domain.model.QuestionType;
 import com.innercircle.onboardingservey.domain.model.SurveyCommand;
-import com.innercircle.onboardingservey.domain.model.SurveyResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResults;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,10 @@ public class SurveyServiceTest {
     void survey_create_success() {
 
         final SurveyCommand.SurveyVersionCreateCommand surveyVersionCreateCommand = fixtureSurveyCreateCommand();
-        final SurveyResult.SurveyDetailResult surveyDetailResult = surveyService.createSurvey(surveyVersionCreateCommand);
+        final SurveyResults.SurveyResult surveyResult = surveyService.createSurvey(surveyVersionCreateCommand);
 
-        assertEqualSurvey(surveyDetailResult,
+        assertEqualSurvey(
+            surveyResult,
             surveyVersionCreateCommand
         );
 
@@ -125,21 +126,21 @@ public class SurveyServiceTest {
     @DisplayName("survey에 버전이 추가된다.")
     void survey_update_success() {
         final SurveyCommand.SurveyVersionCreateCommand surveyVersionCreateCommand = fixtureSurveyCreateCommand();
-        final SurveyResult.SurveyDetailResult surveyDetailResult = surveyService.createSurvey(surveyVersionCreateCommand);
+        final SurveyResults.SurveyResult surveyResult = surveyService.createSurvey(surveyVersionCreateCommand);
 
-        final Long surveyId = surveyDetailResult.surveyId();
+        final Long surveyId = surveyResult.surveyId();
         final SurveyCommand.SurveyVersionCreateCommand expect = new SurveyCommand.SurveyVersionCreateCommand(
             "수정",
             "수정했찌롱",
             new ArrayList<>()
         );
-        final SurveyResult.SurveyDetailResult actual = surveyService.addSurveyVersion(surveyId, expect);
+        final SurveyResults.SurveyResult actual = surveyService.addSurveyVersion(surveyId, expect);
 
         assertEqualSurvey(actual, expect);
     }
 
     private void assertEqualSurvey(
-        SurveyResult.SurveyDetailResult actual,
+        SurveyResults.SurveyResult actual,
         SurveyCommand.SurveyVersionCreateCommand expect
     ) {
         assertThat(actual).isNotNull();
@@ -149,7 +150,7 @@ public class SurveyServiceTest {
         assertThat(actual.description()).isEqualTo(expect.surveyDescription());
 
         // 설문조사의 첫 번째 질문 검증
-        assertThat(actual.questionDetailResults()).hasSize(expect.questionCreateRequests()
+        assertThat(actual.questionResults()).hasSize(expect.questionCreateRequests()
             .size());
 
         final Map<Integer, SurveyCommand.QuestionCreateCommand> questionMapByDisplayOrder = expect.questionCreateRequests()
@@ -159,12 +160,12 @@ public class SurveyServiceTest {
                 Function.identity()
             ));
 
-        actual.questionDetailResults()
+        actual.questionResults()
             .forEach(question -> assertEqualQuestion(question, questionMapByDisplayOrder.get(question.displayOrder())));
     }
 
     private void assertEqualQuestion(
-        SurveyResult.QuestionDetailResult actual,
+        SurveyResults.QuestionResult actual,
         SurveyCommand.QuestionCreateCommand expect
     ) {
         assertThat(actual).isNotNull();

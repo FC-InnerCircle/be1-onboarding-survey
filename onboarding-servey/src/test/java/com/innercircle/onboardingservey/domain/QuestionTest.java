@@ -1,13 +1,13 @@
 package com.innercircle.onboardingservey.domain;
 
-import com.innercircle.onboardingservey.domain.model.Question;
-import com.innercircle.onboardingservey.domain.model.QuestionOption;
-import com.innercircle.onboardingservey.domain.model.Survey;
+import com.innercircle.onboardingservey.domain.model.entity.Question;
+import com.innercircle.onboardingservey.domain.model.entity.QuestionOption;
+import com.innercircle.onboardingservey.domain.model.entity.Survey;
 
 import java.util.List;
 import java.util.stream.IntStream;
 
-import com.innercircle.onboardingservey.domain.model.SurveyVersion;
+import com.innercircle.onboardingservey.domain.model.entity.SurveyVersion;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -78,6 +78,7 @@ public class QuestionTest {
             survey
         );
         final String title = "이름을 입력해주세요";
+        final String description = "test";
         final Boolean required = Boolean.TRUE;
         final List<QuestionOption> questionOptions = IntStream.of(
                 1,
@@ -94,6 +95,7 @@ public class QuestionTest {
 
         final Question question = Question.singleChoice(
             title,
+            description,
             required,
             1,
             surveyVersion,
@@ -102,6 +104,7 @@ public class QuestionTest {
 
         assertThat(question).isNotNull();
         assertThat(question.getTitle()).isEqualTo(title);
+        assertThat(question.getDescription()).isEqualTo(description);
         assertThat(question.getRequired()).isEqualTo(required);
         assertThat(question.getQuestionOptions()).isNotEmpty();
         assertThat(question.getQuestionOptions()
@@ -117,6 +120,7 @@ public class QuestionTest {
             new Survey()
         );
         final String title = "이름을 입력해주세요";
+        final String description = "test";
         final Boolean required = Boolean.TRUE;
         final List<QuestionOption> questionOptions = IntStream.of(1,
                 2,
@@ -131,6 +135,7 @@ public class QuestionTest {
 
         final Question question = Question.multiChoice(
             title,
+            description,
             required,
             1,
             survey,
@@ -139,6 +144,7 @@ public class QuestionTest {
 
         assertThat(question).isNotNull();
         assertThat(question.getTitle()).isEqualTo(title);
+        assertThat(question.getDescription()).isEqualTo(description);
         assertThat(question.getRequired()).isEqualTo(required);
         assertThat(question.getQuestionOptions()).isNotEmpty();
         assertThat(question.getQuestionOptions()

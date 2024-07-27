@@ -1,35 +1,35 @@
 package com.innercircle.onboardingservey.controller.survey;
 
-import com.innercircle.onboardingservey.controller.survey.SurveyAdminResponse.SurveyDetailResponse;
+import com.innercircle.onboardingservey.controller.survey.SurveyAdminResponse.SurveyDetailAdminResponse;
 import com.innercircle.onboardingservey.domain.SurveyService;
 import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyVersionCreateCommand;
-import com.innercircle.onboardingservey.domain.model.SurveyResult.SurveyDetailResult;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin/survey")
+@RequestMapping("/admin/surveys")
 @RequiredArgsConstructor
 public class SurveyAdminController {
 
     private final SurveyService surveyService;
 
     @PostMapping
-    public ResponseEntity<SurveyDetailResponse> surveyCreate(
-        @RequestBody SurveyRequest.SurveyVersionCreateRequest request
+    public ResponseEntity<SurveyDetailAdminResponse> surveyCreate(
+        @RequestBody SurveyAdminRequest.SurveyCreateAdminRequest request
     ) {
-        final SurveyDetailResult surveyDetailResult = surveyService.createSurvey(SurveyVersionCreateCommand.from(request));
-        return ResponseEntity.ok(SurveyDetailResponse.from(surveyDetailResult));
+        final SurveyResult surveyResult = surveyService.createSurvey(SurveyVersionCreateCommand.from(request));
+        return ResponseEntity.ok(SurveyDetailAdminResponse.from(surveyResult));
     }
 
     @PostMapping("/{surveyId}")
-    public ResponseEntity<SurveyDetailResponse> surveyVersionCreate(
+    public ResponseEntity<SurveyDetailAdminResponse> surveyVersionCreate(
         @PathVariable Long surveyId,
-        @RequestBody SurveyRequest.SurveyVersionCreateRequest request
+        @RequestBody SurveyAdminRequest.SurveyCreateAdminRequest request
     ) {
-        final SurveyDetailResult surveyDetailResult = surveyService.addSurveyVersion(surveyId, SurveyVersionCreateCommand.from(request));
-        return ResponseEntity.ok(SurveyDetailResponse.from(surveyDetailResult));
+        final SurveyResult surveyResult = surveyService.addSurveyVersion(surveyId, SurveyVersionCreateCommand.from(request));
+        return ResponseEntity.ok(SurveyDetailAdminResponse.from(surveyResult));
     }
 
 }
