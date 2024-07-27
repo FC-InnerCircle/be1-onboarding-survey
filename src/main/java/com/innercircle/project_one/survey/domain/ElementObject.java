@@ -2,11 +2,13 @@ package com.innercircle.project_one.survey.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class ElementObject {
 
     @Id
@@ -20,7 +22,7 @@ public class ElementObject {
     private SurveyObject surveyObject;
 
     public ElementObject(int elementOrder, String elementValue, SurveyObject elementSurveyObject) {
-       this.elementOrder = Objects.requireNonNull(elementOrder);
+       this.elementOrder = elementOrder;
        this.elementValue = Objects.requireNonNull(elementValue);
        this.surveyObject = Objects.requireNonNull(elementSurveyObject);
     }

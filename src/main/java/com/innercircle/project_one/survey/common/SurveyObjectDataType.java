@@ -8,7 +8,7 @@ public enum SurveyObjectDataType {
 
     SurveyObjectDataType(String val) {
         if (!this.name().equals(val))
-            throw new IllegalArgumentException("Incorrect SurveyObjectDataType: " + val);
+            throw new IllegalArgumentException("적절한 타입이 아닙니다: " + val);
     }
 
 

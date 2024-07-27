@@ -1,12 +1,13 @@
 package com.innercircle.project_one.survey.domain;
 
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @DiscriminatorValue("ELEMENT")
 public class ElementSurveyObjectAnswer extends SurveyObjectAnswer {
 

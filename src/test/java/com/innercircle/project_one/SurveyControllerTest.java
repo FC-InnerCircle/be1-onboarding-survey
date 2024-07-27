@@ -7,9 +7,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.innercircle.project_one.survey.api.SurveyController;
-import com.innercircle.project_one.survey.api.SurveyService;
+import com.innercircle.project_one.survey.api.service.SurveyCreateService;
+import com.innercircle.project_one.survey.api.service.SurveyService;
 import com.innercircle.project_one.survey.api.dto.SurveyDTO;
 import com.innercircle.project_one.survey.api.repository.SurveyRepository;
+import com.innercircle.project_one.survey.api.service.SurveyUpdateService;
 import com.innercircle.project_one.survey.common.ApiResponse;
 import com.innercircle.project_one.survey.common.SuccessResponse;
 import com.innercircle.project_one.survey.domain.Survey;
@@ -33,6 +35,12 @@ public class SurveyControllerTest {
     private SurveyService surveyService;
 
     @MockBean
+    private SurveyCreateService surveyCreateService;
+
+    @MockBean
+    private SurveyUpdateService surveyUpdateService;
+
+    @MockBean
     private SurveyRepository surveyRepository;
 
 
@@ -54,7 +62,7 @@ public class SurveyControllerTest {
         // when
         SurveyDTO survey = mapper.readValue(jsonString, SurveyDTO.class);
         ApiResponse apiResponse = new SuccessResponse<>("설문조사 폼이 저장되었습니다.");
-        Mockito.when(surveyService.saveSurvey(survey)).thenReturn(apiResponse);
+        Mockito.when(surveyCreateService.saveSurvey(survey)).thenReturn(apiResponse);
 
         // then
         mockMvc.perform(post("/surveys")
@@ -84,7 +92,7 @@ public class SurveyControllerTest {
         SurveyDTO surveyDTO = mapper.readValue(jsonString, SurveyDTO.class);
 
         ApiResponse apiResponse = new SuccessResponse<>("설문조사 폼이 업데이트되었습니다.");
-        Mockito.when(surveyService.updateSurvey(1L, surveyDTO)).thenReturn(apiResponse);
+        Mockito.when(surveyUpdateService.updateSurvey(1L, surveyDTO)).thenReturn(apiResponse);
 
         // then
         mockMvc.perform(patch("/surveys/1")
