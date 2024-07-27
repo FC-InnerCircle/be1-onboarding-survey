@@ -1,4 +1,4 @@
-# 이너써클 BE 온보딩 프로젝트 (장현호)
+# 이너써클 BE 온보딩 프로젝트 (장현호) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhyunolike%2Fbe1-onboarding-survey&count_bg=%23FFD400&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 > [🚀기능 점검을 위한 빌드 결과물 바로가기](https://github.com/hyunolike/be1-onboarding-survey/tree/main/build-output/result)
 
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/0dd5e37d-7d99-495b-b4f4-f1de85ef8c36">
