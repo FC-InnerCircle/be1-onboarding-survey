@@ -38,22 +38,22 @@ class SurveyServiceImplTest {
                 description = "Test Description",
                 isActive = true,
                 questions =
-                    listOf(
-                        QuestionRequest(
-                            questionText = "Test Question",
-                            questionType = "TEXT",
-                            questionOrder = 1,
-                            isRequired = true,
-                            additionalConfig = mapOf("key" to "value"),
-                            questionOptions =
-                                listOf(
-                                    QuestionOptionRequest(
-                                        optionText = "Option 1",
-                                        optionOrder = 1,
-                                    ),
-                                ),
+                listOf(
+                    QuestionRequest(
+                        questionText = "Test Question",
+                        questionType = "TEXT",
+                        questionOrder = 1,
+                        isRequired = true,
+                        additionalConfig = mapOf("key" to "value"),
+                        questionOptions =
+                        listOf(
+                            QuestionOptionRequest(
+                                optionText = "Option 1",
+                                optionOrder = 1,
+                            ),
                         ),
                     ),
+                ),
             )
 
         val savedForm =
@@ -93,16 +93,16 @@ class SurveyServiceImplTest {
                 description = "Updated Description",
                 isActive = true,
                 questions =
-                    listOf(
-                        QuestionRequest(
-                            questionText = "Updated Question",
-                            questionType = "TEXT",
-                            questionOrder = 1,
-                            isRequired = true,
-                            additionalConfig = mapOf("key" to "value"),
-                            questionOptions = listOf(),
-                        ),
+                listOf(
+                    QuestionRequest(
+                        questionText = "Updated Question",
+                        questionType = "TEXT",
+                        questionOrder = 1,
+                        isRequired = true,
+                        additionalConfig = mapOf("key" to "value"),
+                        questionOptions = listOf(),
                     ),
+                ),
             )
 
         val existingForm =
@@ -197,16 +197,16 @@ class SurveyServiceImplTest {
                 title = "Test Form",
                 description = "Test Description",
                 questions =
-                    listOf(
-                        QuestionRequest(
-                            questionText = "Test Question",
-                            questionType = "MULTIPLE_CHOICE",
-                            questionOrder = 1,
-                            isRequired = true,
-                            additionalConfig = mapOf(),
-                            questionOptions = listOf(),
-                        ),
+                listOf(
+                    QuestionRequest(
+                        questionText = "Test Question",
+                        questionType = "MULTIPLE_CHOICE",
+                        questionOrder = 1,
+                        isRequired = true,
+                        additionalConfig = mapOf(),
+                        questionOptions = listOf(),
                     ),
+                ),
             )
 
         // When & Then
