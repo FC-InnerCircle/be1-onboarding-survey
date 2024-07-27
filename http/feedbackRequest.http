@@ -20,4 +20,4 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/forms/{{formId}}/history
+GET http://localhost:8080/feedbacks/forms/{{formId}}/history

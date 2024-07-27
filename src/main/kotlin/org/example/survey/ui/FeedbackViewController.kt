@@ -5,9 +5,11 @@ import org.example.survey.dto.feedback.response.FeedbackResponse
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController("/feedback")
+@RestController
+@RequestMapping("/feedbacks")
 class FeedbackViewController(
     private val feedbackViewService: FeedbackViewService,
 ) {
