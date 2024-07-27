@@ -15,7 +15,7 @@ public record SurveyView(
                 entity.getName(),
                 entity.getDescription(),
                 entity.getItems().stream()
-                        .filter(item->item.getOverridden() == null)
+                        .filter(item->item.getVersion().overwritten() == null)
                         .map(SurveyItemView::of)
                         .toList()
         );

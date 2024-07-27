@@ -4,6 +4,7 @@ import lshh.be1onboardingsurvey.common.lib.clock.Clock;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
 import lshh.be1onboardingsurvey.survey.domain.entity.*;
 import lshh.be1onboardingsurvey.survey.domain.vo.SurveyResponseItemValue;
+import lshh.be1onboardingsurvey.survey.domain.vo.Version;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class SurveyTest {
             );
 
             // Add the new item
-            sut.addItem(command);
+            sut.addItem(command, fakeClock.now());
 
             // Assert that the item has been added
             assertEquals(1, sut.getItems().size());
@@ -79,7 +80,7 @@ public class SurveyTest {
             );
 
             // Update the item with new option
-            sut.updateItem(command);
+            sut.updateItem(command, fakeClock.now());
 
             // Assert that the item has been updated with new option
             assertEquals(1, sut.findItem(1L).orElseThrow().getOptions().size());
@@ -101,6 +102,7 @@ public class SurveyTest {
                     .formType(SurveyItemFormType.TEXT)
                     .required(true)
                     .sequence(1L)
+                    .version(Version.forCreate(fakeClock.now()))
                     .build();
             List<SurveyItem> itemList = new ArrayList<>();
             itemList.add(initialItem);
@@ -143,15 +145,16 @@ public class SurveyTest {
 
             SurveyItem initialItem1 = SurveyItem.builder()
                     .id(1L)
-                    .overridden(fakeClock.now())
                     .formType(SurveyItemFormType.RADIO)
+                    .sequence(1L)
                     .build();
+            initialItem1.setVersion(Version.forOverwriten(null, fakeClock.now()));
 
             SurveyItem initialItem2 = SurveyItem.builder()
                     .id(2L)
-                    .preId(1L)
                     .formType(SurveyItemFormType.RADIO)
                     .build();
+            initialItem2.setVersion(Version.forUpdate(initialItem1, fakeClock.now()));
 
             List<SurveyItem> itemList = new ArrayList<>();
             itemList.add(initialItem1);

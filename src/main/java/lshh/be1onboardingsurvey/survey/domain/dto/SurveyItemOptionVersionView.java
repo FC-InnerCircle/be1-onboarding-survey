@@ -14,12 +14,15 @@ public record SurveyItemOptionVersionView(
 ) {
 
     public static SurveyItemOptionVersionView of(SurveyItemOption surveyItemOption) {
+
+        var preId = surveyItemOption.getVersion().previous() == null ? null : surveyItemOption.getVersion().previous().getId();
+
         return new SurveyItemOptionVersionView(surveyItemOption.getId(),
                 surveyItemOption.getName(),
                 surveyItemOption.getDescription(),
                 surveyItemOption.getSequence(),
-                surveyItemOption.getOverridden(),
-                surveyItemOption.getPreId()
+                surveyItemOption.getVersion().overwritten(),
+                preId
         );
     }
 }

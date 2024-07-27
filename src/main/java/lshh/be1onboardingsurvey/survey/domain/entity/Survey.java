@@ -6,8 +6,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lshh.be1onboardingsurvey.common.lib.clock.Clock;
+import lshh.be1onboardingsurvey.common.lib.diff.Diff;
 import lshh.be1onboardingsurvey.survey.domain.command.*;
+import lshh.be1onboardingsurvey.survey.domain.vo.Version;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,9 +41,13 @@ public class Survey {
                 .build();
     }
 
-    public void addItem(AddSurveyItemCommand command) {
+    public void addItem(AddSurveyItemCommand command, LocalDateTime now) {
         SurveyItem surveyItem = command.toEntity();
+        surveyItem.setVersion(Version.forCreate(now));
         surveyItem.setSurvey(this);
+        if(this.items == null){
+            this.items = new ArrayList<>();
+        }
         items.add(surveyItem);
     }
 
@@ -51,14 +59,14 @@ public class Survey {
 
     public Optional<SurveyItem> findItemByPreId(Long preId){
         return this.items.stream()
-                .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
+                .filter(item -> item.getVersion().previous() != null && item.getVersion().previous().getId().equals(preId))
                 .findFirst();
     }
 
     public Optional<SurveyItem> findLatestItem(Long id){
         return findItem(id)
                 .map(item -> {
-                    while(item.getOverridden() != null){
+                    while(item.getVersion().overwritten() != null){
                         item = findItemByPreId(item.getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Survey latest item not found"));
                     }
@@ -66,22 +74,32 @@ public class Survey {
                 });
     }
 
+    public List<SurveyItem> findItemByName(String name){
+        return this.items.stream()
+                .filter(item -> item.getName().equals(name))
+                .toList();
+    }
+
     public Optional<SurveyItem> findItemBySequence(Long sequence){
         return this.items.stream()
-                .filter(i -> i.getSequence().equals(sequence) && i.getOverridden() == null)
+                .filter(item -> item.getSequence().equals(sequence)
+                        && item.getVersion().overwritten() == null)
                 .findFirst();
     }
 
-    public void updateItem(AddSurveyItemOptionCommand command) {
+    public void updateItem(AddSurveyItemOptionCommand command, LocalDateTime now) {
         SurveyItem surveyItem = findItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
-        surveyItem.addItemOption(command);
+        surveyItem.addItemOption(command, now);
     }
 
     public void updateItem(UpdateSurveyItemCommand command, Clock clock){
         SurveyItem latestItem = findLatestItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
         SurveyItem newItem = command.toEntity();
+        if(Diff.of(latestItem, newItem).isNotChanged()){
+            return;
+        }
         switch(command.form()){
             case TEXT, TEXTAREA -> {}
             case RADIO, CHECKBOX -> {
@@ -89,17 +107,16 @@ public class Survey {
                 newItem.addItemOptions(options);
             }
         }
-        newItem.setPreId(latestItem.getId());
-        latestItem.setOverridden(clock);
+        newItem.setVersion(Version.forUpdate(latestItem, clock.now()));
+        latestItem.setVersion(Version.forOverwriten(latestItem.getVersion(), clock.now()));
         newItem.setSurvey(this);
         this.items.add(newItem);
     }
 
-
-    public void updateItem(UpdateSurveyItemOptionCommand command, Clock clock) {
+    public void updateItem(UpdateSurveyItemOptionCommand command, LocalDateTime now) {
         SurveyItem surveyItem = findItem(command.itemId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item not found"));
-        surveyItem.updateItemOption(command, clock);
+        surveyItem.updateItemOption(command, now);
     }
 
     public void addResponse(SurveyResponse response) {

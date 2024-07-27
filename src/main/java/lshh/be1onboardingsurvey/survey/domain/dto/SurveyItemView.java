@@ -23,7 +23,7 @@ public record SurveyItemView(
                 entity.getRequired(),
                 entity.getSequence(),
                 entity.getOptions().stream()
-                        .filter(option->option.getOverridden() == null)
+                        .filter(option->option.getVersion().overwritten() == null)
                         .sorted(Comparator.comparing(SurveyItemOption::getSequence))
                         .map(SurveyItemOptionView::of)
                         .toList()

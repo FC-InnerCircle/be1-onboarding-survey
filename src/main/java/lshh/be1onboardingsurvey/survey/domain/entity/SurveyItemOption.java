@@ -2,9 +2,7 @@ package lshh.be1onboardingsurvey.survey.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lshh.be1onboardingsurvey.common.lib.clock.Clock;
-
-import java.time.LocalDateTime;
+import lshh.be1onboardingsurvey.survey.domain.vo.Version;
 
 @Getter
 @AllArgsConstructor
@@ -19,17 +17,14 @@ public class SurveyItemOption {
     String name;
     String description;
     Long sequence;
-    LocalDateTime overridden;
+
     @Setter
-    Long preId;
+    @Embedded
+    Version<SurveyItemOption> version;
 
     @Setter
     @ManyToOne
     SurveyItem surveyItem;
-
-    public void setOverridden(Clock clock) {
-        this.overridden = clock.now();
-    }
 
     public SurveyItemOption toCopy(SurveyItem surveyItem) {
         return SurveyItemOption.builder()
@@ -37,6 +32,7 @@ public class SurveyItemOption {
                 .description(this.description)
                 .sequence(this.sequence)
                 .surveyItem(surveyItem)
+                .version(this.version)
                 .build();
     }
 

@@ -18,6 +18,7 @@ public record SurveyItemVersionView(
 
 ) {
     public static SurveyItemVersionView of(SurveyItem entity){
+        var preId = entity.getVersion().previous() == null ? null : entity.getVersion().previous().getId();
         return new SurveyItemVersionView(entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
@@ -28,8 +29,8 @@ public record SurveyItemVersionView(
                         .sorted((o1, o2) -> (int) (o1.getSequence() - o2.getSequence()))
                         .map(SurveyItemOptionVersionView::of)
                         .toList(),
-                entity.getOverridden(),
-                entity.getPreId()
+                entity.getVersion().overwritten(),
+                preId
         );
     }
 }

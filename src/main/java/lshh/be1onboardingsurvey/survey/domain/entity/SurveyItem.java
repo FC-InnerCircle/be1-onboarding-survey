@@ -2,10 +2,11 @@ package lshh.be1onboardingsurvey.survey.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lshh.be1onboardingsurvey.common.lib.clock.Clock;
+import lshh.be1onboardingsurvey.common.lib.diff.Diff;
 import lshh.be1onboardingsurvey.common.lib.jpa.BooleanConverter;
 import lshh.be1onboardingsurvey.survey.domain.command.AddSurveyItemOptionCommand;
 import lshh.be1onboardingsurvey.survey.domain.command.UpdateSurveyItemOptionCommand;
+import lshh.be1onboardingsurvey.survey.domain.vo.Version;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,10 +30,9 @@ public class SurveyItem {
     Boolean required;
     Long sequence;
 
-    LocalDateTime overridden;
-
     @Setter
-    Long preId;
+    @Embedded
+    Version<SurveyItem> version;
   
     @Setter
     @ManyToOne
@@ -41,7 +41,11 @@ public class SurveyItem {
     @OneToMany(mappedBy = "surveyItem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     List<SurveyItemOption> options;
 
-    public void addItemOption(AddSurveyItemOptionCommand command) {
+    public boolean isOverridden(){
+        return this.version.overwritten() != null;
+    }
+
+    public void addItemOption(AddSurveyItemOptionCommand command, LocalDateTime now) {
         if(
             this.formType != SurveyItemFormType.RADIO
             && this.formType != SurveyItemFormType.CHECKBOX
@@ -53,11 +57,8 @@ public class SurveyItem {
         if(this.options == null){
             this.options = new ArrayList<>();
         }
+        surveyItemOption.setVersion(Version.forCreate(now));
         options.add(surveyItemOption);
-    }
-
-    public void setOverridden(Clock clock) {
-        this.overridden = clock.now();
     }
 
     public void addItemOptions(List<SurveyItemOption> options) {
@@ -67,14 +68,16 @@ public class SurveyItem {
         this.options.addAll(options);
     }
 
-    public void updateItemOption(UpdateSurveyItemOptionCommand command, Clock clock) {
+    public void updateItemOption(UpdateSurveyItemOptionCommand command, LocalDateTime now) {
         SurveyItemOption latest = this.findLatestOption(command.optionId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey item option not found"));
-
         SurveyItemOption newOption = command.toEntity();
-        latest.setOverridden(clock);
+        if(Diff.of(latest, newOption).isNotChanged()){
+            return;
+        }
+        latest.setVersion(Version.forOverwriten(latest.getVersion(), now));
         newOption.setSurveyItem(this);
-        newOption.setPreId(latest.getId());
+        newOption.setVersion(Version.forUpdate(latest, now));
         this.options.add(newOption);
     }
 
@@ -86,14 +89,14 @@ public class SurveyItem {
 
     public Optional<SurveyItemOption> findItemByPreId(Long preId){
         return this.options.stream()
-                .filter(item -> item.getPreId() != null && item.getPreId().equals(preId))
+                .filter(item -> item.getVersion().previous() != null && item.getVersion().previous().getId().equals(preId))
                 .findFirst();
     }
 
     public Optional<SurveyItemOption> findLatestOption(Long id){
         return findOption(id)
                 .map(item -> {
-                    while(item.getOverridden() != null){
+                    while(item.getVersion().overwritten() != null){
                         item = findItemByPreId(item.getId())
                                 .orElseThrow(() -> new IllegalArgumentException("Survey latest item not found"));
                     }
@@ -101,4 +104,9 @@ public class SurveyItem {
                 });
     }
 
+    public List<SurveyItemOption> findOptionByName(String name) {
+        return this.options.stream()
+                .filter(option -> option.getName().equals(name))
+                .toList();
+    }
 }

@@ -53,7 +53,7 @@ public class SurveyService {
     public Result<?> addItem(AddSurveyItemCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
-        survey.addItem(command);
+        survey.addItem(command, clock.now());
         return repository.save(survey);
     }
 
@@ -61,7 +61,7 @@ public class SurveyService {
     public Result<?> addItemOption(AddSurveyItemOptionCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
-        survey.updateItem(command);
+        survey.updateItem(command, clock.now());
         return repository.save(survey);
     }
 
@@ -79,7 +79,7 @@ public class SurveyService {
     public Result<?> updateItemOption(UpdateSurveyItemOptionCommand command) {
         Survey survey = repository.findById(command.surveyId())
                 .orElseThrow(() -> new IllegalArgumentException("Survey not found"));
-        survey.updateItem(command, clock);
+        survey.updateItem(command, clock.now());
         return repository.save(survey);
     }
 
