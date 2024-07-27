@@ -1,12 +1,12 @@
 package fastcampus.innercircle.onboarding.survey.dto.response;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyForm;
-import fastcampus.innercircle.onboarding.survey.dto.request.CreateQuestionRequest;
 
 import java.util.List;
+import java.util.UUID;
 
 public record FindFormResponse(
-        Long id,
+        UUID id,
         Long version,
         String title,
         String desc,

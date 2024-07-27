@@ -31,7 +31,6 @@ public record CreateQuestionRequest(
 
     public SurveyQuestion toEntity() {
         return SurveyQuestion.builder()
-                .version(1L)
                 .title(title())
                 .desc(desc())
                 .isRequired(isRequired())

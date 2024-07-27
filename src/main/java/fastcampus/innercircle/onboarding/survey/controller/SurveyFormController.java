@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/survey/form")
@@ -18,12 +19,12 @@ public class SurveyFormController {
 
     @PostMapping
     public ResponseEntity<Object> createForm(@RequestBody final CreateFormRequest request) {
-        Long formId = formService.register(request.toEntity());
-        return ResponseEntity.created(URI.create(String.format("/api/survey/form/%d", formId))).build();
+        UUID formId = formService.register(request.toEntity());
+        return ResponseEntity.created(URI.create(String.format("/api/survey/form/%s", formId))).build();
     }
 
     @GetMapping("/{formId}")
-    public ResponseEntity<FindFormResponse> getForm(@PathVariable(name = "formId") Long formId) {
+    public ResponseEntity<FindFormResponse> getForm(@PathVariable(name = "formId") final UUID formId) {
         SurveyForm findForm = formService.getForm(formId);
         return ResponseEntity.ok(FindFormResponse.from(findForm));
     }

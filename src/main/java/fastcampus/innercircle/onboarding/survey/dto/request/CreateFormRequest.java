@@ -1,5 +1,6 @@
 package fastcampus.innercircle.onboarding.survey.dto.request;
 
+import fastcampus.innercircle.onboarding.survey.domain.FormId;
 import fastcampus.innercircle.onboarding.survey.domain.SurveyForm;
 import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionEmptyException;
 
@@ -23,7 +24,7 @@ public record CreateFormRequest(
 
     public SurveyForm toEntity() {
         return SurveyForm.builder()
-                .version(1L)
+                .formId(FormId.createFormId())
                 .title(title())
                 .desc(desc())
                 .createAt(LocalDateTime.now())

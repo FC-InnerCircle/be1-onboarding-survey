@@ -20,9 +20,6 @@ public class SurveyQuestion {
     @Column(name = "QUESTION_ID")
     private Long id;
 
-    @Column(name = "FORM_VERSION")
-    private Long version;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "RESPONSE_TYPE")
     private SurveyResponseType responseType;
@@ -41,7 +38,10 @@ public class SurveyQuestion {
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FORM_ID")
+    @JoinColumns({
+            @JoinColumn(name = "FORM_ID", referencedColumnName = "FORM_ID"),
+            @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")
+    })
     private SurveyForm form;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -50,7 +50,6 @@ public class SurveyQuestion {
     @Builder
     public SurveyQuestion(
             final SurveyForm form,
-            final Long version,
             final String title,
             final String desc,
             final boolean isRequired,
@@ -59,7 +58,6 @@ public class SurveyQuestion {
             final List<SurveyQuestionOption> options
     ) {
         this.form = form;
-        this.version = version;
         this.title = title;
         this.desc = desc;
         this.isRequired = isRequired;
@@ -78,5 +76,9 @@ public class SurveyQuestion {
 
     private boolean isOptionalQuestion() {
         return MULTI.equals(responseType) || SINGLE.equals(responseType);
+    }
+
+    public Long getVersion() {
+        return this.form.getVersion();
     }
 }

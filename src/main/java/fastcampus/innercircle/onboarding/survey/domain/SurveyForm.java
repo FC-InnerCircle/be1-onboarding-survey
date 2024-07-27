@@ -6,6 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @ToString
 @Getter
@@ -13,13 +14,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "SURVEY_FORM")
 public class SurveyForm {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "FORM_ID")
-    private Long id;
-
-    @Column(name = "FORM_VERSION")
-    private Long version;
+    @EmbeddedId
+    private FormId formId;
 
     @Column(name = "FORM_TITLE")
     private String title;
@@ -38,13 +34,13 @@ public class SurveyForm {
 
     @Builder
     public SurveyForm(
-            final Long version,
+            final FormId formId,
             final String title,
             final String desc,
             final LocalDateTime createAt,
             final List<SurveyQuestion> questions
     ) {
-        this.version = version;
+        this.formId = formId;
         this.title = title;
         this.desc = desc;
         this.createAt = createAt;
@@ -54,5 +50,17 @@ public class SurveyForm {
     public void addQuestion(SurveyQuestion question) {
         questions.add(question);
         question.setForm(this);
+    }
+
+    public void versionUp() {
+        this.formId.versionUp();
+    }
+
+    public UUID getId() {
+        return this.formId.getId();
+    }
+
+    public Long getVersion() {
+        return this.formId.getVersion();
     }
 }

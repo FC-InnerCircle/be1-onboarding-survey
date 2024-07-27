@@ -13,7 +13,10 @@ public class SurveyResponse {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "FORM_ID")
+    @JoinColumns({
+            @JoinColumn(name = "FORM_ID", referencedColumnName = "FORM_ID"),
+            @JoinColumn(name = "VERSION", referencedColumnName = "VERSION")
+    })
     private SurveyForm form;
 
     @OneToMany(mappedBy = "response")
