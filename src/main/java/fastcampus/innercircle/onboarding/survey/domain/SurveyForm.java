@@ -47,12 +47,8 @@ public class SurveyForm {
         questions.forEach(this::addQuestion);
     }
 
-    public void addQuestion(SurveyQuestion question) {
-        questions.add(question);
-        question.setForm(this);
-    }
-
-    public void versionUp() {
+    public void setNextFormId(SurveyForm beforeForm) {
+        this.formId = new FormId(beforeForm.getId(), beforeForm.getVersion());
         this.formId.versionUp();
     }
 
@@ -62,5 +58,15 @@ public class SurveyForm {
 
     public Long getVersion() {
         return this.formId.getVersion();
+    }
+
+    public boolean isUnchanged(SurveyForm afterForm) {
+        // TODO 변경사항 diff 로직
+        return false;
+    }
+
+    private void addQuestion(SurveyQuestion question) {
+        questions.add(question);
+        question.setForm(this);
     }
 }

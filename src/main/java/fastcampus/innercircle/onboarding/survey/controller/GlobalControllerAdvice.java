@@ -1,8 +1,6 @@
 package fastcampus.innercircle.onboarding.survey.controller;
 
-import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionEmptyException;
-import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionOptionEmptyException;
-import fastcampus.innercircle.onboarding.survey.exception.SurveyQuestionOptionNotAllowedException;
+import fastcampus.innercircle.onboarding.survey.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,12 +10,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalControllerAdvice {
 
     @ExceptionHandler({
+            SurveyFormUnchangedException.class,
             SurveyQuestionEmptyException.class,
             SurveyQuestionOptionEmptyException.class,
             SurveyQuestionOptionNotAllowedException.class
     })
     public ResponseEntity<String> badRequest(RuntimeException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({
+            SurveyFormNotFoundException.class
+    })
+    public ResponseEntity<String> notFound(RuntimeException e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler

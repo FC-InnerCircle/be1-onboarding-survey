@@ -2,6 +2,7 @@ package fastcampus.innercircle.onboarding.survey.controller;
 
 import fastcampus.innercircle.onboarding.survey.domain.SurveyForm;
 import fastcampus.innercircle.onboarding.survey.dto.request.CreateFormRequest;
+import fastcampus.innercircle.onboarding.survey.dto.request.UpdateFormRequest;
 import fastcampus.innercircle.onboarding.survey.dto.response.FindFormResponse;
 import fastcampus.innercircle.onboarding.survey.service.SurveyFormService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,12 @@ public class SurveyFormController {
     public ResponseEntity<Object> createForm(@RequestBody final CreateFormRequest request) {
         UUID formId = formService.register(request.toEntity());
         return ResponseEntity.created(URI.create(String.format("/api/survey/form/%s", formId))).build();
+    }
+
+    @PutMapping("/{formId}")
+    public ResponseEntity<Object> updateForm(@PathVariable(name = "formId") final UUID formId, @RequestBody final UpdateFormRequest request) {
+        UUID updateFormId = formService.update(formId, request.toEntity());
+        return ResponseEntity.ok(updateFormId);
     }
 
     @GetMapping("/{formId}")

@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Embeddable
 public class FormId implements Serializable {
-    @Column(name = "FORM_ID", columnDefinition = "BINARY(16)")
+    @Column(name = "FORM_ID")
     private UUID id;
 
     @Column(name = "VERSION")

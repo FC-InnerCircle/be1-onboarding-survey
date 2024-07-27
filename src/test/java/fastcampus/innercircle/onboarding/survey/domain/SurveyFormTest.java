@@ -29,7 +29,11 @@ class SurveyFormTest {
 
         CreateFormRequest formRequest = new CreateFormRequest("설문1", "설문 내용", questions);
         SurveyForm form = formRequest.toEntity();
+        FormId formId = form.getFormId();
 
-        Assertions.assertThat(form.getVersion()).isEqualTo(1L);
+        Assertions.assertThat(form.getId()).isEqualTo(formId.getId());
+        Assertions.assertThat(form.getVersion()).isEqualTo(formId.getVersion());
+        Assertions.assertThat(questions.get(0).options()).containsAll(options1);
+        Assertions.assertThat(questions.get(1).options()).containsAll(options2);
     }
 }
