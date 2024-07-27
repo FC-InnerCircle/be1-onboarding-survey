@@ -2,8 +2,8 @@ package org.example.survey.ui
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.example.survey.application.FeedbackRegisterService
-import org.example.survey.dto.feedback.AnswerRequest
-import org.example.survey.dto.feedback.FeedbackRequest
+import org.example.survey.dto.feedback.request.AnswerRequest
+import org.example.survey.dto.feedback.request.FeedbackRequest
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever

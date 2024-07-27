@@ -3,4 +3,6 @@ package org.example.survey.repository
 import org.example.survey.domain.FeedbackHistory
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface FeedbackHistoryRepository : JpaRepository<FeedbackHistory, Long>
+interface FeedbackHistoryRepository : JpaRepository<FeedbackHistory, Long> {
+    fun findByFormId(formId: Long): List<FeedbackHistory>
+}

@@ -1,4 +1,4 @@
-package org.example.survey.dto.feedback
+package org.example.survey.dto.feedback.request
 
 import org.example.survey.domain.Feedback
 
