@@ -1,6 +1,7 @@
 package com.innercircle.onboardingservey.domain;
 
 import com.innercircle.onboardingservey.domain.model.*;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyAnswerResult;
 import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyResult;
 
 import java.util.*;
@@ -12,13 +13,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service @RequiredArgsConstructor public class SurveyService {
+@Service
+@RequiredArgsConstructor
+public class SurveyService {
 
     private final QuestionStore questionStore;
     private final QuestionReader questionReader;
     private final SurveyStore surveyStore;
     private final SurveyReader surveyReader;
     private final AnswerStore answerStore;
+    private final AnswerReader answerReader;
 
     @Transactional
     public SurveyResult createSurvey(SurveyCommand.SurveyVersionCreateCommand command) {
@@ -48,13 +52,15 @@ import org.springframework.transaction.annotation.Transactional;
         final Long surveyId
     ) {
         final Survey survey = surveyReader.getSurveyBySurveyId(surveyId);
-        final List<SurveyVersion> surveyVersions = surveyReader.getSurveyVersionAllBySurveyId(survey);
+        final List<SurveyVersion> surveyVersions = surveyReader.getSurveyVersionAllBySurveyId(
+            survey);
         final SurveyVersion latestSurveyVersion = surveyVersions.stream()
             .sorted(Comparator.comparingLong(SurveyVersion::getSurveyVersionId))
             .toList()
             .get(0);
 
-        final List<Question> questions = questionReader.findQuestionsBySurveyVersion(latestSurveyVersion);
+        final List<Question> questions = questionReader.findQuestionsBySurveyVersion(
+            latestSurveyVersion);
 
         return SurveyResult.from(
             survey.getSurveyId(),
@@ -67,7 +73,8 @@ import org.springframework.transaction.annotation.Transactional;
     public SurveyResults.SurveyAnswerResult createAnswer(
         final AnswerCommand.AnswerCreateCommand command
     ) {
-        final SurveyVersion surveyVersion = surveyReader.getSurveyVersionBySurveyVersionId(command.surveyVersionId());
+        final SurveyVersion surveyVersion = surveyReader.getSurveyVersionBySurveyVersionId(
+            command.surveyVersionId());
 
         final Map<Long, AnswerCommand.QuestionAnswerCommand> questionAnswerCommandByQuestionIdMap = command.questionAnswerCommand()
             .stream()
@@ -101,12 +108,56 @@ import org.springframework.transaction.annotation.Transactional;
             ));
 
         return SurveyResults.SurveyAnswerResult.from(
+            answer.getAnswerId(),
             command.userId(),
             surveyVersion,
             questions,
             questionAnswerDetailByQuestionIdMap
-            );
+        );
     }
+
+    @Transactional(readOnly = true)
+    public List<SurveyResults.SurveyAnswerResult> getAnswer(
+        final Long surveyId
+    ) {
+        final Survey survey = surveyReader.getSurveyBySurveyId(surveyId);
+        final List<Answer> answers = answerReader.getAnswersBySurvey(survey);
+        final List<QuestionAnswer> questionAnswers = answerReader.getQuestionAnswersInAnswers(
+            answers);
+        final Map<Long, List<QuestionAnswer>> questionAnswerByQuestionIdMap = answerReader.getQuestionAnswersInAnswers(
+                answers)
+            .stream()
+            .collect(
+                Collectors.groupingBy(
+                    questionAnswer -> questionAnswer.getQuestion().getQuestionId()
+                )
+            );
+        final Map<Long, List<QuestionAnswerDetail>> questionAnswerDetailsMapByAnswerId = answerReader.getQuestionAnswerDetailsInQuestionAnswer(
+                questionAnswers)
+            .stream()
+            .collect(Collectors.groupingBy(
+                questionAnswerDetail -> questionAnswerDetail.getQuestionAnswer().getAnswer()
+                    .getAnswerId()
+            ));
+
+        return answers.stream().map(
+            answer -> SurveyAnswerResult.from(
+                answer.getAnswerId(),
+                answer.getUserId(),
+                answer.getSurveyVersion(),
+                questionAnswerByQuestionIdMap.get(answer.getAnswerId()).stream()
+                    .map(QuestionAnswer::getQuestion).toList(),
+                questionAnswerDetailsMapByAnswerId.get(
+                        answer.getAnswerId())
+                    .stream()
+                    .collect(
+                        Collectors.groupingBy(
+                            it -> it.getQuestionAnswer().getQuestion().getQuestionId())
+                    )
+            )
+        ).toList();
+    }
+
 
     private List<QuestionAnswerDetail> createQuestionAnswer(
         AnswerCommand.AnswerCreateCommand command,

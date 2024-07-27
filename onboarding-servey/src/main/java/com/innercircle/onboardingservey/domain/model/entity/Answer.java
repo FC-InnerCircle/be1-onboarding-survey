@@ -17,11 +17,15 @@ public class Answer {
     @ManyToOne(fetch = FetchType.LAZY)
     private SurveyVersion surveyVersion;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Survey survey;
+
     public Answer(
         Long userId,
         SurveyVersion surveyVersion
     ) {
         this.userId = userId;
         this.surveyVersion = surveyVersion;
+        this.survey = surveyVersion.getSurvey();
     }
 }

@@ -3,7 +3,9 @@ package com.innercircle.onboardingservey.controller.survey;
 import com.innercircle.onboardingservey.controller.survey.SurveyAdminResponse.SurveyDetailAdminResponse;
 import com.innercircle.onboardingservey.domain.SurveyService;
 import com.innercircle.onboardingservey.domain.model.SurveyCommand.SurveyVersionCreateCommand;
+import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyAnswerResult;
 import com.innercircle.onboardingservey.domain.model.SurveyResults.SurveyResult;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,14 @@ public class SurveyAdminController {
     ) {
         final SurveyResult surveyResult = surveyService.addSurveyVersion(surveyId, SurveyVersionCreateCommand.from(request));
         return ResponseEntity.ok(SurveyDetailAdminResponse.from(surveyResult));
+    }
+
+    @GetMapping("{surveyId}/answer")
+    public ResponseEntity<Object> getAnswer(
+        @PathVariable Long surveyId
+    ) {
+        final List<SurveyAnswerResult> surveyResult = surveyService.getAnswer(surveyId);
+        return ResponseEntity.ok(surveyResult);
     }
 
 }

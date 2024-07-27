@@ -75,6 +75,7 @@ public class SurveyResults {
     }
 
     public record SurveyAnswerResult(
+        Long answerId,
         Long userId,
         Long surveyId,
         Long surveyVersionId,
@@ -83,12 +84,14 @@ public class SurveyResults {
         List<SurveyAnswerQuestionResult> surveyAnswerQuestionResults
     ) {
         public static SurveyAnswerResult from(
+            Long answerId,
             Long userId,
             SurveyVersion surveyVersion,
             List<Question> questions,
             Map<Long, List<QuestionAnswerDetail>> questionAnswerDetailsByQuestionIdMap
         ) {
             return new SurveyAnswerResult(
+                answerId,
                 userId,
                 surveyVersion.getSurvey()
                     .getSurveyId(),
