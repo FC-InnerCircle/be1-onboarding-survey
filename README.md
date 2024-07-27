@@ -113,7 +113,7 @@ response
 ```
 
 [설문조사]
- - API: /v1/survey
+ - API: /v1/surveys
  - Method: POST
  - Request :
 ```
