@@ -1,0 +1,3 @@
+[submodule "ddd-template"]
+	path = ddd-template
+	url = https://github.com/hyunolike/ddd-template.git
