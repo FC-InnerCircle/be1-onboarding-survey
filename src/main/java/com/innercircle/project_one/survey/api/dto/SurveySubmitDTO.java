@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.util.List;
 
 public record SurveySubmitDTO(
-        int version,
+        Long version,
         List<SurveySubmitObject> objects
 ) {
 

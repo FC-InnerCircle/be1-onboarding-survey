@@ -4,7 +4,6 @@ import com.innercircle.project_one.survey.api.dto.SurveySubmitDTO;
 import com.innercircle.project_one.survey.api.repository.*;
 import com.innercircle.project_one.survey.common.SurveyObjectDataType;
 import com.innercircle.project_one.survey.domain.*;
-import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,20 +20,29 @@ public class SurveyValidator {
 
     private final SurveyService surveyService;
 
+
+    public void validateUpdateable(Long requestId, Survey survey) {
+        validateUpdateVersion(requestId, survey);
+    }
     public void validateSubmitable(Survey survey, SurveySubmitDTO surveySubmitDTO) {
-        validateVersion(survey, surveySubmitDTO);
+        validateSubmitVersion(survey, surveySubmitDTO);
         validateSurveyObjects(survey, surveySubmitDTO);
     }
 
-    private void validateVersion(Survey survey, SurveySubmitDTO surveySubmitDTO) {
-        if(survey.getSurveyVersion().getVersion() != surveySubmitDTO.version()) {
+    private void validateSubmitVersion(Survey survey, SurveySubmitDTO surveySubmitDTO) {
+        if(!Objects.equals(survey.getSurveyVersion().getVersion(), surveySubmitDTO.version())) {
+            throw new IllegalArgumentException("버전이 일치하지 않습니다.");
+        }
+    }
+
+    private void validateUpdateVersion(Long requestId, Survey survey) {
+        if(!Objects.equals(requestId, survey.getSurveyVersion().getVersion())) {
             throw new IllegalArgumentException("버전이 일치하지 않습니다.");
         }
     }
 
     private void validateSurveyObjects(Survey survey, SurveySubmitDTO surveySubmitDTO) {
-        survey.sortSurveyObjects();
-        List<SurveyObject> savedSurveyObjects = survey.getSurveyObjects();
+        List<SurveyObject> savedSurveyObjects = surveyService.getSurveyVersionObjects(survey.getId(), surveySubmitDTO);
         List<SurveySubmitDTO.SurveySubmitObject> submitSurveyObjects = surveySubmitDTO.objects();
 
         if (savedSurveyObjects.size() != submitSurveyObjects.size()) {
@@ -77,9 +85,9 @@ public class SurveyValidator {
      */
     public void validateSelectedElementIncludedAtElementList(SurveySubmitDTO.SurveySubmitObject requestObject, List<String> answerElements) {
 
-        Survey requestSurvey = surveyService.findSurvey(requestObject.id());
+        SurveyObject surveyObjectId = surveyService.findSurveyObject(requestObject.id());
 
-        List<ElementObject> elementList = elementObjectRepository.findAllBySurveyObjectId(requestSurvey.getId());
+        List<ElementObject> elementList = elementObjectRepository.findAllBySurveyObjectId(surveyObjectId.getId());
 
         Set<String> elementObjectIds = elementList.stream()
                 .map(eo -> String.valueOf(eo.getId()))

@@ -16,10 +16,13 @@ public class SurveyUpdateService {
     private final SurveyService surveyService;
     private final SurveyRepository surveyRepository;
     private final SurveyVersionRepository surveyVersionRepository;
+    private final SurveyValidator surveyValidator;
 
     @Transactional
     public ApiResponse updateSurvey(Long surveyId, SurveyDTO surveyDTO) {
         Survey findSurvey = surveyService.findSurvey(surveyId);
+        surveyValidator.validateUpdateable(surveyDTO.version(), findSurvey);
+
         findSurvey.updateSurveyTitleAndDescription(surveyDTO.title(), surveyDTO.description());
         Survey savedSurvey = surveyRepository.save(findSurvey);
 

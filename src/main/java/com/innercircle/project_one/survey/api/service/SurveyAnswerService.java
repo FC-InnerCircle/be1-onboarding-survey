@@ -20,6 +20,7 @@ public class SurveyAnswerService {
 
     private final SurveyService surveyService;
     private final SurveyObjectAnswerRepository surveyObjectAnswerRepository;
+    private final SurveyAnswerRepository surveyAnswerRepository;
     private final EntityManager entityManager;
     private final SurveyValidator surveyValidator;
 
@@ -28,8 +29,9 @@ public class SurveyAnswerService {
 
         Survey survey = surveyService.findSurvey(surveyId);
         surveyValidator.validateSubmitable(survey, surveySubmitDTO);
+        SurveyAnswer surveyAnswer = saveSurveyAnswerForm(survey);
 
-        List<SurveyObject> surveyObjects = survey.getSurveyObjects();
+        List<SurveyObject> surveyObjects = surveyService.getSurveyVersionObjects(surveyId, surveySubmitDTO);
         survey.sortSurveyObjects();
 
         List<SurveySubmitDTO.SurveySubmitObject> objects = surveySubmitDTO.objects();
@@ -37,7 +39,7 @@ public class SurveyAnswerService {
         for (int i = 0; i < objects.size(); i++) {
             SurveySubmitDTO.SurveySubmitObject submitObject = objects.get(i);
 
-            List<SurveyObjectAnswer> answers = createAnswer(surveyObjects.get(i), submitObject);
+            List<SurveyObjectAnswer> answers = createAnswer(surveyObjects.get(i), submitObject, surveyAnswer);
             for (SurveyObjectAnswer answer : answers) {
                 surveyObjectAnswerRepository.save(answer);
             }
@@ -47,7 +49,7 @@ public class SurveyAnswerService {
     }
 
 
-    private List<SurveyObjectAnswer> createAnswer(SurveyObject surveyObject, SurveySubmitDTO.SurveySubmitObject requestObject) {
+    private List<SurveyObjectAnswer> createAnswer(SurveyObject surveyObject, SurveySubmitDTO.SurveySubmitObject requestObject, SurveyAnswer surveyAnswer) {
         List<SurveyObjectAnswer> answers = new ArrayList<>();
         switch (SurveyObjectDataType.of(requestObject.type())) {
             case TEXT, RICH_TEXT -> {
@@ -55,6 +57,7 @@ public class SurveyAnswerService {
                 answers.add(StringSurveyObjectAnswer.builder()
                         .surveyObject(surveyObject)
                         .answer(content)
+                        .surveyAnswer(surveyAnswer)
                         .build());
             }
             case RADIO -> {
@@ -66,6 +69,7 @@ public class SurveyAnswerService {
                         .surveyObject(surveyObject)
                         .answer(selectedElement)
                         .elementObject(elementObject)
+                        .surveyAnswer(surveyAnswer)
                         .build());
             }
             case CHECK_BOX -> {
@@ -78,12 +82,18 @@ public class SurveyAnswerService {
                             .surveyObject(surveyObject)
                             .answer(selectedElements.get(i))
                             .elementObject(elementObject)
+                            .surveyAnswer(surveyAnswer)
                             .build());
                 }
             }
             default -> throw new IllegalArgumentException("적절한 입력 타입이 아닙니다.");
         }
         return answers;
+    }
+
+    private SurveyAnswer saveSurveyAnswerForm(Survey survey) {
+        SurveyAnswer surveyAnswer = new SurveyAnswer(survey);
+        return surveyAnswerRepository.save(surveyAnswer);
     }
 
 }

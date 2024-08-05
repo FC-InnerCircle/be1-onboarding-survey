@@ -1,5 +1,6 @@
 package com.innercircle.project_one.survey.api.service;
 
+import com.innercircle.project_one.survey.api.dto.SurveySubmitDTO;
 import com.innercircle.project_one.survey.api.repository.*;
 import com.innercircle.project_one.survey.api.dto.SurveyDTO;
 import com.innercircle.project_one.survey.api.dto.SurveyObjectDTO;
@@ -25,6 +26,17 @@ public class SurveyService {
         return surveyRepository.findById(surveyId)
                 .orElseThrow(() -> new IllegalArgumentException("설문조사를 찾을 수 없습니다."));
     }
+
+    protected SurveyObject findSurveyObject(Long surveyId) {
+        return surveyObjectRepository.findById(surveyId)
+                .orElseThrow(() -> new IllegalArgumentException("설문조사를 찾을 수 없습니다."));
+    }
+
+    protected List<SurveyObject> getSurveyVersionObjects(Long surveyId, SurveySubmitDTO surveySubmitDTO) {
+        return surveyObjectRepository.findBySurveyIdAndSurveyVersionOrderByElementOrder(surveyId, surveySubmitDTO.version())
+                .orElseThrow(() -> new IllegalArgumentException("설문조사를 찾을 수 없습니다."));
+    }
+
 
     protected List<ElementObject> getElementObject(SurveyObjectDTO objectDTO, SurveyObject surveyObject) {
         List<ElementObject> elements = new ArrayList<>();
@@ -67,7 +79,7 @@ public class SurveyService {
                 .type(dataType)
                 .surveyObjectContent(content)
                 .survey(survey)
-                .surveyVersionId(savedSurveyVersion.getVersion())
+                .surveyVersion(savedSurveyVersion.getVersion())
                 .build();
 
         if(dataType.isElementDataType()) {

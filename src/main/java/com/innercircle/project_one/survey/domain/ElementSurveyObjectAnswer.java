@@ -1,11 +1,13 @@
 package com.innercircle.project_one.survey.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 
 @Entity
+@Getter
 @SuperBuilder
 @NoArgsConstructor
 @DiscriminatorValue("ELEMENT")

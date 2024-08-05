@@ -34,12 +34,14 @@ POST http://localhost:8080/surveys/1 HTTP/1.1
 Content-Type: application/json
 
 {
-   "version": 1,
+   "version": 2,
    "objects": [
-      {"type": "text", "id": 1, "content": "단답형 답변"},
-      {"type": "rich_text", "id": 2, "content": "장문형 답변"},
-      {"type": "radio", "id": 3, "content": {"selected_element": "6"}},
-      {"type": "check_box", "id": 4, "content": {"checked_elements": ["7", "8"]}}
+      {"type": "text", "id": 7, "content": "ㅇㅇ"},
+      {"type": "rich_text", "id": 8, "content": "ㅇ"},
+      {"type": "check_box", "id": 5, "content": {"checked_elements": [5]}},
+      {"type": "radio", "id": 6, "content": {"selected_element": 7}}
    ]
 }
 
+### 4. 설문조사 리스트 조회 API
+GET http://localhost:8080/surveys/1?pageNum=1 HTTP/1.1
